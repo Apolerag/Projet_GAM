@@ -23,6 +23,8 @@ ifneq ($(strip $(shell $(CC) -v 2>&1 | grep -i "Linux")),)
 endif
 
 all: clean $(EXEC)
+	@mv SOURCES/*.o OBJS/
+	@cp $(EXEC) OBJS/
 
 job: all
 
@@ -35,7 +37,7 @@ SOURCES/%.o: %.c %.h
 #
 clean:
 	@echo "operating system = $(OS)"
-	rm -rf SOURCES/*.o DOCS/* $(EXEC)
+	rm -rf OBJS/* DOCS/* $(EXEC)
 
 doc: 
 	rm -rf DOCS/*
