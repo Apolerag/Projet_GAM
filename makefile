@@ -1,4 +1,4 @@
-CFLAGS = -c -g -Wall -pedantic
+CFLAGS = -g -Wall -pedantic
 GL_INCLUDE    = -I/usr/include/GL
 GL_LIBDIR    = -L. -L/usr/X11R6/lib
 GL_LIBRARIES = -lglut -lGL -lm -lGLU -lXmu -lXext -lXi -lX11
@@ -34,7 +34,6 @@ $(EXEC): $(OBJ)
 SOURCES/%.o: %.c %.h
 	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
 
-#
 clean:
 	@echo "operating system = $(OS)"
 	rm -rf OBJS/* DOCS/* $(EXEC)
@@ -42,5 +41,3 @@ clean:
 doc: 
 	rm -rf DOCS/*
 	doxygen SOURCES/main.dox
-#
-

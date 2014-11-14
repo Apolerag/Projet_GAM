@@ -1,5 +1,5 @@
 /*! \file base.h
-* \author A Chemier, R Lhomme
+* \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
 
@@ -12,6 +12,7 @@
 /*! MIN retourne le min de A et B*/
 #define MIN(A,B) ( (A)<=(B) ? (A) : (B) )
 
+/*! Calcule la taille du tableau T*/
 #define TAILLE(T) ( sizeof(T) / sizeof(T[0]))
 
 #define FWD 1

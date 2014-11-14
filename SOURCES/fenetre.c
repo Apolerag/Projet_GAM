@@ -1,9 +1,8 @@
 /*! \file fenetre.c
-* \author A Chemier, R Lhomme
+* \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
 
-#include <assert.h>
 #include "fenetre.h"
 
 void definitionFenetre(const double X_min, const double X_max, const double Y_min, const double Y_max, const double margin)
@@ -15,7 +14,7 @@ void definitionFenetre(const double X_min, const double X_max, const double Y_mi
 	f.margin = margin;
 }
 
-void clearFenetre(vertex *v, int nb)
+void clearFenetre(vertex *v, const int nb)
 {
 	free(v);
 
@@ -27,23 +26,31 @@ void winInit()
 	gluOrtho2D(f.minX, f.maxX, f.minY, f.maxY);
 }
 
-double myRandom (double a, double b)
+double myRandom (const double a, const double b)
 {
-	double tmp = random(); /* long int in [0, RAND_MAX] */
-
-	return a+tmp*((b-a)/RAND_MAX);
+	return ( rand()/(double)RAND_MAX ) * (b-a) + a;
 }
 
 void selectPoints (vertex *v, const int nb)
 {
-	int n = nb;
-	while (--n >= 0)
+	assert(nb >= 4);
+	assert(f.maxX - f.minX > 10 && f.maxX > f.minX);
+	assert(f.maxY - f.minY > 10 && f.maxY > f.minY);
+
+	int n = 4;
+	int i;
+
+	v[0].coords[0] = 0; v[0].coords[1] = 0;
+	v[1].coords[0] = 1; v[1].coords[1] = 0;
+	v[2].coords[0] = 1; v[2].coords[1] = 1;
+	v[3].coords[0] = 0; v[3].coords[1] = 1;
+
+	while (++n < nb)
 	{	
-		v[n].coords[0] = myRandom(f.minX , f.maxX);
-		v[n].coords[1] = myRandom(f.minY, f.maxY);
+		v[n].coords[0] = myRandom(0, 1);
+		v[n].coords[1] = myRandom(0, 1);
 	}
-		
-//	displayPoint(v,nb);
+
 }
 
 void effaceFenetre()
@@ -51,34 +58,27 @@ void effaceFenetre()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void displayEnveloppe(const enveloppe *e)
-{
+void displayPoints(const vertex *v, const int nb)
+{	
+	glColor3f(0.0, 0.0, 0.0);
+  	glClear(GL_COLOR_BUFFER_BIT);
+	int i;
+	int echelleX = f.maxX - 10;
+	int echelleY = f.maxY - 10;
 
 	glBegin(GL_LINE_LOOP);
 	glColor3f(0.0, 0.0, 1.0);
-
-	vertex *j = e->premier;
-
-	while(j != e->dernier)
+	for (i = 0; i < 4; ++i)
 	{
-		glVertex2f(j->coords[0],f.maxY - j->coords[1]);
-		j = j->suivant;
+		glVertex2f(v[i].coords[0]*echelleX + 5, f.maxY - v[i].coords[1]*echelleY - 5);
 	}
 	glEnd();
 
-}
-
-void displayPoints(const vertex *v, const int nb)
-{
-	int i;
-	int min = minLexicographique(v, nb);
 	glBegin(GL_POINTS);
-	glColor3f(0.0, 0.0, 1.0);
+	glColor3f(1.0, 1.0, 1.0);
 	for (i = 0; i < nb; ++i)
 	{
-		if(i == min) glColor3f(1.0, 0.0, 0.0);
-		else glColor3f(0.0, 1.0, 0.0);
-		glVertex2f(v[i].coords[0], f.maxY - v[i].coords[1]);
+		glVertex2f(v[i].coords[0]*echelleX + 5, f.maxY - v[i].coords[1]*echelleY - 5);
 	}
 	glEnd();
 }

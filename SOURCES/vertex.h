@@ -1,5 +1,5 @@
 /*! \file vertex.h
-* \author A Chemier, R Lhomme
+* \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
 
@@ -28,6 +28,7 @@ typedef enum
 	POLYGONE = 2
 } Position;
 
+/*! enum pour comparer deux vertex*/
 typedef enum {
 	INFERIEUR = -1,
 	EGAUX = 0,
@@ -43,10 +44,17 @@ typedef struct _vertex
 	struct _vertex *suivant;
 } vertex;
 
-/*! Calcul le determinant de la matrice 3*3 abcdefghi
-* \arg a, b, c la premiere ligne de la matrice
-* \arg c, d, e la deuxieme ligne de la matrice
-* \arg g, h, i la troisieme ligne de la matrice
+
+/*! Calcul le determinant de la matrice 3*3 
+\f[
+    \left |
+	  \begin{array}{cccc}
+	   a & b & c  \\
+	   d & e & f \\
+	   g & h & i \\
+	  \end{array}
+	\right |
+ *  \f]
 */
 double determinant(const double a, const double b, const double c,
 				const double d, const double e, const double f,
@@ -82,21 +90,47 @@ void afficherVertex(const vertex * v);
 	confondus, SUPERIEUR sinon */
 Ordre ordreLexicographiqueVertex(const vertex * v1, const vertex * v2);
 
-/* tir par fusion*/
-vertex* Separer(vertex *liste);
-
-vertex* fusion(vertex *lg,vertex *ld, const vertex* origin);
-
-void afficherListe(vertex *v);
-
-vertex* trier(vertex* l, const vertex* origin);
-
-void echanger(vertex *v ,const int i,const int j);
-
-int partition(vertex *v, const int deb, const int fin);
-
-void triPartitionBis(vertex *v,const int debut,const int fin);
-
-void triPartition(vertex *v, const int n);
+/*! \fn  InCircle (vertex *A, vertex *B, vertex *C, vertex *Z)
+ *  \param A the first vertex determining the circle
+ *  \param B the second vertex determining the circle
+ *  \param C the last vertex determining the circle
+ *  \param Z the vertex to be tested against the circle \f$\Gamma(A,B,C)\f$.
+ *  \brief determines wether vertex \a Z lies ouside, on, or inside
+ *  the circle passing through \a A, \a B and \a C.
+ *
+ *  Let \f$\Gamma(ABC)\f$ be the circle around vertices \f$A, B, C\f$.
+ *  Guibas and Stolfi have shown that the relative position of \f$Z\f$
+ *  and \f$\Gamma(A,B,C)\f$ is equivalent to computing the sign 
+ *  of determinant:
+ *  \f[
+        \left |
+	  \begin{array}{cccc}
+	   x_A     & y_A     & x_A^2+y_A^2  & 1 \\
+	   x_B     & y_B     & x_B^2+y_B^2  & 1 \\
+	   x_C     & y_C     & x_C^2+y_C^2  & 1 \\
+	   x_Z     & y_Z     & x_Z^2+y_Z^2  & 1 \\
+	  \end{array}
+	\right |
+ *  \f]
+ *  corresponding to the relative position of vertex \f$Z\f$ and
+ *  the plane through the projections of vertices \f$A,B,C\f$
+ *  on the paraboloid of revolution with equation
+ *  \f[ z = x^2+y^2. \f]
+ *  According to Guibas & Stolfi's result, the current routine should return:
+ *   -  -1 (DEHORS) if vertex \f$Z\f$ is outside circle \f$\Gamma(A,B,C)\f$,
+ *   -  0 (DESSUS)  if vertex \f$Z\f$ lies on circle \f$\Gamma(A,B,C)\f$, and
+ *   -  1 (DEDANS)  if vertex \f$Z\f$ lies inside circle \f$\Gamma(A,B,C)\f$.             
+ *
+ *  For convenience, as the only disturbing case is 
+ *  "\f$D\f$ lies inside \f$\Gamma(A,B,C)\f$",
+ *  the routine actually returns: 
+ *     1 (DEDANS)  if vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$,
+ *     0       otherwise.
+ *
+ *  \warning Vertices \f$A,B,C\f$ are ASSUMED neither to be aligned or equal.
+ *           Overflow might arise otherwise. User must check this condition
+ *           with function Angle() before calling present function.
+ */
+Position InCircle (vertex *A, vertex *B, vertex *C, vertex *Z);
 
 #endif

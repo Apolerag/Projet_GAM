@@ -1,19 +1,20 @@
-/*! \file fenetre.c
-* \author A Chemier, R Lhomme
+/*! \file fenetre.h
+* \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
 
 #ifndef _FENETRE_H
 #define _FENETRE_H
 
-#include "vertex.h"
 #include "base.h"
-#include "enveloppe.h"
+#include "vertex.h"
 
-#include <unistd.h>  
+#include <assert.h>
 #include <GL/glut.h> 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>  
+
 /*! contient le nom du fichier à lire*/
 char *in;
 
@@ -40,7 +41,7 @@ void definitionFenetre(const double X_min, const double X_max, const double Y_mi
 /*! vide la fenetre
 *
 */
-void clearFenetre(vertex *v,int nb);
+void clearFenetre(vertex *v, const int nb);
 
 /*! Incantation d'ouverture de fenetre OpenGL */
 void winInit();
@@ -50,7 +51,7 @@ void winInit();
 * \arg b : borne superieure.
 * \warning verifier que random() retourne bien un entier long entre 0 et RAND_MAX inclus.
 */
-double myRandom (double a, double b);
+double myRandom (const double a, const double b);
 
 /*! Generations des sites 
 * \arg *v un tableau de vertices
@@ -59,8 +60,6 @@ double myRandom (double a, double b);
 void selectPoints (vertex *v, const int nb);
 
 void effaceFenetre();
-
-void displayEnveloppe(const enveloppe *e);
 
 void displayPoints(const vertex *v, const int nb);
 

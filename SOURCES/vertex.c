@@ -1,7 +1,13 @@
+/*! \file vertex.c
+* \author Aurélien Chemier, Romane Lhomme
+* \date 2014
+*/
+
 #include "vertex.h"
+
+#include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 
 double determinant(const double a, const double b, const double c,
 				const double d, const double e, const double f,
@@ -12,9 +18,15 @@ double determinant(const double a, const double b, const double c,
 
 Orientation orientationPolaire(const vertex *A, const vertex *B, const vertex *C)
 {
-	double det = determinant(1,1,1,
-						   A->coords[0],B->coords[0],C->coords[0],
-						   A->coords[1],B->coords[1],C->coords[1]);
+	double det;
+
+	if (A == B || B == C || A == C)
+    	return ALIGNES;
+
+    det = determinant(1,1,1,
+					  A->coords[0],B->coords[0],C->coords[0],
+					  A->coords[1],B->coords[1],C->coords[1]);
+
 	if(det < 0) return DROITE;
 	else if(det > 0) return GAUCHE;
 	else return ALIGNES;
@@ -39,9 +51,6 @@ int minLexicographique(const vertex *v, const int taille)
 	return indice ;
 }
 
-/*! Calcul la position des vertices par rapport au triangle
-* 
-*/
 Position positionPointTriangle(const vertex *A, const vertex *B, 
 										const vertex *C, const vertex *N)
 {
@@ -91,115 +100,16 @@ void afficherListe(vertex *v)
 
 }
 
-/* tri fusion de la liste*/
-vertex* separer(vertex *liste)
+Position InCircle (vertex *A, vertex *B, vertex *C, vertex *Z)
 {
-	vertex *m;
-	if (liste == NULL || liste->suivant == NULL)
-		return NULL;
-	else
-	{
-		m = liste->suivant;
-		liste->suivant = m->suivant;
-		m->suivant=separer(m->suivant);
-		return m;
-	}
-}
-vertex* fusion(vertex *lg,vertex *ld, const vertex *origin)
-{
-	vertex *retour = NULL;
-	if (lg == NULL)
-	{
-		return ld;
-	}
-	if (ld == NULL)
-	{
-		return lg;
-	}
-	if(orientationPolaire(origin, lg,ld ) == DROITE)
-	{
-		retour = ld;
-		ld = ld->suivant;
-	}
-	else
-	{
-		retour = lg;
-		lg = lg->suivant;
-	}
-	
-	vertex *courant = retour;
-	retour->suivant = NULL;
-	while(lg != NULL && ld != NULL)
-	{
-		if(orientationPolaire(origin, lg,ld) == DROITE)
-		{
-			courant->suivant = ld;
-			ld = ld->suivant;
-		}
-		else
-		{
-			courant->suivant = lg;
-			lg = lg->suivant;
-		}
-		courant = courant->suivant;
-	}
-	if(lg != NULL) courant->suivant = lg;
-	else courant->suivant = ld;
-	return retour;
-}
+  double AZx = A->coords[0] - Z->coords[0], AZy = A->coords[1] - Z->coords[1],
+         BZx = B->coords[0] - Z->coords[0], BZy = B->coords[1] - Z->coords[1],
+         CZx = C->coords[0] - Z->coords[0], CZy = C->coords[1] - Z->coords[1],
 
-vertex* trier(vertex* l, const vertex *origin)
-{
-	vertex * m;
-	if (l != NULL && l->suivant != NULL)
-	{
-		m = separer(l);
-		l = trier(l,origin);
-		m = trier(m,origin);
-		l = fusion(l,m,origin);
-	}
-	return l;
-}
+  det = ((A->coords[0] + Z->coords[0])*AZx + (A->coords[1] + Z->coords[1])*AZy) * (BZx*CZy - BZy*CZx) +
+        ((B->coords[0] + Z->coords[0])*BZx + (B->coords[1] + Z->coords[1])*BZy) * (CZx*AZy - CZy*AZx) +
+        ((C->coords[0] + Z->coords[0])*CZx + (C->coords[1] + Z->coords[1])*CZy) * (AZx*BZy - AZy*BZx);
 
-/*tri Partition*/
-
-void echanger(vertex *v ,const int i,const int j)
-{ 
-	vertex tmp;
-	tmp=v[i];
-	v[i]=v[j];
-	v[j]=tmp;
-}
-
-int partition(vertex *v, const int deb, const int fin)
-{ 
-	int compt = deb; 
-	vertex pivot = v[deb]; 
-	int i; 
-	for (i = deb+1; i <= fin; i++)
-	{ 
-		if (ordreLexicographiqueVertex(&v[i], &pivot) == INFERIEUR)
-		{
-			compt++;
-			echanger(v,compt,i);
-		}
-	
-	}
-	echanger(v,compt,deb); 
-	return compt;
-}
-
-void triPartitionBis(vertex *v,const int debut,const int fin)
-{ 
-	if (debut<fin)
-	{ 
-		int pivot = partition(v,debut,fin);
-		triPartitionBis(v, debut, pivot-1);
-		triPartitionBis(v, pivot+1, fin);
-	}
-}
-
-void triPartition(vertex *v, const int nb)
-{
-	triPartitionBis(v, 0, nb-1); 
+  /* should return (det > 0.0) ? IN : (det == 0.0) ? ON : OUT; really */
+  return (det > 0.0) ? DEDANS : 0;
 }
