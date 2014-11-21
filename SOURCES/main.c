@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	vertex *v = NULL;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "bBjJgGlLdDn:")) != EOF)
+	while ((c = getopt(argc, argv, "hn:")) != EOF)
 	{
 		switch (c)
 		{

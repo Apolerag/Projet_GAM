@@ -1,5 +1,8 @@
 delaunay
 DOCS/*
+*.aux
+*.toc
+*.log
 
 # Object files
 *.o

@@ -89,17 +89,6 @@ Ordre ordreLexicographiqueVertex(const vertex * v1, const vertex * v2)
 	return EGAUX ;
 }
 
-void afficherListe(vertex *v)
-{
-	vertex *j = v;
-	while (j != NULL)
-	{
-		printf("%lf, %lf \n",j->coords[0], j->coords[1]);
-		j = j->suivant;
-	}
-
-}
-
 Position InCircle (vertex *A, vertex *B, vertex *C, vertex *Z)
 {
   double AZx = A->coords[0] - Z->coords[0], AZy = A->coords[1] - Z->coords[1],

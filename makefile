@@ -26,7 +26,7 @@ all: clean $(EXEC)
 	@mv SOURCES/*.o OBJS/
 	@cp $(EXEC) OBJS/
 
-job: all
+job: all rapport doc
 
 $(EXEC): $(OBJ)
 	$(CC) $(GL_LIBDIR) $(OBJ) $(GL_LIBRARIES) -o $@
@@ -34,9 +34,15 @@ $(EXEC): $(OBJ)
 SOURCES/%.o: %.c %.h
 	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
 
+rapport:
+	pdflatex RAPPORT/*.tex
+	mv *.pdf *.aux *.log *.toc RAPPORT/
+
 clean:
 	@echo "operating system = $(OS)"
 	rm -rf OBJS/* DOCS/* $(EXEC)
+	rm -rf RAPPORT/*.aux RAPPORT/*.toc RAPPORT/*.log
+	rm -rf RAPPORT/*.pdf
 
 doc: 
 	rm -rf DOCS/*

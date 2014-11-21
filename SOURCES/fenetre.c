@@ -45,11 +45,9 @@ void selectPoints (vertex *v, const int nb)
 	v[2].coords[0] = 1; v[2].coords[1] = 1;
 	v[3].coords[0] = 0; v[3].coords[1] = 1;
 
-	while (++n < nb)
-	{	
-		v[n].coords[0] = myRandom(0, 1);
-		v[n].coords[1] = myRandom(0, 1);
-	}
+	for(n = 4; n < nb; n++)
+		for (i = 0; i < DIM; ++i)
+			v[n].coords[i] = myRandom(0, 1);
 
 }
 
@@ -66,6 +64,7 @@ void displayPoints(const vertex *v, const int nb)
 	int echelleX = f.maxX - 10;
 	int echelleY = f.maxY - 10;
 
+	/*tracer carrée initial*/
 	glBegin(GL_LINE_LOOP);
 	glColor3f(0.0, 0.0, 1.0);
 	for (i = 0; i < 4; ++i)

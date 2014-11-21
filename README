@@ -1,0 +1,13 @@
+SOURCES: .c, .h.
+
+DATA: fichiers de données éventuelles.
+
+OBJS: .o et exécutable
+
+makefile: fichier de commandes maître, pilotant la compilation du programme, la compilation de la documentation, et celle du rapport.
+
+README::
+
+RAPPORT: les fichiers LaTeX pour la génération du rapport en pdf.
+
+delaunay: lien symbolique sur l'exécutable dans OBJS

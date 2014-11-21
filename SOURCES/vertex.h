@@ -9,7 +9,7 @@
 #include "base.h"
 
 /*! Dimension de l'espace */
-#define DIM 2
+#define DIM 3
 
 /*! enum pour representer l'orientation de trois points*/
 typedef enum
@@ -122,7 +122,7 @@ Ordre ordreLexicographiqueVertex(const vertex * v1, const vertex * v2);
  *   -  1 (DEDANS)  if vertex \f$Z\f$ lies inside circle \f$\Gamma(A,B,C)\f$.             
  *
  *  For convenience, as the only disturbing case is 
- *  "\f$D\f$ lies inside \f$\Gamma(A,B,C)\f$",
+ *  \f$D\f$ lies inside \f$\Gamma(A,B,C)\f$,
  *  the routine actually returns: 
  *     1 (DEDANS)  if vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$,
  *     0       otherwise.
