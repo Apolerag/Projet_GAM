@@ -7,6 +7,7 @@
 #define _FENETRE_H
 
 #include "base.h"
+#include "FilePrioriteSimplexe.h"
 #include "vertex.h"
 
 #include <assert.h>
@@ -46,21 +47,10 @@ void clearFenetre(vertex *v, const int nb);
 /*! Incantation d'ouverture de fenetre OpenGL */
 void winInit();
 
-/*! Generation d'un nombre aleatoire entre deux bornes.
-* \arg a : borne inferieure
-* \arg b : borne superieure.
-* \warning verifier que random() retourne bien un entier long entre 0 et RAND_MAX inclus.
-*/
-double myRandom (const double a, const double b);
-
-/*! Generations des sites 
-* \arg *v un tableau de vertices
-* \arg nb le nombre de vertices
-*/
-void selectPoints (vertex *v, const int nb);
-
 void effaceFenetre();
 
 void displayPoints(const vertex *v, const int nb);
+
+void displaySimplexe(File_Priorite *f);
 
 #endif

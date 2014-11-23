@@ -4,6 +4,8 @@
 */
 
 #include "fenetre.h"
+#include "delaunay.h"
+#include "FilePrioriteSimplexe.h"
 
 #include <assert.h>  
 #include <math.h>  
@@ -23,6 +25,7 @@ int main(int argc, char **argv)
 	int c;
 	int nbPoints = 50;
 	vertex *v = NULL;
+	File_Priorite *f;
 	
 	opterr = 0;
 	while ((c = getopt(argc, argv, "hn:")) != EOF)
@@ -51,9 +54,10 @@ int main(int argc, char **argv)
 
 	winInit();
 	ALLOUER(v,nbPoints);
-	selectPoints (v, nbPoints);
+	f = creerFile(2 * nbPoints);
+	creationPoints (v, nbPoints, f);
 
-	displayPoints(v, nbPoints);
+	displaySimplexe(f);
 	glFlush();
 
 	glutMainLoop(); 

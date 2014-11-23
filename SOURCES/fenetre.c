@@ -26,31 +26,6 @@ void winInit()
 	gluOrtho2D(f.minX, f.maxX, f.minY, f.maxY);
 }
 
-double myRandom (const double a, const double b)
-{
-	return ( rand()/(double)RAND_MAX ) * (b-a) + a;
-}
-
-void selectPoints (vertex *v, const int nb)
-{
-	assert(nb >= 4);
-	assert(f.maxX - f.minX > 10 && f.maxX > f.minX);
-	assert(f.maxY - f.minY > 10 && f.maxY > f.minY);
-
-	int n = 4;
-	int i;
-
-	v[0].coords[0] = 0; v[0].coords[1] = 0;
-	v[1].coords[0] = 1; v[1].coords[1] = 0;
-	v[2].coords[0] = 1; v[2].coords[1] = 1;
-	v[3].coords[0] = 0; v[3].coords[1] = 1;
-
-	for(n = 4; n < nb; n++)
-		for (i = 0; i < DIM; ++i)
-			v[n].coords[i] = myRandom(0, 1);
-
-}
-
 void effaceFenetre()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -81,3 +56,34 @@ void displayPoints(const vertex *v, const int nb)
 	}
 	glEnd();
 }
+
+void displaySimplexe(File_Priorite *fil)
+{
+	File_Priorite *t = creerFile(fil->nbElements);
+	simplexe *s;
+	vertex *v;
+	int i;
+	int echelleX = f.maxX - 10;
+	int echelleY = f.maxY - 10;
+
+	glColor3f(0.0, 0.0, 0.0);
+  	glClear(GL_COLOR_BUFFER_BIT);
+	
+	while(fil->nbElementsCourant > 0)
+	{
+		s = extremierFile(fil);
+		glBegin(GL_LINE_LOOP);
+		glColor3f(0.0, 0.0, 1.0);
+		for (i = 0; i < 3; ++i)
+		{
+			v = s->t[i];
+			glVertex2f(v->coords[0]*echelleX + 5, f.maxY - v->coords[1]*echelleY - 5);
+		}
+		glEnd();
+		insererVertexFile(t, s);
+	}
+	glFlush();
+	free(fil);
+	fil = t;
+}
+

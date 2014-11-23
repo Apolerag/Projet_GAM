@@ -10,13 +10,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void creationSimplexe(simplexe *s, const vertex *A, const vertex *B, const vertex *C)
+simplexe * creationSimplexe(const vertex *A, const vertex *B, const vertex *C)
 {
+	simplexe *s;
+	ALLOUER(s,1);
 	s->t[0] = A;
 	s->t[1] = B;
 	s->t[2] = C;
+	s->inclus = NULL;
 	s->nb = 0;
 	s->nbVoisin = 0;
+	return s;
 }
 
 Position positionPointSimplexe(const simplexe *s, const vertex *N)
@@ -42,7 +46,7 @@ void ajouteVoisin(simplexe *s, simplexe *v)
 	s->nbVoisin++;
 }
 
-double distancePlan(simplexe *s)
+void distanceMax(simplexe *s)
 {
 	assert(s != NULL);
 
@@ -75,6 +79,4 @@ double distancePlan(simplexe *s)
 			sqrt(pow(a,2) + pow(b,2) + pow(c,2) );
 		s->distanceMax = MAX(s->distanceMax, dist);
 	}
-
-	return 0;
 }

@@ -24,7 +24,7 @@ File_Priorite * creerFile(const int nb_elements);
 void freeFile(File_Priorite * f);
 
 /*! insere l'élément n dans la file, celle ci est retriée automatiquement*/
-void insererVertexFile(File_Priorite * f, simplexe * v);
+void insererVertexFile(File_Priorite * f, simplexe * s);
 
 /*! récupère et enleve le premier élément de la file, celle ci est réorganisée*/
 simplexe* extremierFile(File_Priorite * f);
