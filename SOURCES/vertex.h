@@ -36,19 +36,18 @@ typedef enum {
 } Ordre;
 
 /*! Structure pour representer un point. */
-typedef struct _vertex
+typedef struct
 {
 	double coords[DIM];	
 	Position position;
-	//struct _vertex *precedent;
-	struct _vertex *suivant;
+	double distanceAuSimplexe;
 } vertex;
 
 
 /*! Calcul le determinant de la matrice 3*3 
 \f[
     \left |
-	  \begin{array}{cccc}
+	  \begin{array}{ccc}
 	   a & b & c  \\
 	   d & e & f \\
 	   g & h & i \\
@@ -59,7 +58,6 @@ typedef struct _vertex
 double determinant(const double a, const double b, const double c,
 				const double d, const double e, const double f,
 				const double g, const double h, const double i);
-
 
 /*! Calcul l'orientation polaire des Vertex A, B et C
 * \arg A, B et C les trois Vertices dont on veut calculer l'angle

@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	winInit();
 	ALLOUER(v,nbPoints);
 	f = creerFileSimplexe(2 * nbPoints);
-	creationPoints (v, nbPoints, f);
+	initialisation(v, nbPoints, f);
 
 	displaySimplexe(f);
 	glFlush();

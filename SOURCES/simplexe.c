@@ -14,20 +14,19 @@ simplexe * creationSimplexe(const vertex *A, const vertex *B, const vertex *C)
 {
 	simplexe *s;
 	ALLOUER(s,1);
-	s->t[0] = A;
-	s->t[1] = B;
-	s->t[2] = C;
-	s->inclus = NULL;
-	s->nb = 0;
+	s->sommets[0] = A;
+	s->sommets[1] = B;
+	s->sommets[2] = C;
+	s->fileVertex = creerFileVertex(0);
 	return s;
 }
 
 Position positionPointSimplexe(const simplexe *s, const vertex *N)
 {
 	Position position;
-	Orientation O1 = orientationPolaire(s->t[0], s->t[1], N) ;
-	Orientation O2 = orientationPolaire(s->t[1], s->t[2], N) ;
-	Orientation O3 = orientationPolaire(s->t[2], s->t[0], N) ;
+	Orientation O1 = orientationPolaire(s->sommets[0], s->sommets[1], N) ;
+	Orientation O2 = orientationPolaire(s->sommets[1], s->sommets[2], N) ;
+	Orientation O3 = orientationPolaire(s->sommets[2], s->sommets[0], N) ;
 	if(O1 == DROITE || O2 == DROITE || O3 == DROITE)
 		position = DEHORS; 
 	else if(O1 == ALIGNES || O2 == ALIGNES  || O3 == ALIGNES )
@@ -47,9 +46,9 @@ void distanceMax(simplexe *s)
 	assert(s != NULL);
 
 	int i;
-	const vertex *A = s->t[0];
-	const vertex *B = s->t[1];
-	const vertex *C = s->t[2];
+	const vertex *A = s->sommets[0];
+	const vertex *B = s->sommets[1];
+	const vertex *C = s->sommets[2];
 	double dist;
 
 	double n[3]; //vecteur normal au plan ABC
@@ -70,9 +69,9 @@ void distanceMax(simplexe *s)
 	double d = -a * A->coords[0] - b * A->coords[1] - c * A->coords[2];
 
 	s->distanceMax = 0.0;
-	for (i = 0; i < s->nb; ++i) {
-		dist = abs(a * s->t[i]->coords[0] + b * s->t[i]->coords[1] + c * s->t[i]->coords[2] + d) /
-			sqrt(pow(a,2) + pow(b,2) + pow(c,2) );
+	/*for (i = 0; i < s->nb; ++i) {
+		dist = abs(a * s->sommets[i]->coords[0] + b * s->sommets[i]->coords[1] + c * s->sommets[i]->coords[2] + d) /
+			sqrt(pow(a,2) + pow(b,2) + pow(c,2));
 		s->distanceMax = MAX(s->distanceMax, dist);
-	}
+	}*/
 }

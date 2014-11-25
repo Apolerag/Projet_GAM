@@ -14,7 +14,7 @@ void definitionFenetre(const double X_min, const double X_max, const double Y_mi
 	f.margin = margin;
 }
 
-void clearFenetre(vertex *v, const int nb)
+void clearFenetre(vertex *v, const int nbVertex)
 {
 	free(v);
 
@@ -31,7 +31,7 @@ void effaceFenetre()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void displayPoints(const vertex *v, const int nb)
+void displayPoints(const vertex *v, const int nbVertex)
 {	
 	glColor3f(0.0, 0.0, 0.0);
   	glClear(GL_COLOR_BUFFER_BIT);
@@ -50,7 +50,7 @@ void displayPoints(const vertex *v, const int nb)
 
 	glBegin(GL_POINTS);
 	glColor3f(1.0, 1.0, 1.0);
-	for (i = 0; i < nb; ++i)
+	for (i = 0; i < nbVertex; ++i)
 	{
 		glVertex2f(v[i].coords[0]*echelleX + 5, f.maxY - v[i].coords[1]*echelleY - 5);
 	}
@@ -77,17 +77,15 @@ void displaySimplexe(FileSimplexe *fil)
 		glColor3f(0.0, 0.0, 1.0);
 		for (i = 0; i < 3; ++i)
 		{
-			glVertex2f(s->t[i]->coords[0]*echelleX + 5, 
-				f.maxY - s->t[i]->coords[1]*echelleY - 5);
+			glVertex2f(s->sommets[i]->coords[0]*echelleX + 5, 
+				f.maxY - s->sommets[i]->coords[1]*echelleY - 5);
 		}
 		glEnd();
 
-		v = s->inclus;
+	/*	v = s->inclus;
 		glBegin(GL_POINTS);
 		glColor3f(1.0, 1.0, 1.0);
 
-		printf("%d\n",s->nb);
-		printf("%d\n", v == NULL);
 
 		while(v != NULL)
 		{
@@ -95,7 +93,7 @@ void displaySimplexe(FileSimplexe *fil)
 				f.maxY - v->coords[1]*echelleY - 5);
 			v = v->suivant;
 		}
-		glEnd();
+		glEnd();*/
 
 		insererFileSimplexe(t, s);
 	}

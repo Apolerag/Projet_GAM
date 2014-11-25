@@ -10,14 +10,25 @@
 #include "FilePrioriteSimplexe.h"
 #include "vertex.h"	
 
-/*! Generations des vertices dans le carré unité
+#define H_MAX 1000
+
+typedef struct 
+{
+	FileSimplexe *filePrioriteSimplexe;
+	vertex *tableauVertices;
+	int nbVertices;
+} Delaunay;
+
+/*! Générations des vertices dans le carré unité
 * la fonction génère aléatoirement nb vertices et crée les deux premiers simplexes de la triangulation 
-* \arg *v un tableau de vertices
-* \arg nb le nombre de vertices
+* \arg v un tableau vide de vertices de taille nbVertex
 * \arg f la file de priorité contenant les simplexes
 */
-void creationPoints (vertex *v, const int nb, FileSimplexe *f);
 
+//à remplacer par struct delaunay
+void initialisation(vertex *v, const int nbVertex, FileSimplexe *f);
+
+//à remplacer par struct delaunay
 void separationSimplexe(FileSimplexe *f, simplexe *s);
 
 #endif

@@ -1,4 +1,4 @@
-/*! \file file_prioriteInt.h
+/*! \file FilePrioriteVertex.h
 * \author A Chemier, R Lhomme
 * \date 2014
 */

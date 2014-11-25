@@ -10,10 +10,8 @@
 #include <stdlib.h>
 #include <unistd.h>  
 
-void creationPoints (vertex *v, const int nb, FileSimplexe *f)
+void initialisation(vertex *v, const int nbVertex, FileSimplexe *f)
 {
-	assert(nb >= 4);
-
 	int n = 4;
 	int i;
 	simplexe *s1, *s2;
@@ -25,40 +23,29 @@ void creationPoints (vertex *v, const int nb, FileSimplexe *f)
 	v[2].coords[0] = 1; v[2].coords[1] = 1;
 	v[3].coords[0] = 0; v[3].coords[1] = 1;
 
-	for(n = 4; n < nb; n++)
-		for (i = 0; i < DIM; ++i)
-			v[n].coords[i] = RAND(0, 1);
+	for(n = 4; n < nbVertex; n++) {
+		v[n].coords[0] = RAND(0, 1);
+		v[n].coords[1] = RAND(0, 1);
+		v[n].coords[2] = RAND(0, H_MAX); //a modifier
+	}
+		
+
 
 	s1 = creationSimplexe(&v[0], &v[1], &v[2]);
 	s2 = creationSimplexe(&v[0], &v[2], &v[3]);
 
 	
 	
-	for(n = 4; n < nb; n++) {
+	for(n = 4; n < nbVertex; n++) {
 		if(positionPointSimplexe(s1, &v[n]) == DEDANS) {
-			if(c1 == NULL)
-			{
-				s1->inclus = &v[n];
-				c1 = s1->inclus;
-			}
-			else {
-				c1->suivant = &v[n];
-				c1 = c1->suivant;
-			}
-			s1->nb++;
+			//calcul distance par rapport à s1 + 
+			//inserer dans fdp vertex s1
 		}
 		else
 		{
-			if(c2 == NULL)
-			{
-				s2->inclus = &v[n];
-				c2 = s2->inclus;
-			}
-			else {
-				c2->suivant = &v[n];
-				c2 = c2->suivant;
-			}
-			s2->nb++;	
+			//calcul distance par rapport à s2 + 
+			//inserer dans fdp vertex s2
+				
 		}
 	}
 

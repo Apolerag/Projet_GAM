@@ -1,4 +1,4 @@
-/*! \file FilePrioriteSimplex.h
+/*! \file FilePrioriteSimplexe.h
 * \author A Chemier, R Lhomme
 * \date 2014
 */

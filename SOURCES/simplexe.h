@@ -3,22 +3,21 @@
 * \date 2014
 */
 
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
+#ifndef SIMPLEXE_H
+#define SIMPLEXE_H
 
+#include "FilePrioriteVertex.h"
 #include "vertex.h"
 
 typedef struct _simplexe
 {
-	const vertex* t[3];
-	vertex *inclus;
-	unsigned int nb;
-	struct _simplexe *voisin[3];
+	const vertex *sommets[3];
+	FileVertex *fileVertex; //liste avec en premier le plus loin
+	struct _simplexe *voisins[3];
 	double distanceMax;
-	unsigned int posDistanceMax;
 } simplexe;
 
-/*! créé le vertex ABC*/
+/*! crée le simplexe ABC*/
 simplexe* creationSimplexe(const vertex *A, const vertex *B, const vertex *C);
 
 /*! retourne la position du vertex N par rapport au simplexe s*/
