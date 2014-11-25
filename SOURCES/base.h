@@ -3,6 +3,13 @@
 * \date 2014
 */
 
+/*! Generation d'un nombre aleatoire entre deux bornes.
+* \arg a : borne inferieure
+* \arg b : borne superieure.
+* \warning verifier que random() retourne bien un entier long entre 0 et RAND_MAX inclus.
+*/
+#define RAND(A,B) ( rand()/(double)RAND_MAX ) * (B - A) + A;
+
 /*! ALLOUER permet d'allouer à X un emplacement mémoire de taille NB*/
 #define ALLOUER(X,NB) X = malloc(sizeof(*(X)) * (NB))
 

@@ -1,4 +1,4 @@
-/*! \file file_priorite_int.c
+/*! \file FilePrioriteSimplexe.c
 * \author A Chemier, R Lhomme
 * \date 2014
 */
@@ -6,9 +6,9 @@
 #include "FilePrioriteSimplexe.h"
 #define ALLOUER(X,NB) X = malloc(sizeof(*(X)) * (NB))
 
-File_Priorite * creerFile(const int nb_elements)
+FileSimplexe * creerFileSimplexe(const int nb_elements)
 { 
-	File_Priorite * file_retour;
+	FileSimplexe * file_retour;
 	ALLOUER(file_retour, 1);
 	ALLOUER(file_retour->file, nb_elements + 1);
 	file_retour->nbElements = nb_elements;
@@ -17,13 +17,13 @@ File_Priorite * creerFile(const int nb_elements)
 	return file_retour;
 }
 
-void freeFile(File_Priorite * f)
+void freeFileSimplexe(FileSimplexe * f)
 {
 	free(f->file);
 	f->nbElements = 0;
 }
 
-void insererVertexFile(File_Priorite * f, simplexe * s)
+void insererFileSimplexe(FileSimplexe * f, simplexe * s)
 {
 	if(f->nbElements == f->nbElementsCourant) {
 		printf("La file est pleine, on ne peut pas insérer.\n"); 
@@ -37,14 +37,14 @@ void insererVertexFile(File_Priorite * f, simplexe * s)
 	i = f->nbElementsCourant ;
 	while( (f->file[i/2].distanceMax > f->file[i/2].distanceMax) 
 		&& (i > 1)) {
-		echangeCase(f, i, i/2);
+		echangeCaseSimplexe(f, i, i/2);
 		i /= 2;
 	}
 }
 
-simplexe* extremierFile(File_Priorite * f)
+simplexe* extremierFileSimplexe(FileSimplexe * f)
 {
-	echangeCase(f, 1, f->nbElementsCourant);
+	echangeCaseSimplexe(f, 1, f->nbElementsCourant);
 	f->nbElementsCourant--;
 	double gauche, droite;
 
@@ -56,20 +56,20 @@ simplexe* extremierFile(File_Priorite * f)
 		if((gauche > 0) && (droite > 0)) {
 			//if(ordreLexicographiqueVertex(&f->file[2*i], &f->file[(2*i)+1]) == INFERIEUR) {
 			if(f->file[2*i].distanceMax <  f->file[(2*i)+1].distanceMax) {
-				echangeCase(f, i, 2*i);
+				echangeCaseSimplexe(f, i, 2*i);
 				i *= 2 ; 
 			}
 			else {
-				echangeCase(f, i, (2*i)+1);
+				echangeCaseSimplexe(f, i, (2*i)+1);
 				i *= 2 ; i += 1 ;
 			}	
 		}
 		else if(gauche > 0) {
-			echangeCase(f, i, 2*i);
+			echangeCaseSimplexe(f, i, 2*i);
 			i *= 2 ; 
 		}
 		else if(droite > 0) {
-			echangeCase(f, i, (2*i)+1);
+			echangeCaseSimplexe(f, i, (2*i)+1);
 			i *= 2 ; i += 1 ;
 		}
 		else
@@ -78,13 +78,13 @@ simplexe* extremierFile(File_Priorite * f)
 	/* Cas spécial quand il n'y a plus que deux éléments */
 	if(f->nbElementsCourant == 2) {
 		if(f->file[1].distanceMax > f->file[2].distanceMax)
-			echangeCase(f, 1, 2);
+			echangeCaseSimplexe(f, 1, 2);
 	}
 
 	return &f->file[f->nbElementsCourant+1];
 }
 
-void echangeCase(File_Priorite * f, const int i, const int j)
+void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 {
 	simplexe temp;
 	temp = f->file[i];

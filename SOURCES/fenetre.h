@@ -51,6 +51,6 @@ void effaceFenetre();
 
 void displayPoints(const vertex *v, const int nb);
 
-void displaySimplexe(File_Priorite *f);
+void displaySimplexe(FileSimplexe *f);
 
 #endif

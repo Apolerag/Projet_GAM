@@ -19,7 +19,6 @@ simplexe * creationSimplexe(const vertex *A, const vertex *B, const vertex *C)
 	s->t[2] = C;
 	s->inclus = NULL;
 	s->nb = 0;
-	s->nbVoisin = 0;
 	return s;
 }
 
@@ -40,10 +39,7 @@ Position positionPointSimplexe(const simplexe *s, const vertex *N)
 
 void ajouteVoisin(simplexe *s, simplexe *v)
 {
-	assert(s->nbVoisin < 3);
 
-	s->voisin[s->nbVoisin] = v;
-	s->nbVoisin++;
 }
 
 void distanceMax(simplexe *s)

@@ -10,19 +10,14 @@
 #include <stdlib.h>
 #include <unistd.h>  
 
-double myRandom (const double a, const double b)
-{
-	return ( rand()/(double)RAND_MAX ) * (b-a) + a;
-}
-
-void creationPoints (vertex *v, const int nb, File_Priorite *f)
+void creationPoints (vertex *v, const int nb, FileSimplexe *f)
 {
 	assert(nb >= 4);
 
 	int n = 4;
 	int i;
 	simplexe *s1, *s2;
-	vertex *c1, *c2;
+	vertex *c1 = NULL, *c2 = NULL;
 
 	/*creation du carré initial */ 
 	v[0].coords[0] = 0; v[0].coords[1] = 0;
@@ -32,17 +27,20 @@ void creationPoints (vertex *v, const int nb, File_Priorite *f)
 
 	for(n = 4; n < nb; n++)
 		for (i = 0; i < DIM; ++i)
-			v[n].coords[i] = myRandom(0, 1);
+			v[n].coords[i] = RAND(0, 1);
 
 	s1 = creationSimplexe(&v[0], &v[1], &v[2]);
 	s2 = creationSimplexe(&v[0], &v[2], &v[3]);
 
-	c1 = s1->inclus;
-	c2 = s2->inclus;
+	
+	
 	for(n = 4; n < nb; n++) {
 		if(positionPointSimplexe(s1, &v[n]) == DEDANS) {
 			if(c1 == NULL)
-				c1 = &v[n];
+			{
+				s1->inclus = &v[n];
+				c1 = s1->inclus;
+			}
 			else {
 				c1->suivant = &v[n];
 				c1 = c1->suivant;
@@ -52,7 +50,10 @@ void creationPoints (vertex *v, const int nb, File_Priorite *f)
 		else
 		{
 			if(c2 == NULL)
-				c2 = &v[n];
+			{
+				s2->inclus = &v[n];
+				c2 = s2->inclus;
+			}
 			else {
 				c2->suivant = &v[n];
 				c2 = c2->suivant;
@@ -61,6 +62,11 @@ void creationPoints (vertex *v, const int nb, File_Priorite *f)
 		}
 	}
 
-	insererVertexFile(f, s1);
-	insererVertexFile(f, s2);
+	insererFileSimplexe(f, s1);
+	insererFileSimplexe(f, s2);
+}
+
+void separationSimplexe(FileSimplexe *f, simplexe *s)
+{
+	//simplexe *s1 = creationSimplexe();
 }

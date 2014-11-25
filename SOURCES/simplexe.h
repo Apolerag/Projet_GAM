@@ -14,7 +14,6 @@ typedef struct _simplexe
 	vertex *inclus;
 	unsigned int nb;
 	struct _simplexe *voisin[3];
-	unsigned int nbVoisin;
 	double distanceMax;
 	unsigned int posDistanceMax;
 } simplexe;

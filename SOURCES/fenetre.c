@@ -57,9 +57,9 @@ void displayPoints(const vertex *v, const int nb)
 	glEnd();
 }
 
-void displaySimplexe(File_Priorite *fil)
+void displaySimplexe(FileSimplexe *fil)
 {
-	File_Priorite *t = creerFile(fil->nbElements);
+	FileSimplexe *t = creerFileSimplexe(fil->nbElements);
 	simplexe *s;
 	vertex *v;
 	int i;
@@ -71,16 +71,33 @@ void displaySimplexe(File_Priorite *fil)
 	
 	while(fil->nbElementsCourant > 0)
 	{
-		s = extremierFile(fil);
+		s = extremierFileSimplexe(fil);
+
 		glBegin(GL_LINE_LOOP);
 		glColor3f(0.0, 0.0, 1.0);
 		for (i = 0; i < 3; ++i)
 		{
-			v = s->t[i];
-			glVertex2f(v->coords[0]*echelleX + 5, f.maxY - v->coords[1]*echelleY - 5);
+			glVertex2f(s->t[i]->coords[0]*echelleX + 5, 
+				f.maxY - s->t[i]->coords[1]*echelleY - 5);
 		}
 		glEnd();
-		insererVertexFile(t, s);
+
+		v = s->inclus;
+		glBegin(GL_POINTS);
+		glColor3f(1.0, 1.0, 1.0);
+
+		printf("%d\n",s->nb);
+		printf("%d\n", v == NULL);
+
+		while(v != NULL)
+		{
+			glVertex2f(v->coords[0]*echelleX + 5, 
+				f.maxY - v->coords[1]*echelleY - 5);
+			v = v->suivant;
+		}
+		glEnd();
+
+		insererFileSimplexe(t, s);
 	}
 	glFlush();
 	free(fil);

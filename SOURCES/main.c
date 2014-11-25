@@ -24,11 +24,12 @@ int main(int argc, char **argv)
 	//printf("\E[34;1mhel\E[mlo\n");
 	int c;
 	int nbPoints = 50;
+	unsigned int nbFacette = 50;
 	vertex *v = NULL;
-	File_Priorite *f;
+	FileSimplexe *f;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hn:")) != EOF)
+	while ((c = getopt(argc, argv, "hn:f:")) != EOF)
 	{
 		switch (c)
 		{
@@ -36,9 +37,16 @@ int main(int argc, char **argv)
 				if ((sscanf(optarg, "%d", &nbPoints) != 1) || nbPoints <= 0)
 					nbPoints = 50;
 				break;
+			case 'f': 
+				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
+					nbFacette = -1;
+					printf("%u\n", nbFacette);
+				break;
 			case 'h':  
 			default :
 				printf("-n le nombre de vertex (50 par défaut)\n");
+				printf("-f le nombre de facette crée dans la triangulation\n");
+				printf("un nombre négatif indique que toutes les facettes seront créés\n");
 				printf("-h l'aide d'utilisation\n");
 				return EXIT_SUCCESS;  
 				break;
@@ -54,7 +62,7 @@ int main(int argc, char **argv)
 
 	winInit();
 	ALLOUER(v,nbPoints);
-	f = creerFile(2 * nbPoints);
+	f = creerFileSimplexe(2 * nbPoints);
 	creationPoints (v, nbPoints, f);
 
 	displaySimplexe(f);

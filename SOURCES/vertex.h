@@ -40,7 +40,7 @@ typedef struct _vertex
 {
 	double coords[DIM];	
 	Position position;
-	struct _vertex *precedent;
+	//struct _vertex *precedent;
 	struct _vertex *suivant;
 } vertex;
 

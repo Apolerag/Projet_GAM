@@ -10,19 +10,14 @@
 #include "FilePrioriteSimplexe.h"
 #include "vertex.h"	
 
-#include <assert.h>
-
-/*! Generation d'un nombre aleatoire entre deux bornes.
-* \arg a : borne inferieure
-* \arg b : borne superieure.
-* \warning verifier que random() retourne bien un entier long entre 0 et RAND_MAX inclus.
-*/
-double myRandom (const double a, const double b);
-
-/*! Generations des sites 
+/*! Generations des vertices dans le carré unité
+* la fonction génère aléatoirement nb vertices et crée les deux premiers simplexes de la triangulation 
 * \arg *v un tableau de vertices
 * \arg nb le nombre de vertices
+* \arg f la file de priorité contenant les simplexes
 */
-void creationPoints (vertex *v, const int nb, File_Priorite *f);
+void creationPoints (vertex *v, const int nb, FileSimplexe *f);
+
+void separationSimplexe(FileSimplexe *f, simplexe *s);
 
 #endif
