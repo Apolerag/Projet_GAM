@@ -7,7 +7,7 @@
 #define DELAUNAY_H
 
 #include "base.h"
-#include "FilePrioriteSimplexe.h"
+#include "filePrioriteSimplexe.h"
 #include "vertex.h"	
 
 #define H_MAX 1000

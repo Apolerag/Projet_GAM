@@ -7,7 +7,7 @@
 #define _FENETRE_H
 
 #include "base.h"
-#include "FilePrioriteSimplexe.h"
+#include "filePrioriteSimplexe.h"
 #include "vertex.h"
 
 #include <assert.h>

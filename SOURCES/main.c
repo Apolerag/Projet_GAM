@@ -5,7 +5,7 @@
 
 #include "fenetre.h"
 #include "delaunay.h"
-#include "FilePrioriteSimplexe.h"
+#include "filePrioriteSimplexe.h"
 
 #include <assert.h>  
 #include <math.h>  

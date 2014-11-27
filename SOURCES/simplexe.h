@@ -6,7 +6,7 @@
 #ifndef SIMPLEXE_H
 #define SIMPLEXE_H
 
-#include "FilePrioriteVertex.h"
+#include "filePrioriteVertex.h"
 #include "vertex.h"
 
 typedef struct _simplexe

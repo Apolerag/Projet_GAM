@@ -3,7 +3,7 @@
 * \date 2014
 */
 
-#include "FilePrioriteVertex.h"
+#include "filePrioriteVertex.h"
 #define ALLOUER(X,NB) X = malloc(sizeof(*(X)) * (NB))
 
 FileVertex * creerFileVertex(const int nb_elements)

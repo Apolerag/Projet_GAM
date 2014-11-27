@@ -3,8 +3,7 @@
 * \date 2014
 */
 
-#include "FilePrioriteSimplexe.h"
-#define ALLOUER(X,NB) X = malloc(sizeof(*(X)) * (NB))
+#include "filePrioriteSimplexe.h"
 
 FileSimplexe * creerFileSimplexe(const int nb_elements)
 { 
