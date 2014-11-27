@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-simplexe * creationSimplexe(const vertex *A, const vertex *B, const vertex *C)
+simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 {
 	simplexe *s;
 	ALLOUER(s,1);
@@ -21,7 +21,7 @@ simplexe * creationSimplexe(const vertex *A, const vertex *B, const vertex *C)
 	return s;
 }
 
-Position positionPointSimplexe(const simplexe *s, const vertex *N)
+Position positionPointSimplexe(const simplexe *s, const Vertex *N)
 {
 	Position position;
 	Orientation O1 = orientationPolaire(s->sommets[0], s->sommets[1], N) ;
@@ -46,9 +46,9 @@ void distanceMax(simplexe *s)
 	assert(s != NULL);
 
 	int i;
-	const vertex *A = s->sommets[0];
-	const vertex *B = s->sommets[1];
-	const vertex *C = s->sommets[2];
+	const Vertex *A = s->sommets[0];
+	const Vertex *B = s->sommets[1];
+	const Vertex *C = s->sommets[2];
 	double dist;
 
 	double n[3]; //vecteur normal au plan ABC

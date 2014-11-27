@@ -10,12 +10,12 @@
 #include <stdlib.h>
 #include <unistd.h>  
 
-void initialisation(vertex *v, const int nbVertex, FileSimplexe *f)
+void initialisation(Vertex *v, const int nbVertex, FileSimplexe *f)
 {
 	int n = 4;
 	int i;
 	simplexe *s1, *s2;
-	vertex *c1 = NULL, *c2 = NULL;
+	Vertex *c1 = NULL, *c2 = NULL;
 
 	/*creation du carré initial */ 
 	v[0].coords[0] = 0; v[0].coords[1] = 0;
@@ -39,12 +39,12 @@ void initialisation(vertex *v, const int nbVertex, FileSimplexe *f)
 	for(n = 4; n < nbVertex; n++) {
 		if(positionPointSimplexe(s1, &v[n]) == DEDANS) {
 			//calcul distance par rapport à s1 + 
-			//inserer dans fdp vertex s1
+			//inserer dans fdp Vertex s1
 		}
 		else
 		{
 			//calcul distance par rapport à s2 + 
-			//inserer dans fdp vertex s2
+			//inserer dans fdp Vertex s2
 				
 		}
 	}

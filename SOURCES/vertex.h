@@ -28,7 +28,7 @@ typedef enum
 	POLYGONE = 2
 } Position;
 
-/*! enum pour comparer deux vertex*/
+/*! enum pour comparer deux Vertex*/
 typedef enum {
 	INFERIEUR = -1,
 	EGAUX = 0,
@@ -41,7 +41,7 @@ typedef struct
 	double coords[DIM];	
 	Position position;
 	double distanceAuSimplexe;
-} vertex;
+} Vertex;
 
 
 /*! Calcul le determinant de la matrice 3*3 
@@ -61,39 +61,39 @@ double determinant(const double a, const double b, const double c,
 
 /*! Calcul l'orientation polaire des Vertex A, B et C
 * \arg A, B et C les trois Vertices dont on veut calculer l'angle
-* \return l'orientation du vertex C par rapport x
+* \return l'orientation du Vertex C par rapport x
 */
-Orientation orientationPolaire(const vertex *A, const vertex *B, const vertex *C);
+Orientation orientationPolaire(const Vertex *A, const Vertex *B, const Vertex *C);
 
 /*! Retourne l'indice du min lexicographique des points du fichier
-* \arg const vertex *v un tableau de vertex
+* \arg const Vertex *v un tableau de Vertex
 * \arg const int taile la taille du tableau
 */
-int minLexicographique(const vertex *v, const int taille);
+int minLexicographique(const Vertex *v, const int taille);
 
 /*! Calcul la position d'un vertices par rapport à un triangle
 * \arg A,B,C le triangle
 * \arg N le point 
 * \return la position
 */
-Position positionPointTriangle(const vertex *A, const vertex *B, 
-										const vertex *C, const vertex *N);
+Position positionPointTriangle(const Vertex *A, const Vertex *B, 
+										const Vertex *C, const Vertex *N);
 
 
-/*! affiche les informations d'un vertex*/
-void afficherVertex(const vertex * v);
+/*! affiche les informations d'un Vertex*/
+void afficherVertex(const Vertex * v);
 
-/*! compare lexicographiquement deux vertex - retourne INFERIEUR si le premier est 
-	inférieur lexicographiquement au deuxième, EGAUX si les deux vertexs sont 
+/*! compare lexicographiquement deux Vertex - retourne INFERIEUR si le premier est 
+	inférieur lexicographiquement au deuxième, EGAUX si les deux Vertexs sont 
 	confondus, SUPERIEUR sinon */
-Ordre ordreLexicographiqueVertex(const vertex * v1, const vertex * v2);
+Ordre ordreLexicographiqueVertex(const Vertex * v1, const Vertex * v2);
 
-/*! \fn  InCircle (vertex *A, vertex *B, vertex *C, vertex *Z)
- *  \param A the first vertex determining the circle
- *  \param B the second vertex determining the circle
- *  \param C the last vertex determining the circle
- *  \param Z the vertex to be tested against the circle \f$\Gamma(A,B,C)\f$.
- *  \brief determines wether vertex \a Z lies ouside, on, or inside
+/*! \fn  InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z)
+ *  \param A the first Vertex determining the circle
+ *  \param B the second Vertex determining the circle
+ *  \param C the last Vertex determining the circle
+ *  \param Z the Vertex to be tested against the circle \f$\Gamma(A,B,C)\f$.
+ *  \brief determines wether Vertex \a Z lies ouside, on, or inside
  *  the circle passing through \a A, \a B and \a C.
  *
  *  Let \f$\Gamma(ABC)\f$ be the circle around vertices \f$A, B, C\f$.
@@ -110,25 +110,25 @@ Ordre ordreLexicographiqueVertex(const vertex * v1, const vertex * v2);
 	  \end{array}
 	\right |
  *  \f]
- *  corresponding to the relative position of vertex \f$Z\f$ and
+ *  corresponding to the relative position of Vertex \f$Z\f$ and
  *  the plane through the projections of vertices \f$A,B,C\f$
  *  on the paraboloid of revolution with equation
  *  \f[ z = x^2+y^2. \f]
  *  According to Guibas & Stolfi's result, the current routine should return:
- *   -  -1 (DEHORS) if vertex \f$Z\f$ is outside circle \f$\Gamma(A,B,C)\f$,
- *   -  0 (DESSUS)  if vertex \f$Z\f$ lies on circle \f$\Gamma(A,B,C)\f$, and
- *   -  1 (DEDANS)  if vertex \f$Z\f$ lies inside circle \f$\Gamma(A,B,C)\f$.             
+ *   -  -1 (DEHORS) if Vertex \f$Z\f$ is outside circle \f$\Gamma(A,B,C)\f$,
+ *   -  0 (DESSUS)  if Vertex \f$Z\f$ lies on circle \f$\Gamma(A,B,C)\f$, and
+ *   -  1 (DEDANS)  if Vertex \f$Z\f$ lies inside circle \f$\Gamma(A,B,C)\f$.             
  *
  *  For convenience, as the only disturbing case is 
  *  \f$D\f$ lies inside \f$\Gamma(A,B,C)\f$,
  *  the routine actually returns: 
- *     1 (DEDANS)  if vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$,
+ *     1 (DEDANS)  if Vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$,
  *     0       otherwise.
  *
  *  \warning Vertices \f$A,B,C\f$ are ASSUMED neither to be aligned or equal.
  *           Overflow might arise otherwise. User must check this condition
  *           with function Angle() before calling present function.
  */
-Position InCircle (vertex *A, vertex *B, vertex *C, vertex *Z);
+Position InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z);
 
 #endif

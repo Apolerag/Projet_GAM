@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	int c;
 	int nbPoints = 50;
 	unsigned int nbFacette = 50;
-	vertex *v = NULL;
+	Vertex *v = NULL;
 	FileSimplexe *f;
 	
 	opterr = 0;
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 				break;
 			case 'h':  
 			default :
-				printf("-n le nombre de vertex (50 par défaut)\n");
+				printf("-n le nombre de Vertex (50 par défaut)\n");
 				printf("-f le nombre de facette crée dans la triangulation\n");
 				printf("un nombre négatif indique que toutes les facettes seront créés\n");
 				printf("-h l'aide d'utilisation\n");

@@ -15,7 +15,7 @@
 typedef struct 
 {
 	FileSimplexe *filePrioriteSimplexe;
-	vertex *tableauVertices;
+	Vertex *tableauVertices;
 	int nbVertices;
 } Delaunay;
 
@@ -26,7 +26,7 @@ typedef struct
 */
 
 //à remplacer par struct delaunay
-void initialisation(vertex *v, const int nbVertex, FileSimplexe *f);
+void initialisation(Vertex *v, const int nbVertex, FileSimplexe *f);
 
 //à remplacer par struct delaunay
 void separationSimplexe(FileSimplexe *f, simplexe *s);

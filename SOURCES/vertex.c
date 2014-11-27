@@ -16,7 +16,7 @@ double determinant(const double a, const double b, const double c,
 	return (a*e*i + d*h*c + g*b*f) - (g*e*c + a*h*f + d*b*i);
 }
 
-Orientation orientationPolaire(const vertex *A, const vertex *B, const vertex *C)
+Orientation orientationPolaire(const Vertex *A, const Vertex *B, const Vertex *C)
 {
 	double det;
 
@@ -32,10 +32,10 @@ Orientation orientationPolaire(const vertex *A, const vertex *B, const vertex *C
 	else return ALIGNES;
 }
 
-int minLexicographique(const vertex *v, const int taille)
+int minLexicographique(const Vertex *v, const int taille)
 {
 	
-	vertex minL = v[0];
+	Vertex minL = v[0];
 	int indice = 0 ;
 	
 	int i ;
@@ -51,8 +51,8 @@ int minLexicographique(const vertex *v, const int taille)
 	return indice ;
 }
 
-Position positionPointTriangle(const vertex *A, const vertex *B, 
-										const vertex *C, const vertex *N)
+Position positionPointTriangle(const Vertex *A, const Vertex *B, 
+										const Vertex *C, const Vertex *N)
 {
 	Position position;
 	Orientation O1 = orientationPolaire(A,B,N) ;
@@ -67,7 +67,7 @@ Position positionPointTriangle(const vertex *A, const vertex *B,
 	return position;
 }
 
-void afficherVertex(const vertex * v)
+void afficherVertex(const Vertex * v)
 {
 	int i;
 	printf("Vertex : ");
@@ -76,7 +76,7 @@ void afficherVertex(const vertex * v)
 	printf("\n");
 }
 
-Ordre ordreLexicographiqueVertex(const vertex * v1, const vertex * v2)
+Ordre ordreLexicographiqueVertex(const Vertex * v1, const Vertex * v2)
 {
 	int i;
 	for(i=0; i<DIM; i++)
@@ -89,7 +89,7 @@ Ordre ordreLexicographiqueVertex(const vertex * v1, const vertex * v2)
 	return EGAUX ;
 }
 
-Position InCircle (vertex *A, vertex *B, vertex *C, vertex *Z)
+Position InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z)
 {
   double AZx = A->coords[0] - Z->coords[0], AZy = A->coords[1] - Z->coords[1],
          BZx = B->coords[0] - Z->coords[0], BZy = B->coords[1] - Z->coords[1],

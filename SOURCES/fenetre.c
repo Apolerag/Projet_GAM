@@ -14,7 +14,7 @@ void definitionFenetre(const double X_min, const double X_max, const double Y_mi
 	f.margin = margin;
 }
 
-void clearFenetre(vertex *v, const int nbVertex)
+void clearFenetre(Vertex *v, const int nbVertex)
 {
 	free(v);
 
@@ -31,7 +31,7 @@ void effaceFenetre()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void displayPoints(const vertex *v, const int nbVertex)
+void displayPoints(const Vertex *v, const int nbVertex)
 {	
 	glColor3f(0.0, 0.0, 0.0);
   	glClear(GL_COLOR_BUFFER_BIT);
@@ -61,7 +61,7 @@ void displaySimplexe(FileSimplexe *fil)
 {
 	FileSimplexe *t = creerFileSimplexe(fil->nbElements);
 	simplexe *s;
-	vertex *v;
+	Vertex *v;
 	int i;
 	int echelleX = f.maxX - 10;
 	int echelleY = f.maxY - 10;

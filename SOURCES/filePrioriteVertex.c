@@ -23,7 +23,7 @@ void freeFileVertex(FileVertex * f)
 	f->nbElements = 0;
 }
 
-void insererFileVertex(FileVertex * f, vertex * v)
+void insererFileVertex(FileVertex * f, Vertex * v)
 {
 	if(f->nbElements == f->nbElementsCourant) {
 		printf("La file est pleine, on ne peut pas insérer.\n"); 
@@ -53,7 +53,7 @@ void afficherFileVertex(FileVertex * f)
 	}
 }
 
-vertex* extremierFileVertex(FileVertex * f)
+Vertex* extremierFileVertex(FileVertex * f)
 {
 	echangeCaseVertex(f, 1, f->nbElementsCourant);
 	f->nbElementsCourant--;
@@ -96,7 +96,7 @@ vertex* extremierFileVertex(FileVertex * f)
 
 void echangeCaseVertex(FileVertex * f, const int i, const int j)
 {
-	vertex temp;
+	Vertex temp;
 	temp = f->file[i];
 	f->file[i] = f->file[j];
 	f->file[j] = temp;

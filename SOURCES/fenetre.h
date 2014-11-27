@@ -42,14 +42,14 @@ void definitionFenetre(const double X_min, const double X_max, const double Y_mi
 /*! vide la fenetre
 *
 */
-void clearFenetre(vertex *v, const int nbVertex);
+void clearFenetre(Vertex *v, const int nbVertex);
 
 /*! Incantation d'ouverture de fenetre OpenGL */
 void winInit();
 
 void effaceFenetre();
 
-void displayPoints(const vertex *v, const int nbVertex);
+void displayPoints(const Vertex *v, const int nbVertex);
 
 void displaySimplexe(FileSimplexe *f);
 
