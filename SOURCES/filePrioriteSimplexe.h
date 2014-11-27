@@ -11,7 +11,7 @@
 #include "simplexe.h"
 
 typedef struct {
-   simplexe * file; 	/*gestion dynamique de la mémoire occupée*/
+   Simplexe * file; 	/*gestion dynamique de la mémoire occupée*/
    int nbElements;	/*nombre d'éléments maximum dans la file*/
    int nbElementsCourant;
 } FileSimplexe;
@@ -24,10 +24,10 @@ FileSimplexe * creerFileSimplexe(const int nb_elements);
 void freeFileSimplexe(FileSimplexe * f);
 
 /*! insere l'élément n dans la file, celle ci est retriée automatiquement*/
-void insererFileSimplexe(FileSimplexe * f, simplexe * s);	
+void insererFileSimplexe(FileSimplexe * f, Simplexe * s);	
 
 /*! récupère et enleve le premier élément de la file, celle ci est réorganisée*/
-simplexe* extremierFileSimplexe(FileSimplexe * f);
+Simplexe* extremierFileSimplexe(FileSimplexe * f);
 
 /*! échange le contenu des cases i et j de la file*/
 void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j);

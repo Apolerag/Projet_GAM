@@ -1,4 +1,4 @@
-/*! \file simplexe.h
+/*! \file Simplexe.h
 * \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
@@ -9,30 +9,30 @@
 #include "filePrioriteVertex.h"
 #include "vertex.h"
 
-typedef struct _simplexe
+typedef struct _Simplexe
 {
 	const Vertex *sommets[3];
 	FileVertex *fileVertex; //liste avec en premier le plus loin
-	struct _simplexe *voisins[3];
+	struct _Simplexe *voisins[3];
 	double distanceMax;
-} simplexe;
+} Simplexe;
 
-/*! crée le simplexe ABC*/
-simplexe* creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C);
+/*! crée le Simplexe ABC*/
+Simplexe* creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C);
 
-/*! retourne la position du Vertex N par rapport au simplexe s*/
-Position positionPointSimplexe(const simplexe *s, const Vertex *N);
+/*! retourne la position du Vertex N par rapport au Simplexe s*/
+Position positionPointSimplexe(const Simplexe *s, const Vertex *N);
 
-/*! ajoute un voisin au simplexe*/
-void ajouteVoisin(simplexe *s, simplexe *v);
+/*! ajoute un voisin au Simplexe*/
+void ajouteVoisin(Simplexe *s, Simplexe *v);
 
-/*! calcul la distance max entre les Vertex v appartenant au simplexe s 
+/*! calcul la distance max entre les Vertex v appartenant au Simplexe s 
 *	le plan formé par s a pour équation :
 *
 *	\f$
 *	a*x + b*y + c*z + d = 0
 *	\f$
 */
-void distanceMax(simplexe *s);
+void distanceMax(Simplexe *s);
 
 #endif

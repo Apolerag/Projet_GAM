@@ -22,7 +22,7 @@ void freeFileSimplexe(FileSimplexe * f)
 	f->nbElements = 0;
 }
 
-void insererFileSimplexe(FileSimplexe * f, simplexe * s)
+void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 {
 	if(f->nbElements == f->nbElementsCourant) {
 		printf("La file est pleine, on ne peut pas insérer.\n"); 
@@ -41,7 +41,7 @@ void insererFileSimplexe(FileSimplexe * f, simplexe * s)
 	}
 }
 
-simplexe* extremierFileSimplexe(FileSimplexe * f)
+Simplexe* extremierFileSimplexe(FileSimplexe * f)
 {
 	echangeCaseSimplexe(f, 1, f->nbElementsCourant);
 	f->nbElementsCourant--;
@@ -85,7 +85,7 @@ simplexe* extremierFileSimplexe(FileSimplexe * f)
 
 void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 {
-	simplexe temp;
+	Simplexe temp;
 	temp = f->file[i];
 	f->file[i] = f->file[j];
 	f->file[j] = temp;

@@ -14,7 +14,7 @@ void initialisation(Vertex *v, const int nbVertex, FileSimplexe *f)
 {
 	int n = 4;
 	int i;
-	simplexe *s1, *s2;
+	Simplexe *s1, *s2;
 	Vertex *c1 = NULL, *c2 = NULL;
 
 	/*creation du carré initial */ 
@@ -53,7 +53,7 @@ void initialisation(Vertex *v, const int nbVertex, FileSimplexe *f)
 	insererFileSimplexe(f, s2);
 }
 
-void separationSimplexe(FileSimplexe *f, simplexe *s)
+void separationSimplexe(FileSimplexe *f, Simplexe *s)
 {
-	//simplexe *s1 = creationSimplexe();
+	//Simplexe *s1 = creationSimplexe();
 }

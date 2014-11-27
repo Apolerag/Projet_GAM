@@ -1,4 +1,4 @@
-/*! \file fenetre.h
+/*! \file Fenetre.h
 * \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
@@ -29,22 +29,22 @@ typedef struct {
 	double minY;
 	double maxY;
 	double margin;
-} fenetre;
+} Fenetre;
 
 /*! la fenêtre qui est affichée*/
-fenetre f;
+Fenetre f;
 
-/*! modifie la dimension de la fenetre
-* \arg X_min, X_max, Y_min, Y_max, margin les nouvelles dimensions de la fenetre
+/*! modifie la dimension de la Fenetre
+* \arg X_min, X_max, Y_min, Y_max, margin les nouvelles dimensions de la Fenetre
 */
 void definitionFenetre(const double X_min, const double X_max, const double Y_min, const double Y_max, const double margin);
 
-/*! vide la fenetre
+/*! vide la Fenetre
 *
 */
 void clearFenetre(Vertex *v, const int nbVertex);
 
-/*! Incantation d'ouverture de fenetre OpenGL */
+/*! Incantation d'ouverture de Fenetre OpenGL */
 void winInit();
 
 void effaceFenetre();

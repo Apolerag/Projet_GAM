@@ -3,8 +3,8 @@
 * \date 2014
 */
 
-#ifndef FILE_PRIORITE_Vertex_H
-#define FILE_PRIORITE_Vertex_H
+#ifndef FILE_PRIORITE_VERTEX_H
+#define FILE_PRIORITE_VERTEX_H
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -1,4 +1,4 @@
-/*! \file fenetre.c
+/*! \file Fenetre.c
 * \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
@@ -60,7 +60,7 @@ void displayPoints(const Vertex *v, const int nbVertex)
 void displaySimplexe(FileSimplexe *fil)
 {
 	FileSimplexe *t = creerFileSimplexe(fil->nbElements);
-	simplexe *s;
+	Simplexe *s;
 	Vertex *v;
 	int i;
 	int echelleX = f.maxX - 10;

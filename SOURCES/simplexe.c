@@ -1,4 +1,4 @@
-/*! \file simplexe.c
+/*! \file Simplexe.c
 * \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
@@ -10,9 +10,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
+Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 {
-	simplexe *s;
+	Simplexe *s;
 	ALLOUER(s,1);
 	s->sommets[0] = A;
 	s->sommets[1] = B;
@@ -21,7 +21,7 @@ simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	return s;
 }
 
-Position positionPointSimplexe(const simplexe *s, const Vertex *N)
+Position positionPointSimplexe(const Simplexe *s, const Vertex *N)
 {
 	Position position;
 	Orientation O1 = orientationPolaire(s->sommets[0], s->sommets[1], N) ;
@@ -36,12 +36,12 @@ Position positionPointSimplexe(const simplexe *s, const Vertex *N)
 	return position;
 }
 
-void ajouteVoisin(simplexe *s, simplexe *v)
+void ajouteVoisin(Simplexe *s, Simplexe *v)
 {
 
 }
 
-void distanceMax(simplexe *s)
+void distanceMax(Simplexe *s)
 {
 	assert(s != NULL);
 
