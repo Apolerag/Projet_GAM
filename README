@@ -11,3 +11,5 @@ README::
 RAPPORT: les fichiers LaTeX pour la génération du rapport en pdf.
 
 delaunay: lien symbolique sur l'exécutable dans OBJS
+commande pour créer le lien:
+ln -s OBJS/delaunay delaunay

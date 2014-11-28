@@ -1,4 +1,4 @@
-/*! \file Fenetre.h
+/*! \file fenetre.h
 * \author Aurélien Chemier, Romane Lhomme
 * \date 2014
 */
@@ -16,13 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>  
 
-/*! contient le nom du fichier à lire*/
-char *in;
-
-/*! contient le nom du fichier à écrire*/
-char *out;
-
-/*! Tailles diverses du systemes de fenetrage .*/
+/*! Tailles diverses du systeme de fenetrage .*/
 typedef struct {
 	double minX;
 	double maxX;

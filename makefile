@@ -1,49 +1,63 @@
-CFLAGS = -g -Wall -pedantic
+ 
+CC=clang
+ 
+ 
+# Les différents répertoires contenant respectivement les fichiers : Sources *.c, Headers *.h, Objets *.o, l'exécutable
+SRCDIR=SOURCES
+HEADDIR=SOURCES
+LIBDIR=OBJS
+BINDIR=OBJS
+ 
+ 
+# Les différentes options de compilations, soyons strictes !
+CFLAGS= -I$(HEADDIR) -g -Wall -pedantic -Os
+# Les différents FrameWorks et bibliothèques pour le linkage
 GL_INCLUDE    = -I/usr/include/GL
 GL_LIBDIR    = -L. -L/usr/X11R6/lib
 GL_LIBRARIES = -lglut -lGL -lm -lGLU -lXmu -lXext -lXi -lX11
-CC = clang
-OS = "unknown"
-SRC = $(wildcard SOURCES/*.c)
-OBJ = $(SRC:.c=.o)
 
-EXEC = delaunay
 
-# Add objectiveC library for MacOSX.
-ifneq ($(strip $(shell $(CC) -v 2>&1 | grep -i "Apple")),)
- GL_INCLUDE    = -I/usr/X11R6/include
- GL_LIBRARIES += -lobjc
- BROWSER = dillo
- OS = "osx"
-endif
-# Nothing to be done for Linux :o)
-ifneq ($(strip $(shell $(CC) -v 2>&1 | grep -i "Linux")),)
- OS = "linux"
- BROWSER = mozilla
-endif
+ 
+# L'exécutable
+BIN=delaunay
+ 
+# Où trouver les différents sources *.c qu'il faudra compiler pour créer les objets correspondants
+SRC= $(wildcard $(SRCDIR)/*.c)
+OBJ= $(SRC:$(SRCDIR)/%.c=$(LIBDIR)/%.o)
 
-all: clean $(EXEC)
-	@mv SOURCES/*.o OBJS/
-	@cp $(EXEC) OBJS/
+ 
+all: $(BIN)
+ 
+#Création de l'exécutable
+delaunay: $(OBJ)
+	$(CC) -o $(BINDIR)/$@ $^ $(CFLAGS) $(GL_LIBDIR) $(GL_LIBRARIES)
+ 
+# Création des différents *.o à partir des *.c
+$(LIBDIR)/%.o: $(SRCDIR)/%.c $(HEADDIR)/%.h 
+	@echo "fzf"
+	$(CC) $(GL_INCLUDE) -o $@ -c $< $(CFLAGS)
 
-job: all rapport doc
-
-$(EXEC): $(OBJ)
-	$(CC) $(GL_LIBDIR) $(OBJ) $(GL_LIBRARIES) -o $@
-
-SOURCES/%.o: %.c %.h
-	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
-
-rapport:
-	pdflatex RAPPORT/*.tex
-	mv *.pdf *.aux *.log *.toc RAPPORT/
-
+$(LIBDIR)/%.o: $(SRCDIR)/%.c
+	@echo "fzf"
+	$(CC) $(GL_INCLUDE) -o $@ -c $< $(CFLAGS)
+ 
+# Nettoyage des objets 
 clean:
-	@echo "operating system = $(OS)"
+	rm -rf $(LIBDIR)/*.o
+ 
+# Nettoyage complet (.o + executable)
+veryclean:
+	rm -rf $(BINDIR)/*
+
+# Nettoyage total (.o, executable, doc et rapport)
+cleanAll::
 	rm -rf OBJS/* DOCS/* $(EXEC)
 	rm -rf RAPPORT/*.aux RAPPORT/*.toc RAPPORT/*.log
 	rm -rf RAPPORT/*.pdf
 
 doc: 
-	rm -rf DOCS/*
 	doxygen SOURCES/main.dox
+
+rapport:
+	pdflatex RAPPORT/*.tex
+	mv *.pdf *.aux *.log *.toc RAPPORT/
