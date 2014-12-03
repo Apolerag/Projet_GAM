@@ -61,7 +61,7 @@ void displaySimplexe(FileSimplexe *fil)
 {
 	FileSimplexe *t = creerFileSimplexe(fil->nbElements);
 	Simplexe *s;
-	Vertex *v;
+	//Vertex *v;
 	int i;
 	int echelleX = f.maxX - 10;
 	int echelleY = f.maxY - 10;

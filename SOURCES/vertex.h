@@ -24,11 +24,10 @@ typedef enum
 {
 	DEDANS = -1,
 	DESSUS = 0,
-	DEHORS = 1,
-	POLYGONE = 2
+	DEHORS = 1
 } Position;
 
-/*! enum pour comparer deux Vertex*/
+/*! enum pour comparer deux Vertices*/
 typedef enum {
 	INFERIEUR = -1,
 	EGAUX = 0,
@@ -36,13 +35,12 @@ typedef enum {
 } Ordre;
 
 /*! Structure pour representer un point. */
-typedef struct
+typedef struct _Vertex
 {
 	double coords[DIM];	
-	Position position;
 	double distanceAuSimplexe;
+	struct _Vertex *suivant;
 } Vertex;
-
 
 /*! Calcul le determinant de la matrice 3*3 
 \f[
