@@ -1,5 +1,5 @@
-delaunay
-DOCS/*
+OBJS/*
+oDOCS/*
 *.aux
 *.toc
 *.log
