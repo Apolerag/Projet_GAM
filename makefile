@@ -37,6 +37,7 @@ all: $(EXEC)
 #Création de l'exécutable
 $(EXEC): $(OBJ)
 	$(CC) -o $(BINDIR)/$@ $^ $(CFLAGS) $(GL_LIBDIR) $(GL_LIBRARIES)
+	
 # Création des différents *.o à partir des *.c
 $(LIBDIR)/%.o: $(SRCDIR)/%.c $(HEADDIR)/%.h 
 	$(CC) $(GL_INCLUDE) -o $@ -c $< $(CFLAGS)

@@ -22,7 +22,7 @@ typedef struct
 /*! Générations des vertices dans le carré unité
 * la fonction génère aléatoirement nb vertices et crée les deux premiers Simplexes de la triangulation 
 * \arg v un tableau vide de vertices de taille nbVertex
-* \arg f la file de priorité contenant les Simplexes
+* \arg f la file de priorité vide qui contiendra les simplexes
 */
 
 //à remplacer par struct delaunay

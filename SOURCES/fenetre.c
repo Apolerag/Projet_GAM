@@ -59,23 +59,25 @@ void displayPoints(const Vertex *v, const int nbVertex)
 
 void displaySimplexe(FileSimplexe *fil)
 {
-	FileSimplexe *t = creerFileSimplexe(fil->nbElements);
 	Simplexe *s;
 	Vertex *v;
-	int i;
+	int i,j;
 	int echelleX = f.maxX - 10;
 	int echelleY = f.maxY - 10;
 
 	glColor3f(0.0, 0.0, 0.0);
   	glClear(GL_COLOR_BUFFER_BIT);
 	
-	while(fil->nbElementsCourant > 0)
+	for (j = 1; j < fil->nbElementsCourant+1; ++j)
 	{
-		s = extremierFileSimplexe(fil);
+		s = &fil->file[j];
 
 		//tracage du triangle
-		glBegin(GL_LINE_LOOP);
-		glColor3f(0.0, 0.0, 1.0);
+		glBegin(GL_TRIANGLES);
+		double r = RAND(0, 1);
+		double g = RAND(0, 1);
+		double b = RAND(0, 1);
+		glColor3f(r, g, b);
 		for (i = 0; i < 3; ++i)
 		{
 			glVertex2f(s->sommets[i]->coords[0]*echelleX + 5, 
@@ -86,7 +88,7 @@ void displaySimplexe(FileSimplexe *fil)
 		v = s->fileVertex;
 		//tracage des vertices contenus dans le simplexe
 		glBegin(GL_POINTS);
-		glColor3f(1.0, 1.0, 1.0);
+		glColor3f(1-r, 1-g, 1-b);
 
 
 		while(v != NULL)
@@ -96,11 +98,7 @@ void displaySimplexe(FileSimplexe *fil)
 			v = v->suivant;
 		}
 		glEnd();
-
-		insererFileSimplexe(t, s);
 	}
 	glFlush();
-	free(fil);
-	fil = t;
 }
 

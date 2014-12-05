@@ -19,6 +19,7 @@ Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	s->sommets[2] = C;
 	s->fileVertex = NULL;
 	s->nbFile = 0;
+	s->distanceMax = -1;
 	return s;
 }
 

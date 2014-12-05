@@ -18,7 +18,7 @@ extern char *optarg;
 
 /*! bascule pour autoriser ou interdire (0) les messages d'erreurs envoyes par getopt. */
 extern int opterr;
-/*
+
 int main(int argc, char **argv)  
 {  
 	//printf("\E[34;1mhel\E[mlo\n");
@@ -67,15 +67,13 @@ int main(int argc, char **argv)
 
 	displaySimplexe(f);
 
-	glFlush();
-
 	glutMainLoop(); 
 	clearFenetre(v,nbPoints);
 	return EXIT_SUCCESS;  
 
 
-}  */
-
+}  
+/*
 
 int main(int argc, char **argv)  
 { 
@@ -97,4 +95,4 @@ int main(int argc, char **argv)
 	free(s);
 	free(tab);
 }
-
+*/
