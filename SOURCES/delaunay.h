@@ -17,6 +17,7 @@ typedef struct
 	FileSimplexe *filePrioriteSimplexe;
 	Vertex *tableauVertices;
 	int nbVertices;
+	int nombreFacetteMax;
 } Delaunay;
 
 /*! Générations des vertices dans le carré unité
@@ -24,9 +25,9 @@ typedef struct
 * \arg v un tableau vide de vertices de taille nbVertex
 * \arg f la file de priorité vide qui contiendra les simplexes
 */
+Delaunay *initialisation(const int nbVertex, const int nombreFacette);
 
-//à remplacer par struct delaunay
-void initialisation(Vertex *v, const int nbVertex, FileSimplexe *f);
+void destruction(Delaunay *d);
 
 //à remplacer par struct delaunay
 void separationSimplexe(FileSimplexe *f, Simplexe *s);

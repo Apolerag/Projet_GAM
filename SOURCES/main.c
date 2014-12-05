@@ -11,7 +11,6 @@
 #include <math.h>  
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 /*! variable externe permettant de lire les parametres sur le ligne de commande.*/
 extern char *optarg;
@@ -24,9 +23,8 @@ int main(int argc, char **argv)
 	//printf("\E[34;1mhel\E[mlo\n");
 	int c;
 	int nbPoints = 50;
-	unsigned int nbFacette = 50;
-	Vertex *v = NULL;
-	FileSimplexe *f;
+	int nbFacette = -1;
+	Delaunay *d = NULL;
 	
 	opterr = 0;
 	while ((c = getopt(argc, argv, "hn:f:")) != EOF)
@@ -39,14 +37,13 @@ int main(int argc, char **argv)
 				break;
 			case 'f': 
 				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
-					nbFacette = -1;
+					nbFacette = -1; // un nombre négatif indique que toutes les facettes seront créés
 					printf("%u\n", nbFacette);
 				break;
 			case 'h':  
 			default :
 				printf("-n le nombre de Vertex (50 par défaut)\n");
-				printf("-f le nombre de facette crée dans la triangulation\n");
-				printf("un nombre négatif indique que toutes les facettes seront créés\n");
+				printf("-f le nombre de facettes crée par la triangulation (toutes par default)\n");
 				printf("-h l'aide d'utilisation\n");
 				return EXIT_SUCCESS;  
 				break;
@@ -61,16 +58,15 @@ int main(int argc, char **argv)
 	definitionFenetre(0, 50, 0, 50, 10);
 
 	winInit();
-	ALLOUER(v,nbPoints);
-	f = creerFileSimplexe(2 * nbPoints);
-	initialisation(v, nbPoints, f);
+	d = initialisation(nbPoints, nbFacette);
 
-	displaySimplexe(f);
+	displaySimplexe(d);
 
 	glutMainLoop(); 
-	clearFenetre(v,nbPoints);
-	return EXIT_SUCCESS;  
+	clearFenetre();
+	destruction(d);
 
+	return EXIT_SUCCESS;  
 
 }  
 /*

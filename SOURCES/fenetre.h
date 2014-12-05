@@ -7,7 +7,7 @@
 #define _FENETRE_H
 
 #include "base.h"
-#include "filePrioriteSimplexe.h"
+#include "delaunay.h"
 #include "vertex.h"
 
 #include <assert.h>
@@ -36,15 +36,13 @@ void definitionFenetre(const double X_min, const double X_max, const double Y_mi
 /*! vide la Fenetre
 *
 */
-void clearFenetre(Vertex *v, const int nbVertex);
+void clearFenetre();
 
 /*! Incantation d'ouverture de Fenetre OpenGL */
 void winInit();
 
-void effaceFenetre();
-
 void displayPoints(const Vertex *v, const int nbVertex);
 
-void displaySimplexe(FileSimplexe *f);
+void displaySimplexe(Delaunay *d);
 
 #endif

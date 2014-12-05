@@ -14,21 +14,14 @@ void definitionFenetre(const double X_min, const double X_max, const double Y_mi
 	f.margin = margin;
 }
 
-void clearFenetre(Vertex *v, const int nbVertex)
+void clearFenetre()
 {
-	free(v);
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void winInit()
 {
 	gluOrtho2D(f.minX, f.maxX, f.minY, f.maxY);
-}
-
-void effaceFenetre()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void displayPoints(const Vertex *v, const int nbVertex)
@@ -57,7 +50,7 @@ void displayPoints(const Vertex *v, const int nbVertex)
 	glEnd();
 }
 
-void displaySimplexe(FileSimplexe *fil)
+void displaySimplexe(Delaunay *d)
 {
 	Simplexe *s;
 	Vertex *v;
@@ -68,9 +61,9 @@ void displaySimplexe(FileSimplexe *fil)
 	glColor3f(0.0, 0.0, 0.0);
   	glClear(GL_COLOR_BUFFER_BIT);
 	
-	for (j = 1; j < fil->nbElementsCourant+1; ++j)
+	for (j = 1; j < d->filePrioriteSimplexe->nbElementsCourant+1; ++j)
 	{
-		s = &fil->file[j];
+		s = &d->filePrioriteSimplexe->file[j];
 
 		//tracage du triangle
 		glBegin(GL_TRIANGLES);
