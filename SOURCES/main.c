@@ -19,6 +19,7 @@ extern char *optarg;
 /*! bascule pour autoriser ou interdire (0) les messages d'erreurs envoyes par getopt. */
 extern int opterr;
 
+/*
 int main(int argc, char **argv)  
 {  
 	//printf("\E[34;1mhel\E[mlo\n");
@@ -73,5 +74,26 @@ int main(int argc, char **argv)
 	return EXIT_SUCCESS;  
 
 
-}  	
-	
+}  	*/
+
+
+int main(int argc, char **argv)  
+{ 
+	Simplexe *s;
+	Vertex *A, *B, *C;
+	ALLOUER(A,1); ALLOUER(B,1);	ALLOUER(C,1);
+
+	double *tab;
+	A->coords[0] = 0; A->coords[1] = 0; A->coords[2] = 1; 
+	B->coords[0] = 4; B->coords[1] = 2; B->coords[2] = 3; 
+	C->coords[0] = -3; C->coords[1] = 1; C->coords[2] = 1; 
+
+	s = creationSimplexe(A,B,C);
+	tab = equationPlan(s);
+
+	fprintf(stderr, "%f %f %f %f\n", tab[0], tab[1], tab[2], tab[3]);
+
+	free(A); free(B); free(C);
+	free(s);
+	free(tab);
+}

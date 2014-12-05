@@ -5,6 +5,7 @@ SRCDIR=SOURCES
 HEADDIR=SOURCES
 LIBDIR=OBJS
 BINDIR=OBJS
+EXEC=delaunay
  
 # Les différentes options de compilations, soyons strictes !
 CFLAGS= -I$(HEADDIR) -g -Wall -pedantic -Os
@@ -25,15 +26,12 @@ ifneq ($(strip $(shell $(CC) -v 2>&1 | grep -i "Linux")),)
 	OS = "linux"
 	BROWSER = mozilla
 endif
-
-# L'exécutable
-EXEC=delaunay
  
 # Où trouver les différents sources *.c qu'il faudra compiler pour créer les objets correspondants
 SRC= $(wildcard $(SRCDIR)/*.c)
 OBJ= $(SRC:$(SRCDIR)/%.c=$(LIBDIR)/%.o)
  
-all: $(EXEC) 
+all: $(EXEC)
 	./$(EXEC) 
  
 #Création de l'exécutable
@@ -61,7 +59,7 @@ cleanAll: veryclean
 	rm -rf RAPPORT/*.pdf
 
 doc: 
-	doxygen SOURCES/Doxyfile
+	doxygen $(SRCDIR)/Doxyfile
 
 rapport:
 	pdflatex RAPPORT/rapport.tex RAPPORT/rapport.pdf

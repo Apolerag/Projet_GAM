@@ -15,6 +15,7 @@ void initialisation(Vertex *v, const int nbVertex, FileSimplexe *f)
 	int n = 4;
 	//int i;
 	Simplexe *s1, *s2;
+	double equationS1[4], equationS2[4];
 	//Vertex *c1 = NULL, *c2 = NULL;
 
 	/*creation du carré initial */ 
@@ -32,6 +33,8 @@ void initialisation(Vertex *v, const int nbVertex, FileSimplexe *f)
 	s1 = creationSimplexe(&v[0], &v[1], &v[2]);
 	s2 = creationSimplexe(&v[0], &v[2], &v[3]);
 	
+	
+
 	for(n = 4; n < nbVertex; n++) {
 		if(positionPointSimplexe(s1, &v[n]) == DEDANS) {
 			//calcul distance par rapport à s1 + 

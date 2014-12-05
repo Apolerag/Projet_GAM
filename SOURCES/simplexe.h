@@ -47,7 +47,8 @@ void distanceMax(Simplexe *s);
 *	\arg v le vertex à insérer dans le simplexe
 *   \arg distance la distance minimal entre le plan formé par s et v
 */
-void ajouteVertexEntete(Simplexe *s, Vertex *v, const int distance);
+void ajouteVertex(Simplexe *s, Vertex *v, const int distance);
 
+double *equationPlan(const Simplexe *s);
 
 #endif

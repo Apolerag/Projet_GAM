@@ -92,3 +92,36 @@ void ajouteVertex(Simplexe *s, Vertex *v, const int distance)
 	}
 	s->nbFile ++;	
 }
+
+/*! calcul l'équation du plan formé par s :
+*
+*	\f$
+*	a*x + b*y + c*z + d = 0
+*	\f$
+*/
+double *equationPlan(const Simplexe *s)
+{
+	double *equation;
+	ALLOUER(equation, 4);
+
+	const Vertex *A = s->sommets[0];
+	const Vertex *B = s->sommets[1];
+	const Vertex *C = s->sommets[2];
+	//double dist;
+
+	double a = (B->coords[1] - A->coords[1]) * (C->coords[2] - A->coords[2]) -
+			(B->coords[2] - A->coords[2]) * (C->coords[1] - A->coords[1]);
+
+	double b = (B->coords[2] - A->coords[2]) * (C->coords[0] - A->coords[0]) -
+			(B->coords[0] - A->coords[0]) * (C->coords[2] - A->coords[2]);
+
+	double c = (B->coords[0] - A->coords[0]) * (C->coords[1] - A->coords[1]) -
+			(B->coords[1] - A->coords[1]) * (C->coords[0] - A->coords[0]);
+
+	equation[0] = a;
+	equation[1] = b;
+	equation[2] = c;
+	equation[3] = -a * A->coords[0] - b * A->coords[1] - c * A->coords[2];
+
+	return equation;
+}
