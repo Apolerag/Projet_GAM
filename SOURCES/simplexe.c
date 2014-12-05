@@ -40,67 +40,26 @@ void ajouteVoisin(Simplexe *s, Simplexe *v)
 
 }
 
-void distanceMax(Simplexe *s)
-{
-	assert(s != NULL);
-
-	//int i;
-	const Vertex *A = s->sommets[0];
-	const Vertex *B = s->sommets[1];
-	const Vertex *C = s->sommets[2];
-	//double dist;
-
-	double n[3]; //vecteur normal au plan ABC
-
-	n[0] = (B->coords[1] - A->coords[1])*(C->coords[2] - A->coords[2]) -
-			(B->coords[2] - A->coords[2])*(C->coords[1] - A->coords[1]);
-
-	n[1] = (B->coords[2] - A->coords[2])*(C->coords[0] - A->coords[0]) -
-			(B->coords[0] - A->coords[0])*(C->coords[2] - A->coords[2]);
-
-	n[2] = (B->coords[0] - A->coords[0])*(C->coords[1] - A->coords[1]) -
-			(B->coords[1] - A->coords[1])*(C->coords[0] - A->coords[0]);
-
-	/* calcul des coefficients a,b,c,d de l'équation de plan ax + by + cz + d = 0*/
-	/*double a = n[0];
-	double b = n[1];
-	double c = n[2];
-	double d = -a * A->coords[0] - b * A->coords[1] - c * A->coords[2];
-*/
-	s->distanceMax = 0.0;
-	/*for (i = 0; i < s->nb; ++i) {
-		dist = abs(a * s->sommets[i]->coords[0] + b * s->sommets[i]->coords[1] + c * s->sommets[i]->coords[2] + d) /
-			sqrt(pow(a,2) + pow(b,2) + pow(c,2));
-		s->distanceMax = MAX(s->distanceMax, dist);
-	}*/
-}
-
-void ajouteVertex(Simplexe *s, Vertex *v, const int distance)
+void ajouteVertex(Simplexe *s, Vertex *v, const double distance)
 {
 	if(s->fileVertex == NULL || distance > s->distanceMax) { 
-		// liste vide ou 
-		// vertex plus loin que le premier 
+		// liste vide ou vertex plus loin que le premier 
 		// -> premiere position dans la liste
 		s->distanceMax = distance;
 		v->suivant = s->fileVertex;
 		s->fileVertex = v;
 	}
 	else {
-		//vertex moins loin que le premier
+		//vertex moins loin que le premier -> deuxieme position de la liste
 		v->suivant = s->fileVertex->suivant;
 		s->fileVertex->suivant = v;
 	}
 	s->nbFile ++;	
 }
 
-/*! calcul l'équation du plan formé par s :
-*
-*	\f$
-*	a*x + b*y + c*z + d = 0
-*	\f$
-*/
 double *equationPlan(const Simplexe *s)
 {
+	assert(s != NULL);
 	double *equation;
 	ALLOUER(equation, 4);
 

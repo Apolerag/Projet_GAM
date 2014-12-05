@@ -30,15 +30,6 @@ Position positionPointSimplexe(const Simplexe *s, const Vertex *N);
 /*! ajoute un voisin au Simplexe*/
 void ajouteVoisin(Simplexe *s, Simplexe *v);
 
-/*! calcul la distance max entre les Vertices v appartenant au Simplexe s 
-*	le plan formé par s a pour équation :
-*
-*	\f$
-*	a*x + b*y + c*z + d = 0
-*	\f$
-*/
-void distanceMax(Simplexe *s);
-
 /*! ajoute un vertex dans la liste de vertices du Simplexe s
 * 	si la distance est supérieur à la distance max courante du simplexe,
 *	le vertex est ajouté en tête et la distance est mise à jour
@@ -47,8 +38,16 @@ void distanceMax(Simplexe *s);
 *	\arg v le vertex à insérer dans le simplexe
 *   \arg distance la distance minimal entre le plan formé par s et v
 */
-void ajouteVertex(Simplexe *s, Vertex *v, const int distance);
+void ajouteVertex(Simplexe *s, Vertex *v, const double distance);
 
+/*! calcul l'équation du plan formé par s :
+*
+*	\f$
+*	a*x + b*y + c*z + d = 0
+*	\f$
+*	\return un tableau de taille 4 de double contenant les coefficients a,b,c,d de l'équation
+*	\warning les trois vertices du simplexe ne sont pas alignés
+*/
 double *equationPlan(const Simplexe *s);
 
 #endif
