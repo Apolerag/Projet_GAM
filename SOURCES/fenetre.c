@@ -78,7 +78,7 @@ void displaySimplexe(Delaunay *d)
 		}
 		glEnd();
 
-		v = s->fileVertex;
+		v = s->listeVertex;
 		//tracage des vertices contenus dans le simplexe
 		glBegin(GL_POINTS);
 		glColor3f(1-r, 1-g, 1-b);

@@ -67,28 +67,6 @@ Position positionPointTriangle(const Vertex *A, const Vertex *B,
 	return position;
 }
 
-void afficherVertex(const Vertex * v)
-{
-	int i;
-	printf("Vertex : ");
-	for(i=0; i<DIM; i++)
-		printf("%lf ", v->coords[i]);
-	printf("\n");
-}
-
-Ordre ordreLexicographiqueVertex(const Vertex * v1, const Vertex * v2)
-{
-	int i;
-	for(i=0; i<DIM; i++)
-	{
-		if(v1->coords[i] < v2->coords[i])
-			return INFERIEUR ;
-		else if(v1->coords[i] > v2->coords[i])
-			return SUPERIEUR ;
-	}
-	return EGAUX ;
-}
-
 Position InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z)
 {
   double AZx = A->coords[0] - Z->coords[0], AZy = A->coords[1] - Z->coords[1],

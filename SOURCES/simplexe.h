@@ -8,19 +8,43 @@
 
 #include "vertex.h"
 
+/*! paramètred de l'équation d'un plan de la forme:
+*
+*	\f$
+*	a*x + b*y + c*z + d = 0
+*	\f$
+*/
+typedef struct 
+{
+	double a;
+	double b;
+	double c;
+	double d;
+} Equation;
+
+/*! Structure pour representer un triangle
+*	\arg sommets les sommets du simplexe
+*	\arg listeVertex la liste des vertex qui sont contenus dans le simplexe
+*	\arg nbListe le nombre d'éléments dans la liste
+*	\arg voisins les simplexes voisins du simplexe courant
+*	\arg distanceMax la distance en le plan formé par le simplexe et le premier vertex de la liste
+*/
 typedef struct _Simplexe
 {
 	const Vertex *sommets[3];
-	Vertex *fileVertex; //liste de vertices 
+	Vertex *listeVertex; //liste de vertices 
 	// avec le vertex le plus loin du plan formé par le simplexe
 	// en première position
-	int nbFile;
+	int nbListe;
+	Equation e;
 	struct _Simplexe *voisins[3];
 	double distanceMax;
 } Simplexe;
 
 /*! crée le Simplexe ABC*/
 Simplexe* creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C);
+
+void destructionSimplexe(Simplexe *s);
 
 /*! retourne la position du Vertex N par rapport au Simplexe s
 * DEDANS, DESSUS ou DEHORS 
@@ -38,16 +62,21 @@ void ajouteVoisin(Simplexe *s, Simplexe *v);
 *	\arg v le vertex à insérer dans le simplexe
 *   \arg distance la distance minimal entre le plan formé par s et v
 */
-void ajouteVertex(Simplexe *s, Vertex *v, const double distance);
+void ajouteVertex(Simplexe *s, Vertex *v);
 
 /*! calcul l'équation du plan formé par s :
 *
 *	\f$
 *	a*x + b*y + c*z + d = 0
 *	\f$
-*	\return un tableau de taille 4 de double contenant les coefficients a,b,c,d de l'équation
+*	
+*	A la fin equation contient a,b,c et d.
 *	\warning les trois vertices du simplexe ne sont pas alignés
 */
-double *equationPlan(const Simplexe *s);
+Equation equationPlan(const Simplexe *s);
+
+/*! calcul la distance entre le simplexe s et le vertex v
+*/
+double distanceVertexSimplexe(Simplexe *s, Vertex *v);		
 
 #endif

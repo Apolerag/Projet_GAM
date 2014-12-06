@@ -18,8 +18,15 @@ FileSimplexe * creerFileSimplexe(const int nb_elements)
 
 void freeFileSimplexe(FileSimplexe * f)
 {
+	Simplexe *s;
+	while(f->nbElementsCourant > 0)
+	{
+		s = extremierFileSimplexe(f);
+		
+	}
 	free(f->file);
 	f->nbElements = 0;
+	free(f);
 }
 
 void insererFileSimplexe(FileSimplexe * f, Simplexe * s)

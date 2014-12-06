@@ -1,5 +1,5 @@
 OBJS/*
-oDOCS/*
+DOCS/*
 *.aux
 *.toc
 *.log

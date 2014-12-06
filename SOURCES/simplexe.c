@@ -17,9 +17,10 @@ Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	s->sommets[0] = A;
 	s->sommets[1] = B;
 	s->sommets[2] = C;
-	s->fileVertex = NULL;
-	s->nbFile = 0;
+	s->listeVertex = NULL;
+	s->nbListe = 0;
 	s->distanceMax = -1;
+	s->e = equationPlan(s);
 	return s;
 }
 
@@ -41,47 +42,50 @@ void ajouteVoisin(Simplexe *s, Simplexe *v)
 
 }
 
-void ajouteVertex(Simplexe *s, Vertex *v, const double distance)
+void ajouteVertex(Simplexe *s, Vertex *v)
 {
-	if(s->fileVertex == NULL || distance > s->distanceMax) { 
+	double distance = distanceVertexSimplexe(s,v);
+	if(s->listeVertex == NULL || distance > s->distanceMax) { 
 		// liste vide ou vertex plus loin que le premier 
 		// -> premiere position dans la liste
 		s->distanceMax = distance;
-		v->suivant = s->fileVertex;
-		s->fileVertex = v;
+		v->suivant = s->listeVertex;
+		s->listeVertex = v;
 	}
 	else {
 		//vertex moins loin que le premier -> deuxieme position de la liste
-		v->suivant = s->fileVertex->suivant;
-		s->fileVertex->suivant = v;
+		v->suivant = s->listeVertex->suivant;
+		s->listeVertex->suivant = v;
 	}
-	s->nbFile ++;	
+	s->nbListe ++;	
 }
 
-double *equationPlan(const Simplexe *s)
+Equation equationPlan(const Simplexe *s)
 {
 	assert(s != NULL);
-	double *equation;
-	ALLOUER(equation, 4);
+	Equation eq;
 
 	const Vertex *A = s->sommets[0];
 	const Vertex *B = s->sommets[1];
 	const Vertex *C = s->sommets[2];
 	//double dist;
 
-	double a = (B->coords[1] - A->coords[1]) * (C->coords[2] - A->coords[2]) -
+	eq.a = (B->coords[1] - A->coords[1]) * (C->coords[2] - A->coords[2]) -
 			(B->coords[2] - A->coords[2]) * (C->coords[1] - A->coords[1]);
 
-	double b = (B->coords[2] - A->coords[2]) * (C->coords[0] - A->coords[0]) -
+	eq.b = (B->coords[2] - A->coords[2]) * (C->coords[0] - A->coords[0]) -
 			(B->coords[0] - A->coords[0]) * (C->coords[2] - A->coords[2]);
 
-	double c = (B->coords[0] - A->coords[0]) * (C->coords[1] - A->coords[1]) -
+	eq.c = (B->coords[0] - A->coords[0]) * (C->coords[1] - A->coords[1]) -
 			(B->coords[1] - A->coords[1]) * (C->coords[0] - A->coords[0]);
 
-	equation[0] = a;
-	equation[1] = b;
-	equation[2] = c;
-	equation[3] = -a * A->coords[0] - b * A->coords[1] - c * A->coords[2];
+	eq.d = -eq.a * A->coords[0] - eq.b * A->coords[1] - eq.c * A->coords[2];
+	return eq;
+}
 
-	return equation;
+double distanceVertexSimplexe(Simplexe *s, Vertex *v)
+{
+	return (double)abs(s->e.a * v->coords[0] + s->e.b * v->coords[1] + 
+			   s->e.c * v->coords[2] + s->e.d) /
+			   sqrt(pow(s->e.a,2) + pow(s->e.b,2) + pow(s->e.c,2));
 }

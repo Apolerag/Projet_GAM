@@ -12,6 +12,12 @@
 
 #define H_MAX 1000
 
+/*!
+* 	\arg filePrioriteSimplexe: les simplexes créés par la triangulation
+*	\arg tableauVertices: le tableau de vertices à trianguler
+*	\arg nbVertices: le nombre de vertices dans le tableau
+*	\arg nombreFacetteMax: le nombre maximal de simplexe créés (défini par l'utilisateur)
+*/
 typedef struct 
 {
 	FileSimplexe *filePrioriteSimplexe;
@@ -27,9 +33,14 @@ typedef struct
 */
 Delaunay *initialisation(const int nbVertex, const int nombreFacette);
 
+/*! libere la place occupé en mémoire par d et ses composants
+*
+*/
 void destruction(Delaunay *d);
 
-//à remplacer par struct delaunay
-void separationSimplexe(FileSimplexe *f, Simplexe *s);
+/*! Triangule les vertex contenu dans d selon la methode de Delaunay
+*
+*/
+void triangulation(Delaunay *d);
 
 #endif

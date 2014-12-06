@@ -5,6 +5,7 @@ SRCDIR=SOURCES
 HEADDIR=SOURCES
 LIBDIR=OBJS
 BINDIR=OBJS
+RAPDIR=RAPPORT
 EXEC=delaunay
  
 # Les différentes options de compilations, soyons strictes !
@@ -56,12 +57,17 @@ veryclean:
 # Nettoyage total (.o, executable, doc et rapport)
 cleanAll: veryclean
 	rm -rf DOCS/*
-	rm -rf RAPPORT/*.aux RAPPORT/*.toc RAPPORT/*.log
-	rm -rf RAPPORT/*.pdf
+	rm -rf $(RAPDIR)/*.aux $(RAPDIR)/*.toc $(RAPDIR)/*.log
+	rm -rf $(RAPDIR)/*.pdf
 
 doc: 
 	doxygen $(SRCDIR)/Doxyfile
 
 rapport:
-	pdflatex RAPPORT/rapport.tex RAPPORT/rapport.pdf
-	mv *.pdf *.aux *.log *.toc RAPPORT/
+	pdflatex $(RAPDIR)/*.tex 
+	mv *.pdf *.aux *.log *.toc $(RAPDIR)/
+
+lireRapport:
+	acroread $(RAPDIR)/*.pdf&
+
+

@@ -27,18 +27,13 @@ typedef enum
 	DEHORS = 1
 } Position;
 
-/*! enum pour comparer deux Vertices*/
-typedef enum {
-	INFERIEUR = -1,
-	EGAUX = 0,
-	SUPERIEUR = 1
-} Ordre;
-
-/*! Structure pour representer un point. */
+/*! Structure pour representer un point. 
+* \arg coords les coordonnées du vertex.
+* \arg le vertex suivant dans une liste de vertices.
+*/
 typedef struct _Vertex
 {
 	double coords[DIM];	
-	double distanceAuSimplexe;
 	struct _Vertex *suivant;
 } Vertex;
 
@@ -77,14 +72,6 @@ int minLexicographique(const Vertex *v, const int taille);
 Position positionPointTriangle(const Vertex *A, const Vertex *B, 
 										const Vertex *C, const Vertex *N);
 
-
-/*! affiche les informations d'un Vertex*/
-void afficherVertex(const Vertex * v);
-
-/*! compare lexicographiquement deux Vertex - retourne INFERIEUR si le premier est 
-	inférieur lexicographiquement au deuxième, EGAUX si les deux Vertexs sont 
-	confondus, SUPERIEUR sinon */
-Ordre ordreLexicographiqueVertex(const Vertex * v1, const Vertex * v2);
 
 /*! \fn  InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z)
  *  \param A the first Vertex determining the circle

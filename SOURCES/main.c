@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	d = initialisation(nbPoints, nbFacette);
 
 	displaySimplexe(d);
-
+	triangulation(d);
 	glutMainLoop(); 
 	clearFenetre();
 	destruction(d);
@@ -73,22 +73,8 @@ int main(int argc, char **argv)
 
 int main(int argc, char **argv)  
 { 
-	Simplexe *s;
-	Vertex *A, *B, *C;
-	ALLOUER(A,1); ALLOUER(B,1);	ALLOUER(C,1);
+	Delaunay *d = initialisation(50,5233);
+	destruction(d);
+	return EXIT_SUCCESS;
+}*/
 
-	double *tab;
-	A->coords[0] = 0; A->coords[1] = 0; A->coords[2] = 0; 
-	B->coords[0] = 3; B->coords[1] = 0; B->coords[2] = 0; 
-	C->coords[0] = 2; C->coords[1] = 3; C->coords[2] = 0; 
-
-	s = creationSimplexe(A,B,C);
-	tab = equationPlan(s);
-
-	fprintf(stderr, "%f %f %f %f\n", tab[0], tab[1], tab[2], tab[3]);
-
-	free(A); free(B); free(C);
-	free(s);
-	free(tab);
-}
-*/
