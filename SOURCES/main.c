@@ -60,8 +60,8 @@ int main(int argc, char **argv)
 	winInit();
 	d = initialisation(nbPoints, nbFacette);
 
-	displaySimplexe(d);
 	triangulation(d);
+	displaySimplexe(d);
 	glutMainLoop(); 
 	clearFenetre();
 	destruction(d);

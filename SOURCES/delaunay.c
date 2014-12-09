@@ -16,6 +16,7 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 	Delaunay *d;
 	ALLOUER(d, 1);
 	ALLOUER(d->tableauVertices, nbVertex);
+	d->nbVertices = nbVertex;
 	d->nombreFacetteMax = nombreFacette;
 	d->filePrioriteSimplexe = creerFileSimplexe(2 * nbVertex);
 	int n;
@@ -60,7 +61,36 @@ void destruction(Delaunay *d)
 void triangulation(Delaunay *d)
 {
 	Simplexe *s;
+	Simplexe *s1, *s2, *s3;
+	Vertex *v,*c;
+	int i;
 
-	s = extremierFileSimplexe(d->filePrioriteSimplexe);
-	
+	while(getValeurPremier(d->filePrioriteSimplexe) >= 0) {
+		s = extremierFileSimplexe(d->filePrioriteSimplexe);
+		v = s->listeVertex;
+		s1 = creationSimplexe(s->sommets[0], s->sommets[1], v);
+		s2 = creationSimplexe(s->sommets[1], s->sommets[2], v);
+		s3 = creationSimplexe(s->sommets[2], s->sommets[0], v);
+
+		v = v->suivant;
+		while(v != NULL) {
+			c = v->suivant;
+			if(positionPointSimplexe(s1, v) == DEDANS)
+				ajouteVertex(s1, v);
+			else if(positionPointSimplexe(s2, v) == DEDANS)
+				ajouteVertex(s2, v);
+			else ajouteVertex(s3, v);
+
+			v = c;
+		}
+		insererFileSimplexe(d->filePrioriteSimplexe, s1);
+		insererFileSimplexe(d->filePrioriteSimplexe, s2);
+		insererFileSimplexe(d->filePrioriteSimplexe, s3);
+
+		for (i = 1; i < d->filePrioriteSimplexe->nbElementsCourant; ++i)
+		{
+			printf("%f ", d->filePrioriteSimplexe->file[i].distanceMax);
+		}
+		printf("\n");
+	}
 }

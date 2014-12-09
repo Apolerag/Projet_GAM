@@ -38,14 +38,21 @@ void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 
 	f->nbElementsCourant++;
 	f->file[f->nbElementsCourant] = *s;
-
+	
 	int i ;
 	i = f->nbElementsCourant ;
-	while( (f->file[i/2].distanceMax > f->file[i/2].distanceMax) 
+	while( (f->file[i].distanceMax > f->file[i/2].distanceMax) 
 		&& (i > 1)) {
 		echangeCaseSimplexe(f, i, i/2);
 		i /= 2;
 	}
+}
+
+double getValeurPremier(FileSimplexe * f)
+{
+	if(f->nbElementsCourant > 0)
+		return f->file[1].distanceMax;
+	else return -1;
 }
 
 Simplexe* extremierFileSimplexe(FileSimplexe * f)

@@ -57,6 +57,7 @@ void displaySimplexe(Delaunay *d)
 	int i,j;
 	int echelleX = f.maxX - 10;
 	int echelleY = f.maxY - 10;
+	int c = 0;
 
 	glColor3f(0.0, 0.0, 0.0);
   	glClear(GL_COLOR_BUFFER_BIT);
@@ -75,6 +76,7 @@ void displaySimplexe(Delaunay *d)
 		{
 			glVertex2f(s->sommets[i]->coords[0]*echelleX + 5, 
 				f.maxY - s->sommets[i]->coords[1]*echelleY - 5);
+			c++;
 		}
 		glEnd();
 
@@ -89,6 +91,7 @@ void displaySimplexe(Delaunay *d)
 			glVertex2f(v->coords[0]*echelleX + 5, 
 				f.maxY - v->coords[1]*echelleY - 5);
 			v = v->suivant;
+			c++;
 		}
 		glEnd();
 	}

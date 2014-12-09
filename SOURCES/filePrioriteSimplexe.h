@@ -26,6 +26,9 @@ void freeFileSimplexe(FileSimplexe * f);
 /*! insere l'élément n dans la file, celle ci est retriée automatiquement*/
 void insererFileSimplexe(FileSimplexe * f, Simplexe * s);	
 
+/* retourne la valeur de la première case de la file de priorité*/
+double getValeurPremier(FileSimplexe * f);
+
 /*! récupère et enleve le premier élément de la file, celle ci est réorganisée*/
 Simplexe* extremierFileSimplexe(FileSimplexe * f);
 

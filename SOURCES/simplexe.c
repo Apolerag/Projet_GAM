@@ -44,6 +44,7 @@ void ajouteVoisin(Simplexe *s, Simplexe *v)
 
 void ajouteVertex(Simplexe *s, Vertex *v)
 {
+	//printf("ajout\n");
 	double distance = distanceVertexSimplexe(s,v);
 	if(s->listeVertex == NULL || distance > s->distanceMax) { 
 		// liste vide ou vertex plus loin que le premier 
