@@ -12,7 +12,6 @@ FileSimplexe * creerFileSimplexe(const int nb_elements)
 	ALLOUER(file_retour->file, nb_elements + 1);
 	file_retour->nbElements = nb_elements;
 	file_retour->nbElementsCourant = 0;
-
 	return file_retour;
 }
 
@@ -22,6 +21,7 @@ void freeFileSimplexe(FileSimplexe * f)
 	while(f->nbElementsCourant > 0)
 	{
 		s = extremierFileSimplexe(f);
+		free(s);
 		
 	}
 	free(f->file);
@@ -37,12 +37,11 @@ void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 	}
 
 	f->nbElementsCourant++;
-	f->file[f->nbElementsCourant] = *s;
+	f->file[f->nbElementsCourant] = s;
 	
 	int i ;
 	i = f->nbElementsCourant ;
-	while( (f->file[i].distanceMax > f->file[i/2].distanceMax) 
-		&& (i > 1)) {
+	while((i > 1) && (f->file[i]->distanceMax > f->file[i/2]->distanceMax)) {
 		echangeCaseSimplexe(f, i, i/2);
 		i /= 2;
 	}
@@ -51,7 +50,7 @@ void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 double getValeurPremier(FileSimplexe * f)
 {
 	if(f->nbElementsCourant > 0)
-		return f->file[1].distanceMax;
+		return f->file[1]->distanceMax;
 	else return -1;
 }
 
@@ -64,11 +63,11 @@ Simplexe* extremierFileSimplexe(FileSimplexe * f)
 	int i = 1;
 	while(2*i < f->nbElementsCourant)
 	{
-		gauche = f->file[2*i].distanceMax -  f->file[i].distanceMax;
-		droite = f->file[(2*i)+1].distanceMax -  f->file[i].distanceMax;
+		gauche = f->file[2*i]->distanceMax -  f->file[i]->distanceMax;
+		droite = f->file[(2*i)+1]->distanceMax -  f->file[i]->distanceMax;
 		if((gauche > 0) && (droite > 0)) {
 			//if(ordreLexicographiqueVertex(&f->file[2*i], &f->file[(2*i)+1]) == INFERIEUR) {
-			if(f->file[2*i].distanceMax <  f->file[(2*i)+1].distanceMax) {
+			if(f->file[2*i]->distanceMax <  f->file[(2*i)+1]->distanceMax) {
 				echangeCaseSimplexe(f, i, 2*i);
 				i *= 2 ; 
 			}
@@ -90,16 +89,16 @@ Simplexe* extremierFileSimplexe(FileSimplexe * f)
 	}
 	/* Cas spécial quand il n'y a plus que deux éléments */
 	if(f->nbElementsCourant == 2) {
-		if(f->file[1].distanceMax > f->file[2].distanceMax)
+		if(f->file[1]->distanceMax > f->file[2]->distanceMax)
 			echangeCaseSimplexe(f, 1, 2);
 	}
 
-	return &f->file[f->nbElementsCourant+1];
+	return f->file[f->nbElementsCourant+1];
 }
 
 void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 {
-	Simplexe temp;
+	Simplexe* temp;
 	temp = f->file[i];
 	f->file[i] = f->file[j];
 	f->file[j] = temp;

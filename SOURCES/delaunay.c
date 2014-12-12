@@ -20,7 +20,6 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 	d->nombreFacetteMax = nombreFacette;
 	d->filePrioriteSimplexe = creerFileSimplexe(2 * nbVertex);
 	int n;
-	int i;
 	Simplexe *s1, *s2;
 
 	/*creation du carré initial */ 
@@ -43,26 +42,13 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 			ajouteVertex(s1, &d->tableauVertices[n]);
 		else ajouteVertex(s2, &d->tableauVertices[n]);		
 	}
-
-	printf("s1: \n");
-	for (i = 0; i < 3; ++i)
-	{
-		printf("%f %f\n", s1->sommets[i]->coords[0],s1->sommets[i]->coords[1]);
-	}
-	printf("s2: \n");
-	for (i = 0; i < 3; ++i)
-	{
-		printf("%f %f\n", s2->sommets[i]->coords[0],s2->sommets[i]->coords[1]);
-	}
-
-	/*ajouteVoisin(s1, Simplexe *v0, Simplexe *v1, Simplexe *v2)
-	ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2)
-	*/
+	
+	ajouteVoisin(s1, NULL, s2, NULL);
+	ajouteVoisin(s2, NULL, NULL, s1);
+	
 	insererFileSimplexe(d->filePrioriteSimplexe, s1);
 	insererFileSimplexe(d->filePrioriteSimplexe, s2);
 
-	free(s1); 
-	free(s2);
 	return d;
 }
 
@@ -92,6 +78,14 @@ void triangulation(Delaunay *d)
 		s1 = creationSimplexe(s->sommets[0], s->sommets[1], v);
 		s2 = creationSimplexe(s->sommets[1], s->sommets[2], v);
 		s3 = creationSimplexe(s->sommets[2], s->sommets[0], v);
+		
+		ajouteVoisin(s1, s2, s3, s->voisins[2]);
+		ajouteVoisin(s2, s2, s1, s->voisins[0]);
+		ajouteVoisin(s3, s1, s2, s->voisins[1]);
+		
+		/*ajout vertex, on va voir le voisin et on modifie la valeur du voisin avec la valeur dans la file
+
+		*/
 
 		v = v->suivant;
 		while(v != NULL) {
@@ -107,6 +101,6 @@ void triangulation(Delaunay *d)
 		insererFileSimplexe(d->filePrioriteSimplexe, s1);
 		insererFileSimplexe(d->filePrioriteSimplexe, s2);
 		insererFileSimplexe(d->filePrioriteSimplexe, s3);
-		free(s1); free(s2); free(s3);
+		free(s);
 	}
 }

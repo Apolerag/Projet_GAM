@@ -11,7 +11,7 @@
 #include "simplexe.h"
 
 typedef struct {
-   Simplexe * file; 	/*gestion dynamique de la mémoire occupée*/
+   Simplexe ** file; 	/*gestion dynamique de la mémoire occupée*/
    int nbElements;	/*nombre d'éléments maximum dans la file*/
    int nbElementsCourant;
 } FileSimplexe;
