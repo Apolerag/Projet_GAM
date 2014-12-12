@@ -52,7 +52,7 @@ void destructionSimplexe(Simplexe *s);
 Position positionPointSimplexe(const Simplexe *s, const Vertex *N);
 
 /*! ajoute un voisin au Simplexe*/
-void ajouteVoisin(Simplexe *s, Simplexe *v);
+void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2);
 
 /*! ajoute un vertex dans la liste de vertices du Simplexe s
 * 	si la distance est supérieur à la distance max courante du simplexe,
@@ -76,6 +76,7 @@ void ajouteVertex(Simplexe *s, Vertex *v);
 Equation equationPlan(const Simplexe *s);
 
 /*! calcul la distance entre le simplexe s et le vertex v
+*	abs(a*x+b*y+c*z+d)/sqrt(a2 +b2+ c2)
 */
 double distanceVertexSimplexe(Simplexe *s, Vertex *v);		
 

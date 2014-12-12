@@ -1,6 +1,7 @@
-/*! \file base.h
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
+/*! 
+*	\file base.h
+*	\author Aurélien Chemier, Romane Lhomme
+*	\date 2014
 */
 
 /*! Generation d'un nombre aleatoire entre deux bornes.

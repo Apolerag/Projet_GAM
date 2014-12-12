@@ -37,14 +37,15 @@ Position positionPointSimplexe(const Simplexe *s, const Vertex *N)
 	return DEDANS; 
 }
 
-void ajouteVoisin(Simplexe *s, Simplexe *v)
+void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2)
 {
-
+	s->voisins[0] = v0;
+	s->voisins[1] = v1;
+	s->voisins[2] = v2;
 }
 
 void ajouteVertex(Simplexe *s, Vertex *v)
 {
-	//printf("ajout\n");
 	double distance = distanceVertexSimplexe(s,v);
 	if(s->listeVertex == NULL || distance > s->distanceMax) { 
 		// liste vide ou vertex plus loin que le premier 
@@ -89,4 +90,5 @@ double distanceVertexSimplexe(Simplexe *s, Vertex *v)
 	return (double)abs(s->e.a * v->coords[0] + s->e.b * v->coords[1] + 
 			   s->e.c * v->coords[2] + s->e.d) /
 			   sqrt(pow(s->e.a,2) + pow(s->e.b,2) + pow(s->e.c,2));
+			   
 }
