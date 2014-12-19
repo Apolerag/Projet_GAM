@@ -178,7 +178,8 @@ void triangulationDelaunay(Delaunay *d)
 	Simplexe *s1, *s2, *s3;
 	Vertex *v,*c;
 	time_t t0;
-	Pile p;
+	Pile *p;
+	ALLOUER(p,1);
 	while(getValeurPremier(d->filePrioriteSimplexe) >= 0
 		&& d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		
@@ -232,5 +233,21 @@ void triangulationDelaunay(Delaunay *d)
 		insererFileSimplexe(d->filePrioriteSimplexe, s2);
 		insererFileSimplexe(d->filePrioriteSimplexe, s3);
 		free(s);
+
+		insererPile(p, s1, t0);
+		insererPile(p, s2, t0);
+		insererPile(p, s3, t0);
+
+		while(! estVide(p)) {
+			s = getSommetPile(p);
+
+			t = s->voisins[0];
+			v = getSommetOppose(s, t);
+			if(InCircle (s->sommets[0], s->sommets[1], s->sommets[2], v) == DEDANS) {
+				//TODO
+			}
+
+		}
 	}
+	free(p);
 }

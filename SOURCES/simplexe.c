@@ -94,7 +94,18 @@ double distanceVertexSimplexe(Simplexe *s, Vertex *v)
 			   sqrt(pow(s->e.a,2) + pow(s->e.b,2) + pow(s->e.c,2));		   
 }
 
-void insererPile(Pile *p, Simplexe *s, time_t t)
+const Vertex * getSommetOppose(Simplexe *s, Simplexe *Voisin)
+{
+	const Vertex *v = NULL;
+
+	if(Voisin->voisins[0] == s) v = s->sommets[0];
+	else if(Voisin->voisins[1] == s) v = s->sommets[1];
+	else if(Voisin->voisins[2] == s) v = s->sommets[2];
+
+	return v;
+}
+
+void insererPile(Pile *p, Simplexe *s, const time_t t)
 {
 	if(s->marqueurTemps != t){
 		s->marqueurTemps = t;
@@ -109,4 +120,10 @@ Simplexe* getSommetPile(Pile *p)
 	if(s != NULL) 
 		p->dernierPile = s->precedentPile;
 	return s;
+}
+
+int estVide(const Pile *p)
+{
+	if(p->dernierPile == NULL) return 1;
+	return 0;
 }

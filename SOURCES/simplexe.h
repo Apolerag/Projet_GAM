@@ -95,13 +95,23 @@ Equation equationPlan(const Simplexe *s);
 */
 double distanceVertexSimplexe(Simplexe *s, Vertex *v);		
 
+const Vertex * getSommetOppose(Simplexe *s, Simplexe *Voisin);
+
+/****************************************************************/
+/*Pile*/
+
 /*! ajoute un élément dans la pile
 *
 */
-void insererPile(Pile *p, Simplexe *s, time_t t);
+void insererPile(Pile *p, Simplexe *s, const time_t t);
 
 /*! récupère le dernier élément de la pile
 */
 Simplexe* getSommetPile(Pile *p);
+
+/*!	controle si la pile est vide
+*	\return 1 si la pile est vide, 0 sinon
+*/
+int estVide(const Pile *p);
 
 #endif
