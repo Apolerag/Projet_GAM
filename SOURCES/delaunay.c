@@ -174,24 +174,48 @@ void triangulation(Delaunay *d)
 
 void triangulationDelaunay(Delaunay *d)
 {
-	Simplexe *s;
+	Simplexe *s, *t;
 	Simplexe *s1, *s2, *s3;
 	Vertex *v,*c;
-
-	while(getValeurPremier(d->filePrioriteSimplexe) >= 0) {
+	time_t t0;
+	Pile p;
+	while(getValeurPremier(d->filePrioriteSimplexe) >= 0
+		&& d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
+		
+		t0 = time(NULL);
 		s = extremierFileSimplexe(d->filePrioriteSimplexe);
 		v = s->listeVertex;
 		s1 = creationSimplexe(s->sommets[0], s->sommets[1], v);
 		s2 = creationSimplexe(s->sommets[1], s->sommets[2], v);
 		s3 = creationSimplexe(s->sommets[2], s->sommets[0], v);
-		
 		ajouteVoisin(s1, s2, s3, s->voisins[2]);
-		ajouteVoisin(s2, s2, s1, s->voisins[0]);
+		ajouteVoisin(s2, s3, s1, s->voisins[0]);
 		ajouteVoisin(s3, s1, s2, s->voisins[1]);
-		
-		/*ajout vertex, on va voir le voisin et on modifie la valeur du voisin avec la valeur dans la file
 
-		*/
+
+		t = s->voisins[0];
+		if(t != NULL)  
+		{
+			if(t->voisins[0] == s) t->voisins[0] = s2;
+			else if(t->voisins[1] == s) t->voisins[1] = s2;
+			else if(t->voisins[2] == s) t->voisins[2] = s2;
+		}
+
+		t = s->voisins[1]; 
+		if(t != NULL)
+		{
+			if(t->voisins[0] == s) t->voisins[0] = s3;
+			else if(t->voisins[1] == s) t->voisins[1] = s3;
+			else if(t->voisins[2] == s) t->voisins[2] = s3;
+		}
+
+		t = s->voisins[2]; 
+		if(t != NULL)
+		{
+			if(t->voisins[0] == s) t->voisins[0] = s1;
+			else if(t->voisins[1] == s) t->voisins[1] = s1;
+			else if(t->voisins[2] == s) t->voisins[2] = s1;
+		}
 
 		v = v->suivant;
 		while(v != NULL) {

@@ -6,6 +6,7 @@
 #ifndef SIMPLEXE_H
 #define SIMPLEXE_H
 
+#include <time.h>
 #include "vertex.h"
 
 /*! paramètred de l'équation d'un plan de la forme:
@@ -39,11 +40,25 @@ typedef struct _Simplexe
 	Equation e;
 	struct _Simplexe *voisins[3];
 	double distanceMax;
+
+	/*gestion de la pile*/
+	struct _Simplexe *precedentPile;
+	time_t marqueurTemps; //
+
 } Simplexe;
+
+/*!	Pile de simplexe
+* (utilisé par Delaunay)
+*/
+typedef struct 
+{
+	Simplexe *dernierPile;
+} Pile;
 
 /*! crée le Simplexe ABC*/
 Simplexe* creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C);
 
+/*! supprime les éléments occupés en mémoire par le Simplexe*/
 void destructionSimplexe(Simplexe *s);
 
 /*! retourne la position du Vertex N par rapport au Simplexe s
@@ -79,5 +94,14 @@ Equation equationPlan(const Simplexe *s);
 *	abs(a*x+b*y+c*z+d)/sqrt(a2 +b2+ c2)
 */
 double distanceVertexSimplexe(Simplexe *s, Vertex *v);		
+
+/*! ajoute un élément dans la pile
+*
+*/
+void insererPile(Pile *p, Simplexe *s, time_t t);
+
+/*! récupère le dernier élément de la pile
+*/
+Simplexe* getSommetPile(Pile *p);
 
 #endif

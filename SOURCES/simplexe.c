@@ -21,6 +21,8 @@ Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	s->nbListe = 0;
 	s->distanceMax = -1;
 	s->e = equationPlan(s);
+	s->precedentPile = NULL;
+	s->marqueurTemps = 0;
 	return s;
 }
 
@@ -89,6 +91,22 @@ double distanceVertexSimplexe(Simplexe *s, Vertex *v)
 {
 	return (double)abs(s->e.a * v->coords[0] + s->e.b * v->coords[1] + 
 			   s->e.c * v->coords[2] + s->e.d) /
-			   sqrt(pow(s->e.a,2) + pow(s->e.b,2) + pow(s->e.c,2));
-			   
+			   sqrt(pow(s->e.a,2) + pow(s->e.b,2) + pow(s->e.c,2));		   
+}
+
+void insererPile(Pile *p, Simplexe *s, time_t t)
+{
+	if(s->marqueurTemps != t){
+		s->marqueurTemps = t;
+		s->precedentPile = p->dernierPile;
+		p->dernierPile = s;
+	}
+}
+
+Simplexe* getSommetPile(Pile *p)
+{
+	Simplexe *s = p->dernierPile;
+	if(s != NULL) 
+		p->dernierPile = s->precedentPile;
+	return s;
 }
