@@ -25,10 +25,11 @@ int main(int argc, char **argv)
 	int nbPoints = 50;
 	int nbFacette = -1;
 	int affiche = 1;
+	int triangle = 0;
 	Delaunay *d = NULL;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "a:f:hn:")) != EOF)
+	while ((c = getopt(argc, argv, "a:f:hn:t:")) != EOF)
 	{
 		switch (c)
 		{
@@ -39,17 +40,22 @@ int main(int argc, char **argv)
 			case 'f': 
 				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
 					nbFacette = -1; // un nombre négatif indique que toutes les facettes seront créés
-					printf("%u\n", nbFacette);
+
 				break;
 			case 'n': 
 				if ((sscanf(optarg, "%d", &nbPoints) != 1) || nbPoints <= 0)
 					nbPoints = 50;
 				break;
+			case 't': 
+				if ((sscanf(optarg, "%d", &triangle) != 1) || (triangle != 0 && triangle != 1))
+					triangle = 0;
+				break;
 			case 'h':  
 			default :
 				printf("-a l'affichage du résultat (1 affiche, 0 n'affiche pas) (par defaut 1)\n");
-				printf("-f le nombre de facettes crée par la triangulation (toutes par default)\n");
+				printf("-f le nombre de facettes maximum crées par la triangulation (toutes par default)\n");
 				printf("-h l'aide d'utilisation\n");
+				printf("-t le type de l'affichage (0 ligne, 1 triangle\n");
 				printf("-n le nombre de Vertex (50 par défaut)\n");
 				return EXIT_SUCCESS;  
 				break;
@@ -69,7 +75,8 @@ int main(int argc, char **argv)
 	triangulation(d);
 
 	if(affiche){
-		displaySimplexe(d);
+		if(triangle == 0) displaySimplexeLigne(d);
+		else displaySimplexeTriangle(d);
 		glutMainLoop();
 	}
 	 

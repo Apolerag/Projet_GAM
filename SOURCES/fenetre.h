@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>  
 
-/*! Tailles diverses du systeme de fenetrage .*/
+/*! Tailles diverses du systeme de fenêtrage .*/
 typedef struct {
 	double minX;
 	double maxX;
@@ -43,6 +43,8 @@ void winInit();
 
 void displayPoints(const Vertex *v, const int nbVertex);
 
-void displaySimplexe(Delaunay *d);
+void displaySimplexeLigne(Delaunay *d);
+
+void displaySimplexeTriangle(Delaunay *d);
 
 #endif

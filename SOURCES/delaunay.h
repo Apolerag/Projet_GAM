@@ -38,9 +38,14 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette);
 */
 void destruction(Delaunay *d);
 
-/*! Triangule les vertex contenu dans d selon la methode de Delaunay
+/*! Triangule les vertex contenu dans d
 *
 */
 void triangulation(Delaunay *d);
+
+/*! Triangule les vertex contenu dans d selon la methode de Delaunay
+*
+*/
+void triangulationDelaunay(Delaunay *d);
 
 #endif
