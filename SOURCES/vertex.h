@@ -114,6 +114,6 @@ Position positionPointTriangle(const Vertex *A, const Vertex *B,
  *           Overflow might arise otherwise. User must check this condition
  *           with function Angle() before calling present function.
  */
-Position InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z);
+Position InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *Z);
 
 #endif

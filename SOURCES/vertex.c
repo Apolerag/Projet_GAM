@@ -67,7 +67,7 @@ Position positionPointTriangle(const Vertex *A, const Vertex *B,
 	return position;
 }
 
-Position InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z)
+Position InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *Z)
 {
   double AZx = A->coords[0] - Z->coords[0], AZy = A->coords[1] - Z->coords[1],
          BZx = B->coords[0] - Z->coords[0], BZy = B->coords[1] - Z->coords[1],

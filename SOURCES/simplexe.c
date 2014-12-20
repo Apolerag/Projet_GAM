@@ -87,14 +87,14 @@ Equation equationPlan(const Simplexe *s)
 	return eq;
 }
 
-double distanceVertexSimplexe(Simplexe *s, Vertex *v)
+double distanceVertexSimplexe(const Simplexe *s, const Vertex *v)
 {
 	return (double)abs(s->e.a * v->coords[0] + s->e.b * v->coords[1] + 
 			   s->e.c * v->coords[2] + s->e.d) /
 			   sqrt(pow(s->e.a,2) + pow(s->e.b,2) + pow(s->e.c,2));		   
 }
 
-const Vertex * getSommetOppose(Simplexe *s, Simplexe *Voisin)
+const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin)
 {
 	const Vertex *v = NULL;
 
@@ -104,6 +104,20 @@ const Vertex * getSommetOppose(Simplexe *s, Simplexe *Voisin)
 
 	return v;
 }
+
+void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouveauVoisin)
+{
+	if(s != NULL)  
+	{
+		if(s->voisins[0] == ancienVoisin) s->voisins[0] = nouveauVoisin;
+		else if(s->voisins[1] == ancienVoisin) s->voisins[1] = nouveauVoisin;
+		else if(s->voisins[2] == ancienVoisin) s->voisins[2] = nouveauVoisin;
+	}
+
+}
+
+/****************************************************************/
+/*pile*/
 
 void insererPile(Pile *p, Simplexe *s, const time_t t)
 {

@@ -65,7 +65,7 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 	if(nombreFacette == -1) d->nombreFacetteMax = d->filePrioriteSimplexe->nbElements;
 	else d->nombreFacetteMax = nombreFacette;
 	int n;
-	Simplexe *s1, *s2;
+	Simplexe *s0, *s1;
 
 	/*creation du carré initial */ 
 	d->tableauVertices[0].coords[0] = 0; d->tableauVertices[0].coords[1] = 0; d->tableauVertices[0].coords[2] = 0;	
@@ -79,20 +79,20 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 		d->tableauVertices[n].coords[2] = RAND(0, H_MAX); //à modifier
 	}
 
-	s1 = creationSimplexe(&d->tableauVertices[0], &d->tableauVertices[1], &d->tableauVertices[2]);
-	s2 = creationSimplexe(&d->tableauVertices[0], &d->tableauVertices[2], &d->tableauVertices[3]);
+	s0 = creationSimplexe(&d->tableauVertices[0], &d->tableauVertices[1], &d->tableauVertices[2]);
+	s1 = creationSimplexe(&d->tableauVertices[0], &d->tableauVertices[2], &d->tableauVertices[3]);
 
 	for(n = 4; n < nbVertex; n++) {
-		if(positionPointSimplexe(s1, &d->tableauVertices[n]) == DEDANS)
-			ajouteVertex(s1, &d->tableauVertices[n]);
-		else ajouteVertex(s2, &d->tableauVertices[n]);		
+		if(positionPointSimplexe(s0, &d->tableauVertices[n]) == DEDANS)
+			ajouteVertex(s0, &d->tableauVertices[n]);
+		else ajouteVertex(s1, &d->tableauVertices[n]);		
 	}
 	
-	ajouteVoisin(s1, NULL, s2, NULL);
-	ajouteVoisin(s2, NULL, NULL, s1);
+	ajouteVoisin(s0, NULL, s1, NULL);
+	ajouteVoisin(s1, NULL, NULL, s0);
 	
+	insererFileSimplexe(d->filePrioriteSimplexe, s0);
 	insererFileSimplexe(d->filePrioriteSimplexe, s1);
-	insererFileSimplexe(d->filePrioriteSimplexe, s2);
 
 	return d;
 }
@@ -114,60 +114,60 @@ n = 1000000	0m5.020s
 void triangulation(Delaunay *d)
 {
 	Simplexe *s, *t;
-	Simplexe *s1, *s2, *s3;
+	Simplexe *s0, *s1, *s2;
 	Vertex *v,*c;
 	while(getValeurPremier(d->filePrioriteSimplexe) >= 0
 		&& d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		
 		s = extremierFileSimplexe(d->filePrioriteSimplexe);
 		v = s->listeVertex;
-		s1 = creationSimplexe(s->sommets[0], s->sommets[1], v);
-		s2 = creationSimplexe(s->sommets[1], s->sommets[2], v);
-		s3 = creationSimplexe(s->sommets[2], s->sommets[0], v);
-		ajouteVoisin(s1, s2, s3, s->voisins[2]);
-		ajouteVoisin(s2, s3, s1, s->voisins[0]);
-		ajouteVoisin(s3, s1, s2, s->voisins[1]);
+		s0 = creationSimplexe(s->sommets[0], s->sommets[1], v);
+		s1 = creationSimplexe(s->sommets[1], s->sommets[2], v);
+		s2 = creationSimplexe(s->sommets[2], s->sommets[0], v);
+		ajouteVoisin(s0, s1, s2, s->voisins[2]);
+		ajouteVoisin(s1, s2, s0, s->voisins[0]);
+		ajouteVoisin(s2, s0, s1, s->voisins[1]);
 
 
 		t = s->voisins[0];
 		if(t != NULL)  
+		{
+			if(t->voisins[0] == s) t->voisins[0] = s1;
+			else if(t->voisins[1] == s) t->voisins[1] = s1;
+			else if(t->voisins[2] == s) t->voisins[2] = s1;
+		}
+
+		t = s->voisins[1]; 
+		if(t != NULL)
 		{
 			if(t->voisins[0] == s) t->voisins[0] = s2;
 			else if(t->voisins[1] == s) t->voisins[1] = s2;
 			else if(t->voisins[2] == s) t->voisins[2] = s2;
 		}
 
-		t = s->voisins[1]; 
-		if(t != NULL)
-		{
-			if(t->voisins[0] == s) t->voisins[0] = s3;
-			else if(t->voisins[1] == s) t->voisins[1] = s3;
-			else if(t->voisins[2] == s) t->voisins[2] = s3;
-		}
-
 		t = s->voisins[2]; 
 		if(t != NULL)
 		{
-			if(t->voisins[0] == s) t->voisins[0] = s1;
-			else if(t->voisins[1] == s) t->voisins[1] = s1;
-			else if(t->voisins[2] == s) t->voisins[2] = s1;
+			if(t->voisins[0] == s) t->voisins[0] = s0;
+			else if(t->voisins[1] == s) t->voisins[1] = s0;
+			else if(t->voisins[2] == s) t->voisins[2] = s0;
 
 		}
 
 		v = v->suivant;
 		while(v != NULL) {
 			c = v->suivant;
-			if(positionPointSimplexe(s1, v) == DEDANS)
+			if(positionPointSimplexe(s0, v) == DEDANS)
+				ajouteVertex(s0, v);
+			else if(positionPointSimplexe(s1, v) == DEDANS)
 				ajouteVertex(s1, v);
-			else if(positionPointSimplexe(s2, v) == DEDANS)
-				ajouteVertex(s2, v);
-			else ajouteVertex(s3, v);
+			else ajouteVertex(s2, v);
 
 			v = c;
 		}
+		insererFileSimplexe(d->filePrioriteSimplexe, s0);
 		insererFileSimplexe(d->filePrioriteSimplexe, s1);
 		insererFileSimplexe(d->filePrioriteSimplexe, s2);
-		insererFileSimplexe(d->filePrioriteSimplexe, s3);
 		free(s);
 	}
 }
@@ -175,79 +175,59 @@ void triangulation(Delaunay *d)
 void triangulationDelaunay(Delaunay *d)
 {
 	Simplexe *s, *t;
-	Simplexe *s1, *s2, *s3;
+	Simplexe *s0, *s1, *s2;
 	Vertex *v,*c;
+	const Vertex *sommetOppose;
 	time_t t0;
-	Pile *p;
-	ALLOUER(p,1);
+	Pile *pile;
+	ALLOUER(pile,1);
 	while(getValeurPremier(d->filePrioriteSimplexe) >= 0
 		&& d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		
 		t0 = time(NULL);
 		s = extremierFileSimplexe(d->filePrioriteSimplexe);
 		v = s->listeVertex;
-		s1 = creationSimplexe(s->sommets[0], s->sommets[1], v);
-		s2 = creationSimplexe(s->sommets[1], s->sommets[2], v);
-		s3 = creationSimplexe(s->sommets[2], s->sommets[0], v);
-		ajouteVoisin(s1, s2, s3, s->voisins[2]);
-		ajouteVoisin(s2, s3, s1, s->voisins[0]);
-		ajouteVoisin(s3, s1, s2, s->voisins[1]);
+		s0 = creationSimplexe(s->sommets[0], s->sommets[1], v);
+		s1 = creationSimplexe(s->sommets[1], s->sommets[2], v);
+		s2 = creationSimplexe(s->sommets[2], s->sommets[0], v);
+		ajouteVoisin(s0, s1, s2, s->voisins[2]);
+		ajouteVoisin(s1, s2, s0, s->voisins[0]);
+		ajouteVoisin(s2, s0, s1, s->voisins[1]);
 
-
-		t = s->voisins[0];
-		if(t != NULL)  
-		{
-			if(t->voisins[0] == s) t->voisins[0] = s2;
-			else if(t->voisins[1] == s) t->voisins[1] = s2;
-			else if(t->voisins[2] == s) t->voisins[2] = s2;
-		}
-
-		t = s->voisins[1]; 
-		if(t != NULL)
-		{
-			if(t->voisins[0] == s) t->voisins[0] = s3;
-			else if(t->voisins[1] == s) t->voisins[1] = s3;
-			else if(t->voisins[2] == s) t->voisins[2] = s3;
-		}
-
-		t = s->voisins[2]; 
-		if(t != NULL)
-		{
-			if(t->voisins[0] == s) t->voisins[0] = s1;
-			else if(t->voisins[1] == s) t->voisins[1] = s1;
-			else if(t->voisins[2] == s) t->voisins[2] = s1;
-		}
-
+		controleNouveauVoisin(s->voisins[0], s, s1);
+		controleNouveauVoisin(s->voisins[1], s, s2);
+		controleNouveauVoisin(s->voisins[2], s, s0);
+		
 		v = v->suivant;
 		while(v != NULL) {
 			c = v->suivant;
-			if(positionPointSimplexe(s1, v) == DEDANS)
+			if(positionPointSimplexe(s0, v) == DEDANS)
+				ajouteVertex(s0, v);
+			else if(positionPointSimplexe(s1, v) == DEDANS)
 				ajouteVertex(s1, v);
-			else if(positionPointSimplexe(s2, v) == DEDANS)
-				ajouteVertex(s2, v);
-			else ajouteVertex(s3, v);
+			else ajouteVertex(s2, v);
 
 			v = c;
 		}
+		insererFileSimplexe(d->filePrioriteSimplexe, s0);
 		insererFileSimplexe(d->filePrioriteSimplexe, s1);
 		insererFileSimplexe(d->filePrioriteSimplexe, s2);
-		insererFileSimplexe(d->filePrioriteSimplexe, s3);
 		free(s);
 
-		insererPile(p, s1, t0);
-		insererPile(p, s2, t0);
-		insererPile(p, s3, t0);
+		insererPile(pile, s0, t0);
+		insererPile(pile, s1, t0);
+		insererPile(pile, s2, t0);
 
-		while(! estVide(p)) {
-			s = getSommetPile(p);
+		while(! estVide(pile)) {
+			s = getSommetPile(pile);
 
 			t = s->voisins[0];
-			v = getSommetOppose(s, t);
-			if(InCircle (s->sommets[0], s->sommets[1], s->sommets[2], v) == DEDANS) {
+			sommetOppose = getSommetOppose(s, t);
+			if(InCircle (s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
 				//TODO
 			}
 
 		}
 	}
-	free(p);
+	free(pile);
 }

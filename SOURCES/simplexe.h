@@ -47,14 +47,6 @@ typedef struct _Simplexe
 
 } Simplexe;
 
-/*!	Pile de simplexe
-* (utilisé par Delaunay)
-*/
-typedef struct 
-{
-	Simplexe *dernierPile;
-} Pile;
-
 /*! crée le Simplexe ABC*/
 Simplexe* creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C);
 
@@ -93,12 +85,29 @@ Equation equationPlan(const Simplexe *s);
 /*! calcul la distance entre le simplexe s et le vertex v
 *	abs(a*x+b*y+c*z+d)/sqrt(a2 +b2+ c2)
 */
-double distanceVertexSimplexe(Simplexe *s, Vertex *v);		
+double distanceVertexSimplexe(const Simplexe *s, const Vertex *v);		
 
-const Vertex * getSommetOppose(Simplexe *s, Simplexe *Voisin);
+/*!	s et voisin sont deux simplexes voisins
+*	la fonction retourne le vetex sommet de Voisin qui n'est pas un sommet de s
+*/
+const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin);
+
+/*!	Controle les voisins de s et remplace ancienVoisin par nouveauVoisin
+*
+*/
+void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouveauVoisin);
 
 /****************************************************************/
 /*Pile*/
+
+
+/*!	Pile de simplexe
+* (utilisé par Delaunay)
+*/
+typedef struct 
+{
+	Simplexe *dernierPile;
+} Pile;
 
 /*! ajoute un élément dans la pile
 *
