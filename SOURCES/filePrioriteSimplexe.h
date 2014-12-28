@@ -23,6 +23,12 @@ FileSimplexe * creerFileSimplexe(const int nb_elements);
 /*! libere la place mémoire occupé par la file*/
 void freeFileSimplexe(FileSimplexe * f);
 
+/*! retourne la valeur du fils gauche de la case i*/
+double getGauche(const FileSimplexe *f, const int i);
+
+/*! retourne la valeur du fils droit de la case i*/
+double getDroite(const FileSimplexe *f, const int i);
+
 /*! insere l'élément n dans la file, celle ci est retriée automatiquement*/
 void insererFileSimplexe(FileSimplexe * f, Simplexe * s);	
 
@@ -34,5 +40,8 @@ Simplexe* extremierFileSimplexe(FileSimplexe * f);
 
 /*! échange le contenu des cases i et j de la file*/
 void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j);
+
+/*! retri la file de priorité*/
+void retriFile(FileSimplexe * f);
 
 #endif

@@ -27,9 +27,10 @@ typedef enum
 	DEHORS = 1
 } Position;
 
-/*! Structure pour representer un point. 
-* \arg coords les coordonnées du vertex.
-* \arg le vertex suivant dans une liste de vertices.
+/*!
+*	\Vertex struct 
+*	\arg coords les coordonnées du vertex.
+*	\arg le vertex suivant dans une liste de vertices.
 */
 typedef struct _Vertex
 {
@@ -64,56 +65,60 @@ Orientation orientationPolaire(const Vertex *A, const Vertex *B, const Vertex *C
 */
 int minLexicographique(const Vertex *v, const int taille);
 
-/*! Calcul la position d'un vertices par rapport à un triangle
-* \arg A,B,C le triangle
-* \arg N le point 
-* \return la position
+/*! 
+*	\fn Position positionPointTriangle(const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *N)
+*	\brief Calcul la position d'un vertices par rapport à un triangle
+*	\arg A,B,C le triangle
+*	\arg N le point 
+*	\return la position
 */
 Position positionPointTriangle(const Vertex *A, const Vertex *B, 
 										const Vertex *C, const Vertex *N);
 
 
-/*! \fn  InCircle (Vertex *A, Vertex *B, Vertex *C, Vertex *Z)
- *  \param A the first Vertex determining the circle
- *  \param B the second Vertex determining the circle
- *  \param C the last Vertex determining the circle
- *  \param Z the Vertex to be tested against the circle \f$\Gamma(A,B,C)\f$.
- *  \brief determines wether Vertex \a Z lies ouside, on, or inside
- *  the circle passing through \a A, \a B and \a C.
- *
- *  Let \f$\Gamma(ABC)\f$ be the circle around vertices \f$A, B, C\f$.
- *  Guibas and Stolfi have shown that the relative position of \f$Z\f$
- *  and \f$\Gamma(A,B,C)\f$ is equivalent to computing the sign 
- *  of determinant:
- *  \f[
-        \left |
-	  \begin{array}{cccc}
-	   x_A     & y_A     & x_A^2+y_A^2  & 1 \\
-	   x_B     & y_B     & x_B^2+y_B^2  & 1 \\
-	   x_C     & y_C     & x_C^2+y_C^2  & 1 \\
-	   x_Z     & y_Z     & x_Z^2+y_Z^2  & 1 \\
-	  \end{array}
+/*! 
+*	\fn Position InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *Z)
+*	\param A the first Vertex determining the circle
+*	\param B the second Vertex determining the circle
+*	\param C the last Vertex determining the circle
+*	\param Z the Vertex to be tested against the circle \f$\Gamma(A,B,C)\f$.
+*	\brief determines wether Vertex \a Z lies ouside, on, or inside
+*	the circle passing through \a A, \a B and \a C.
+*
+*	Let \f$\Gamma(ABC)\f$ be the circle around vertices \f$A, B, C\f$.
+*	Guibas and Stolfi have shown that the relative position of \f$Z\f$
+*	and \f$\Gamma(A,B,C)\f$ is equivalent to computing the sign 
+*	of determinant:
+*	\f[
+	\left |
+	\begin{array}{cccc}
+	x_A     & y_A     & x_A^2+y_A^2  & 1 \\
+	x_B     & y_B     & x_B^2+y_B^2  & 1 \\
+	x_C     & y_C     & x_C^2+y_C^2  & 1 \\
+	x_Z     & y_Z     & x_Z^2+y_Z^2  & 1 \\
+	\end{array}
 	\right |
- *  \f]
- *  corresponding to the relative position of Vertex \f$Z\f$ and
- *  the plane through the projections of vertices \f$A,B,C\f$
- *  on the paraboloid of revolution with equation
- *  \f[ z = x^2+y^2. \f]
- *  According to Guibas & Stolfi's result, the current routine should return:
- *   -  -1 (DEHORS) if Vertex \f$Z\f$ is outside circle \f$\Gamma(A,B,C)\f$,
- *   -  0 (DESSUS)  if Vertex \f$Z\f$ lies on circle \f$\Gamma(A,B,C)\f$, and
- *   -  1 (DEDANS)  if Vertex \f$Z\f$ lies inside circle \f$\Gamma(A,B,C)\f$.             
- *
- *  For convenience, as the only disturbing case is 
- *  \f$D\f$ lies inside \f$\Gamma(A,B,C)\f$,
- *  the routine actually returns: 
- *     1 (DEDANS)  if Vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$,
- *     0       otherwise.
- *
- *  \warning Vertices \f$A,B,C\f$ are ASSUMED neither to be aligned or equal.
- *           Overflow might arise otherwise. User must check this condition
- *           with function Angle() before calling present function.
- */
+*	\f]
+*
+*	corresponding to the relative position of Vertex \f$Z\f$ and
+*	the plane through the projections of vertices \f$A,B,C\f$
+*	on the paraboloid of revolution with equation
+*	\f[ z = x^2+y^2. \f]
+*	According to Guibas & Stolfi's result, the current routine should return:
+*	-  -1 (DEHORS) if Vertex \f$Z\f$ is outside circle \f$\Gamma(A,B,C)\f$,
+*	-  0 (DESSUS)  if Vertex \f$Z\f$ lies on circle \f$\Gamma(A,B,C)\f$, and
+*	-  1 (DEDANS)  if Vertex \f$Z\f$ lies inside circle \f$\Gamma(A,B,C)\f$.             
+*
+*	For convenience, as the only disturbing case is 
+*	\f$D\f$ lies inside \f$\Gamma(A,B,C)\f$,
+*	the routine actually returns: 
+*	1 (DEDANS) if Vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$,
+*	-1 (DEHORS) otherwise.
+*
+*	\warning Vertices \f$A,B,C\f$ are ASSUMED neither to be aligned or equal.
+*	Overflow might arise otherwise. User must check this condition
+*	with function Angle() before calling present function.
+*/
 Position InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *Z);
 
 #endif

@@ -33,7 +33,7 @@ SRC= $(wildcard $(SRCDIR)/*.c)
 OBJ= $(SRC:$(SRCDIR)/%.c=$(LIBDIR)/%.o)
  
 all: $(EXEC)
-	./$(EXEC) -a0
+	./$(EXEC)
  
 #Création de l'exécutable
 $(EXEC): $(OBJ)

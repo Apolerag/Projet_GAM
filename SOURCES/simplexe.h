@@ -97,30 +97,5 @@ const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin);
 */
 void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouveauVoisin);
 
-/****************************************************************/
-/*Pile*/
-
-
-/*!	Pile de simplexe
-* (utilisé par Delaunay)
-*/
-typedef struct 
-{
-	Simplexe *dernierPile;
-} Pile;
-
-/*! ajoute un élément dans la pile
-*
-*/
-void insererPile(Pile *p, Simplexe *s, const time_t t);
-
-/*! récupère le dernier élément de la pile
-*/
-Simplexe* getSommetPile(Pile *p);
-
-/*!	controle si la pile est vide
-*	\return 1 si la pile est vide, 0 sinon
-*/
-int estVide(const Pile *p);
 
 #endif

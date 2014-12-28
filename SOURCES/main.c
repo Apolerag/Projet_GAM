@@ -17,30 +17,28 @@ extern char *optarg;
 
 /*! bascule pour autoriser ou interdire (0) les messages d'erreurs envoyes par getopt. */
 extern int opterr;
-
+/*
 int main(int argc, char **argv)  
 {  
 	//printf("\E[34;1mhel\E[mlo\n");
 	int c;
 	int nbPoints = 50;
 	int nbFacette = -1;
-	int affiche = 1;
+	int affiche = 0;
 	int triangle = 0;
 	Delaunay *d = NULL;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "a:f:hn:t:")) != EOF)
+	while ((c = getopt(argc, argv, "af:hn:t:")) != EOF)
 	{
 		switch (c)
 		{
 			case 'a':
-				if ((sscanf(optarg, "%d", &affiche) != 1) || (affiche != 0 && affiche != 1))
 					affiche = 1;
 				break;
 			case 'f': 
 				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
-					nbFacette = -1; // un nombre négatif indique que toutes les facettes seront créés
-
+					nbFacette = -1; // un nombre négatif indique que toutes les facettes seront créées
 				break;
 			case 'n': 
 				if ((sscanf(optarg, "%d", &nbPoints) != 1) || nbPoints <= 0)
@@ -52,13 +50,12 @@ int main(int argc, char **argv)
 				break;
 			case 'h':  
 			default :
-				printf("-a l'affichage du résultat (1 affiche, 0 n'affiche pas) (par defaut 1)\n");
+				printf("-a l'affichage du résultat\n");
 				printf("-f le nombre de facettes maximum crées par la triangulation (toutes par default)\n");
 				printf("-h l'aide d'utilisation\n");
 				printf("-t le type de l'affichage (0 ligne, 1 triangle\n");
 				printf("-n le nombre de Vertex (50 par défaut)\n");
 				return EXIT_SUCCESS;  
-				break;
 		}
 	}
 	if(affiche) {
@@ -73,7 +70,6 @@ int main(int argc, char **argv)
 	winInit();
 	d = initialisation(nbPoints, nbFacette);
 	triangulation(d);
-
 	if(affiche){
 		if(triangle == 0) displaySimplexeLigne(d);
 		else displaySimplexeTriangle(d);
@@ -86,22 +82,46 @@ int main(int argc, char **argv)
 	return EXIT_SUCCESS;  
 
 }  
+*/
 
-/*
 int main(int argc, char **argv)  
-{ 
-	Vertex v1, v2, v3, v4;
+{
 	Simplexe *s;
+	FileSimplexe *file;
+	file = creerFileSimplexe(10);
+	int i;
+	srand(time(NULL)); 
+	for (i = 1; i <= 10; ++i)
+	{
+		ALLOUER(s,1);
+		s->distanceMax = RAND(0,100);
+		file->file[i] = s;
+		//insererFileSimplexe(file, s);	
+	}
+	file->nbElements = file->nbElementsCourant = 10;
+	for (i = 1; i <= file->nbElementsCourant; ++i)
+	{
+		printf("%f ", file->file[i]->distanceMax);
+	}
+	printf("\n");	
 
+	retriFile(file);
+
+	printf("\n");
 	
-	v1.coords[0] = 0; v1.coords[1] = 0, v1.coords[2] = 0;
-	v2.coords[0] = 2; v2.coords[1] = 0, v2.coords[2] = 0;
-	v3.coords[0] = 2; v3.coords[1] = 2, v3.coords[2] = 0;
-	v4.coords[0] = 1; v4.coords[1] = 1, v4.coords[2] = 0;
+	while(file->nbElementsCourant > 0) {
+		s = extremierFileSimplexe(file);
+		for (i = 1; i <= file->nbElementsCourant; ++i)
+		{
+			printf("%f ", file->file[i]->distanceMax);
+		}
+		printf("\n");
+		free(s);
+	}
 
 
-	s = creationSimplexe(&v1,&v2,&v3);
-	printf("%f\n",distanceVertexSimplexe(s, &v4));
-	free(s);
+
+	freeFileSimplexe(file);
+
 	return EXIT_SUCCESS;
-}*/
+}

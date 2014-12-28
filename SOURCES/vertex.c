@@ -78,5 +78,5 @@ Position InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vert
         ((C->coords[0] + Z->coords[0])*CZx + (C->coords[1] + Z->coords[1])*CZy) * (AZx*BZy - AZy*BZx);
 
   /* should return (det > 0.0) ? IN : (det == 0.0) ? ON : OUT; really */
-  return (det > 0.0) ? DEDANS : 0;
+  return (det > 0.0) ? DEDANS : DEHORS;
 }

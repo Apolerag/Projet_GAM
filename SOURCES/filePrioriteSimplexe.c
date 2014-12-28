@@ -29,6 +29,23 @@ void freeFileSimplexe(FileSimplexe * f)
 	free(f);
 }
 
+double getGauche(const FileSimplexe *f, const int i)
+{
+	if(2*i <=  f->nbElementsCourant){
+		return f->file[2*i]->distanceMax;
+	}
+	return -1;
+}
+
+/*! retourne la valeur du fils droit de la case i*/
+double getDroite(const FileSimplexe *f, const int i)
+{
+	if((2*i)+1 <=  f->nbElementsCourant){
+		return f->file[(2*i)+1]->distanceMax;
+	}
+	return -1;
+}
+
 void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 {
 	if(f->nbElements == f->nbElementsCourant) {
@@ -58,38 +75,32 @@ Simplexe* extremierFileSimplexe(FileSimplexe * f)
 {
 	echangeCaseSimplexe(f, 1, f->nbElementsCourant);
 	f->nbElementsCourant--;
-	double gauche, droite;
+	double gauche, droite, courant;
 
 	int i = 1;
 	while(2*i < f->nbElementsCourant)
 	{
-		gauche = f->file[2*i]->distanceMax -  f->file[i]->distanceMax;
-		droite = f->file[(2*i)+1]->distanceMax -  f->file[i]->distanceMax;
-		if((gauche > 0) && (droite > 0)) {
-			//if(ordreLexicographiqueVertex(&f->file[2*i], &f->file[(2*i)+1]) == INFERIEUR) {
-			if(f->file[2*i]->distanceMax <  f->file[(2*i)+1]->distanceMax) {
-				echangeCaseSimplexe(f, i, 2*i);
-				i *= 2 ; 
-			}
-			else {
-				echangeCaseSimplexe(f, i, (2*i)+1);
-				i *= 2 ; i += 1 ;
-			}	
-		}
-		else if(gauche > 0) {
+		gauche = getGauche(f,i);
+		droite = getDroite(f,i);
+		courant = f->file[i]->distanceMax;
+		//printf("gauche %lf droite %lf courant %lf\n", gauche, droite, courant);
+
+		if(gauche > courant && gauche > droite) {
+			//printf("gauche\n");
 			echangeCaseSimplexe(f, i, 2*i);
 			i *= 2 ; 
 		}
-		else if(droite > 0) {
+		else if(droite > courant){
+			//printf("droite\n");
 			echangeCaseSimplexe(f, i, (2*i)+1);
 			i *= 2 ; i += 1 ;
-		}
+		}	
 		else
 			break;
 	}
 	/* Cas spécial quand il n'y a plus que deux éléments */
 	if(f->nbElementsCourant == 2) {
-		if(f->file[1]->distanceMax > f->file[2]->distanceMax)
+		if(f->file[1]->distanceMax < f->file[2]->distanceMax)
 			echangeCaseSimplexe(f, 1, 2);
 	}
 
@@ -102,4 +113,32 @@ void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 	temp = f->file[i];
 	f->file[i] = f->file[j];
 	f->file[j] = temp;
+}
+
+void retriFile(FileSimplexe * f)
+{
+	int i,j;
+	double gauche, droite, courant;
+
+	for ( i = f->nbElementsCourant / 2; i >= 1; --i)
+	{
+		j = i;
+		while(j <= f->nbElementsCourant) {
+			gauche = getGauche(f,j);
+			droite = getDroite(f,j);
+			courant = f->file[j]->distanceMax;
+			printf("gauche %lf droite %lf courant %lf\n", gauche, droite, courant);
+			if(gauche > courant && gauche > droite) {
+				printf("gauche\n");
+				echangeCaseSimplexe(f, j, 2*j);
+				j*=2;
+			}
+			else if(droite > courant){
+				echangeCaseSimplexe(f, j, (2*j)+1);
+				printf("droite\n");
+				j = 2*j+1;
+			}	
+			else break;
+		}
+	}
 }

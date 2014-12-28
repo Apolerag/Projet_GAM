@@ -4,6 +4,7 @@
 */
 
 #include "delaunay.h"
+#include "pile.h"
 
 #include <assert.h>
 #include <math.h>
@@ -67,6 +68,7 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 	int n;
 	Simplexe *s0, *s1;
 
+	srand(time(NULL)); 
 	/*creation du carré initial */ 
 	d->tableauVertices[0].coords[0] = 0; d->tableauVertices[0].coords[1] = 0; d->tableauVertices[0].coords[2] = 0;	
 	d->tableauVertices[1].coords[0] = 1; d->tableauVertices[1].coords[1] = 0; d->tableauVertices[1].coords[2] = 0;
@@ -178,9 +180,11 @@ void triangulationDelaunay(Delaunay *d)
 	Simplexe *s0, *s1, *s2;
 	Vertex *v,*c;
 	const Vertex *sommetOppose;
+	int i;
 	time_t t0;
 	Pile *pile;
 	ALLOUER(pile,1);
+
 	while(getValeurPremier(d->filePrioriteSimplexe) >= 0
 		&& d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		
@@ -221,12 +225,24 @@ void triangulationDelaunay(Delaunay *d)
 		while(! estVide(pile)) {
 			s = getSommetPile(pile);
 
-			t = s->voisins[0];
-			sommetOppose = getSommetOppose(s, t);
-			if(InCircle (s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
-				//TODO
-			}
+			for (i = 0; i < 3; ++i)
+			{
+				t = s->voisins[i];
+				sommetOppose = getSommetOppose(s, t);
 
+				printf("%d ", sommetOppose != NULL);
+				printf("%d ", orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE);
+				if(sommetOppose != NULL) printf("%d", InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS);
+				printf("\n");
+				/*	if(sommetOppose != NULL)
+						InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEHORS? printf("DEHORS\n"): printf("DEDANS\n");*/
+				if(sommetOppose != NULL &&
+					orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE &&
+					InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
+					//echangeSimplexe(s, t, i, sommetOppose);
+					printf("caca\n");
+				}
+			}
 		}
 	}
 	free(pile);
