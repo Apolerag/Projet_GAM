@@ -10,6 +10,11 @@
 #include <stdio.h>
 #include "simplexe.h"
 
+/*!
+*	\struct FileSimplexe
+*	\brief une file priorité de Simplexe
+*
+*/
 typedef struct {
    Simplexe ** file; 	/*gestion dynamique de la mémoire occupée*/
    int nbElements;	/*nombre d'éléments maximum dans la file*/
@@ -42,6 +47,6 @@ Simplexe* extremierFileSimplexe(FileSimplexe * f);
 void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j);
 
 /*! retri la file de priorité*/
-void retriFile(FileSimplexe * f);
+void retriFileSimplexe(FileSimplexe * f);
 
 #endif

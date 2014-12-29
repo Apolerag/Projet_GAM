@@ -239,11 +239,14 @@ void triangulationDelaunay(Delaunay *d)
 				if(sommetOppose != NULL &&
 					orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE &&
 					InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
-					//echangeSimplexe(s, t, i, sommetOppose);
+					echangeSimplexe(s, t, i);
+
+					insererPile(s, t, t0);
 					printf("caca\n");
 				}
 			}
 		}
+		retriFileSimplexe(d->filePrioriteSimplexe);
 	}
 	free(pile);
 }

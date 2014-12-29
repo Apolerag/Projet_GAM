@@ -28,9 +28,7 @@ typedef enum
 } Position;
 
 /*!
-*	\Vertex struct 
-*	\arg coords les coordonnées du vertex.
-*	\arg le vertex suivant dans une liste de vertices.
+*	\struct Vertex 
 */
 typedef struct _Vertex
 {

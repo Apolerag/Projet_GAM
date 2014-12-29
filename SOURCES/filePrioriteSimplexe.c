@@ -115,7 +115,7 @@ void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 	f->file[j] = temp;
 }
 
-void retriFile(FileSimplexe * f)
+void retriFileSimplexe(FileSimplexe * f)
 {
 	int i,j;
 	double gauche, droite, courant;
@@ -127,15 +127,12 @@ void retriFile(FileSimplexe * f)
 			gauche = getGauche(f,j);
 			droite = getDroite(f,j);
 			courant = f->file[j]->distanceMax;
-			printf("gauche %lf droite %lf courant %lf\n", gauche, droite, courant);
 			if(gauche > courant && gauche > droite) {
-				printf("gauche\n");
 				echangeCaseSimplexe(f, j, 2*j);
 				j*=2;
 			}
 			else if(droite > courant){
 				echangeCaseSimplexe(f, j, (2*j)+1);
-				printf("droite\n");
 				j = 2*j+1;
 			}	
 			else break;

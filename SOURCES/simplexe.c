@@ -118,6 +118,72 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouvea
 
 }
 
-/****************************************************************/
-/*pile*/
+void echangeSimplexe(Simplexe *s1, Simplexe *s2, const int i)
+{
+	Simplexe *nouveau1 = NULL, *nouveau2 = NULL;
+	Vertex *v = NULL, *c = NULL;
+
+	if(orientationPolaire(s1->sommets[0], s1->sommets[1], s2->sommets[i]) == GAUCHE &&
+		orientationPolaire(s2->sommets[i], s1->sommets[1], s1->sommets[2]) == GAUCHE ) {
+		nouveau1 = creationSimplexe(s1->sommets[0], s1->sommets[1], s2->sommets[i]);
+		nouveau2 = creationSimplexe(s2->sommets[i], s1->sommets[1], s1->sommets[2]);
+
+		nouveau1->voisins[0] = nouveau2;
+		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
+		nouveau1->voisins[2] = s1->voisins[2];
+
+		nouveau2->voisins[0] = s1->voisins[0];
+		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
+		nouveau2->voisins[2] = nouveau1;
+	}
+	else if(orientationPolaire(s1->sommets[0], s1->sommets[1], s2->sommets[i]) == GAUCHE &&
+			orientationPolaire(s2->sommets[i], s1->sommets[2], s1->sommets[0]) == GAUCHE ) {
+		nouveau1 = creationSimplexe(s1->sommets[0], s1->sommets[1], s2->sommets[i]);
+		nouveau2 = creationSimplexe(s2->sommets[i], s1->sommets[2], s1->sommets[0]);
+
+		nouveau1->voisins[0] = nouveau2;
+		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
+		nouveau1->voisins[2] = s1->voisins[2];
+
+		nouveau2->voisins[0] = s1->voisins[0];
+		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
+		nouveau2->voisins[2] = nouveau1;
+	}
+	else if(orientationPolaire(s2->sommets[i], s1->sommets[1], s1->sommets[2]) == GAUCHE && 
+			orientationPolaire(s2->sommets[i], s1->sommets[2], s1->sommets[0]) == GAUCHE ) {
+		nouveau1 = creationSimplexe(s2->sommets[i], s1->sommets[1], s1->sommets[2]);
+		nouveau2 = creationSimplexe(s2->sommets[i], s1->sommets[2], s1->sommets[0]);
+
+		nouveau1->voisins[0] = nouveau2;
+		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
+		nouveau1->voisins[2] = s1->voisins[2];
+
+		nouveau2->voisins[0] = s1->voisins[0];
+		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
+		nouveau2->voisins[2] = nouveau1;
+	}
+
+	v = s1->listeVertex;
+	while(v != NULL) {
+		c = v->suivant;
+		if(positionPointSimplexe(nouveau1, v) == DEDANS)
+			ajouteVertex(nouveau1, v);
+		else ajouteVertex(nouveau2, v);
+
+		v = c;
+	}
+
+	v = s2->listeVertex;
+	while(v != NULL) {
+		c = v->suivant;
+		if(positionPointSimplexe(nouveau1, v) == DEDANS)
+			ajouteVertex(nouveau1, v);
+		else ajouteVertex(nouveau2, v);
+
+		v = c;
+	}
+
+	free(s1); s1 = nouveau1;
+	free(s2); s2 = nouveau2;
+}
 

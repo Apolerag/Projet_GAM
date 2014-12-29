@@ -3,13 +3,15 @@
 * \date 2014
 */
 
-#ifndef SIMPLEXE_H
-#define SIMPLEXE_H
+#ifndef Simplexe_H
+#define Simplexe_H
 
 #include <time.h>
 #include "vertex.h"
 
-/*! paramètred de l'équation d'un plan de la forme:
+/*! 
+*	\struct Equation
+*	\brief paramètre de l'équation d'un plan de la forme:
 *
 *	\f$
 *	a*x + b*y + c*z + d = 0
@@ -23,18 +25,20 @@ typedef struct
 	double d;
 } Equation;
 
-/*! Structure pour representer un triangle
-*	\arg sommets les sommets du simplexe
-*	\arg listeVertex la liste des vertex qui sont contenus dans le simplexe
+/*! 
+*	\struct Simplexe
+*	\brief Structure pour representer un triangle
+*	\arg sommets les sommets du Simplexe
+*	\arg listeVertex la liste des Vertex qui sont contenus dans le Simplexe
 *	\arg nbListe le nombre d'éléments dans la liste
-*	\arg voisins les simplexes voisins du simplexe courant
-*	\arg distanceMax la distance en le plan formé par le simplexe et le premier vertex de la liste
+*	\arg voisins les Simplexes voisins du Simplexe courant
+*	\arg distanceMax la distance en le plan formé par le Simplexe et le premier Vertex de la liste
 */
 typedef struct _Simplexe
 {
 	const Vertex *sommets[3];
 	Vertex *listeVertex; //liste de vertices 
-	// avec le vertex le plus loin du plan formé par le simplexe
+	// avec le Vertex le plus loin du plan formé par le Simplexe
 	// en première position
 	int nbListe;
 	Equation e;
@@ -61,12 +65,12 @@ Position positionPointSimplexe(const Simplexe *s, const Vertex *N);
 /*! ajoute un voisin au Simplexe*/
 void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2);
 
-/*! ajoute un vertex dans la liste de vertices du Simplexe s
-* 	si la distance est supérieur à la distance max courante du simplexe,
-*	le vertex est ajouté en tête et la distance est mise à jour
-*	sinon le vertex est inséré en position deux dans la liste
-*	\arg s le simplexe où se situe le vertex
-*	\arg v le vertex à insérer dans le simplexe
+/*! ajoute un Vertex dans la liste de vertices du Simplexe s
+* 	si la distance est supérieur à la distance max courante du Simplexe,
+*	le Vertex est ajouté en tête et la distance est mise à jour
+*	sinon le Vertex est inséré en position deux dans la liste
+*	\arg s le Simplexe où se situe le Vertex
+*	\arg v le Vertex à insérer dans le Simplexe
 *   \arg distance la distance minimal entre le plan formé par s et v
 */
 void ajouteVertex(Simplexe *s, Vertex *v);
@@ -78,16 +82,16 @@ void ajouteVertex(Simplexe *s, Vertex *v);
 *	\f$
 *	
 *	A la fin equation contient a,b,c et d.
-*	\warning les trois vertices du simplexe ne sont pas alignés
+*	\warning les trois vertices du Simplexe ne sont pas alignés
 */
 Equation equationPlan(const Simplexe *s);
 
-/*! calcul la distance entre le simplexe s et le vertex v
+/*! calcul la distance entre le Simplexe s et le Vertex v
 *	abs(a*x+b*y+c*z+d)/sqrt(a2 +b2+ c2)
 */
 double distanceVertexSimplexe(const Simplexe *s, const Vertex *v);		
 
-/*!	s et voisin sont deux simplexes voisins
+/*!	s et voisin sont deux Simplexes voisins
 *	la fonction retourne le vetex sommet de Voisin qui n'est pas un sommet de s
 */
 const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin);
@@ -97,5 +101,15 @@ const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin);
 */
 void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouveauVoisin);
 
+/*!
+*	\fn void echangeSimplexe(Simplexe *s1, Simplexe *s2, const int i);
+*	\brief échange les Simplexe s1 et s2 quand s2->sommet[i] est dans le cercle formé par les sommets de s1
+*
+*	\param s1 et s2 deux Simplexe voisin
+*	\param i le Vertex de s2 non sommet de s1
+*
+*	\warning s1 et s2 sont voisins
+*/
+void echangeSimplexe(Simplexe *s1, Simplexe *s2, const int i);
 
 #endif

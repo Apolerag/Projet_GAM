@@ -17,7 +17,7 @@ extern char *optarg;
 
 /*! bascule pour autoriser ou interdire (0) les messages d'erreurs envoyes par getopt. */
 extern int opterr;
-/*
+
 int main(int argc, char **argv)  
 {  
 	//printf("\E[34;1mhel\E[mlo\n");
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
 	winInit();
 	d = initialisation(nbPoints, nbFacette);
-	triangulation(d);
+	triangulationDelaunay(d);
 	if(affiche){
 		if(triangle == 0) displaySimplexeLigne(d);
 		else displaySimplexeTriangle(d);
@@ -82,40 +82,27 @@ int main(int argc, char **argv)
 	return EXIT_SUCCESS;  
 
 }  
-*/
 
+/*
 int main(int argc, char **argv)  
 {
 	Simplexe *s;
 	FileSimplexe *file;
-	file = creerFileSimplexe(10);
+	file = creerFileSimplexe(1000000);
 	int i;
 	srand(time(NULL)); 
-	for (i = 1; i <= 10; ++i)
+	for (i = 1; i <= 1000000; ++i)
 	{
 		ALLOUER(s,1);
 		s->distanceMax = RAND(0,100);
 		file->file[i] = s;
-		//insererFileSimplexe(file, s);	
 	}
-	file->nbElements = file->nbElementsCourant = 10;
-	for (i = 1; i <= file->nbElementsCourant; ++i)
-	{
-		printf("%f ", file->file[i]->distanceMax);
-	}
-	printf("\n");	
+	file->nbElements = file->nbElementsCourant = 1000000;
+
 
 	retriFile(file);
-
-	printf("\n");
-	
 	while(file->nbElementsCourant > 0) {
 		s = extremierFileSimplexe(file);
-		for (i = 1; i <= file->nbElementsCourant; ++i)
-		{
-			printf("%f ", file->file[i]->distanceMax);
-		}
-		printf("\n");
 		free(s);
 	}
 
@@ -124,4 +111,4 @@ int main(int argc, char **argv)
 	freeFileSimplexe(file);
 
 	return EXIT_SUCCESS;
-}
+}*/
