@@ -55,7 +55,7 @@ typedef struct _Simplexe
 Simplexe* creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C);
 
 /*! supprime les éléments occupés en mémoire par le Simplexe*/
-void destructionSimplexe(Simplexe *s);
+//void destructionSimplexe(Simplexe *s);
 
 /*! retourne la position du Vertex N par rapport au Simplexe s
 * DEDANS, DESSUS ou DEHORS 
@@ -110,6 +110,8 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouvea
 *
 *	\warning s1 et s2 sont voisins
 */
-void echangeSimplexe(Simplexe *s1, Simplexe *s2, const int i);
+void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v);
+
+void afficheSimplexe(const Simplexe *s);
 
 #endif

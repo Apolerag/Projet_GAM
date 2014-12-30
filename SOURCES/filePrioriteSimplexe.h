@@ -49,4 +49,6 @@ void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j);
 /*! retri la file de priorité*/
 void retriFileSimplexe(FileSimplexe * f);
 
+void afficheFile(FileSimplexe *f);
+
 #endif

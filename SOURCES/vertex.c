@@ -9,6 +9,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+void afficheVertex(const Vertex *v)
+{
+	if(v == NULL) printf("NULL\n");
+	else printf("(%.2f, %.2f) ", v->coords[0], v->coords[1]);
+}
+
 double determinant(const double a, const double b, const double c,
 				const double d, const double e, const double f,
 				const double g, const double h, const double i)

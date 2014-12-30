@@ -12,57 +12,52 @@
 #include <stdlib.h>
 #include <unistd.h>  
 
-static void afficheFile(FileSimplexe *f)
+Delaunay *initialisationTest(const int nbVertex, const int nombreFacette)
 {
-	int i = 1;
-	Simplexe *s, *t;
-	for(; i <= f->nbElementsCourant; i++)
-	{
-		s = f->file[i];
-		printf("%d ", i);
+	Delaunay *d;
+	ALLOUER(d, 1);
+	ALLOUER(d->tableauVertex, 5);
+	d->filePrioriteSimplexe = creerFileSimplexe(2 * 5);
+	d->nbVertex = 5;
+	if(nombreFacette == -1) d->nombreFacetteMax = d->filePrioriteSimplexe->nbElements;
+	else d->nombreFacetteMax = nombreFacette;
+	//int n;
+	Simplexe *s0, *s1;
 
-		t = s->voisins[0]; 
-		if(t != NULL)  
-		{
-			if(t->voisins[0] == s) { printf("0 ");}
-			else if(t->voisins[1] == s) { printf("1 ");}
-			else if(t->voisins[2] == s) { printf("2 ");}
-			else printf("caca ");
-		}
-		else printf("N ");
+	srand(time(NULL)); 
+	/*creation du carré initial */ 
+	d->tableauVertex[0].coords[0] = 0; d->tableauVertex[0].coords[1] = 0; d->tableauVertex[0].coords[2] = 0;	
+	d->tableauVertex[1].coords[0] = 1; d->tableauVertex[1].coords[1] = 0; d->tableauVertex[1].coords[2] = 0;
+	d->tableauVertex[2].coords[0] = 1; d->tableauVertex[2].coords[1] = 1; d->tableauVertex[2].coords[2] = 0;
+	d->tableauVertex[3].coords[0] = 0; d->tableauVertex[3].coords[1] = 1; d->tableauVertex[3].coords[2] = 0;
 
-		t = s->voisins[1];
-		if(t != NULL)
-		{
-			if(t->voisins[0] == s) { printf("0 ");}
-			else if(t->voisins[1] == s) { printf("1 ");}
-			else if(t->voisins[2] == s) { printf("2 ");}
-			else printf("caca ");
+	d->tableauVertex[4].coords[0] = 0.25;
+	d->tableauVertex[4].coords[1] = 0.75;
+	d->tableauVertex[4].coords[2] = 0; //à modifier
 
-		}
-		else printf("N ");
+	s0 = creationSimplexe(&d->tableauVertex[0], &d->tableauVertex[1], &d->tableauVertex[2]);
+	s1 = creationSimplexe(&d->tableauVertex[0], &d->tableauVertex[2], &d->tableauVertex[3]);
 
-		t = s->voisins[2]; 
-		if(t != NULL)
-		{
-			if(t->voisins[0] == s) { printf("0 ");}
-			else if(t->voisins[1] == s) { printf("1 ");}
-			else if(t->voisins[2] == s) { printf("2 ");}
-			else printf("caca ");
-		}
-		else printf("N ");
-		printf("\n");
-		//printf("%lf\n", s->distanceMax);
-	}
+	if(positionPointSimplexe(s0, &d->tableauVertex[4]) == DEDANS)
+		ajouteVertex(s0, &d->tableauVertex[4]);
+	else ajouteVertex(s1, &d->tableauVertex[4]);		
+
+	ajouteVoisin(s0, NULL, s1, NULL);
+	ajouteVoisin(s1, NULL, NULL, s0);
+	
+	insererFileSimplexe(d->filePrioriteSimplexe, s0);
+	insererFileSimplexe(d->filePrioriteSimplexe, s1);
+	return d;
 }
+
 
 Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 {
 	Delaunay *d;
 	ALLOUER(d, 1);
-	ALLOUER(d->tableauVertices, nbVertex);
+	ALLOUER(d->tableauVertex, nbVertex);
 	d->filePrioriteSimplexe = creerFileSimplexe(2 * nbVertex);
-	d->nbVertices = nbVertex;
+	d->nbVertex = nbVertex;
 	if(nombreFacette == -1) d->nombreFacetteMax = d->filePrioriteSimplexe->nbElements;
 	else d->nombreFacetteMax = nombreFacette;
 	int n;
@@ -70,24 +65,24 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 
 	srand(time(NULL)); 
 	/*creation du carré initial */ 
-	d->tableauVertices[0].coords[0] = 0; d->tableauVertices[0].coords[1] = 0; d->tableauVertices[0].coords[2] = 0;	
-	d->tableauVertices[1].coords[0] = 1; d->tableauVertices[1].coords[1] = 0; d->tableauVertices[1].coords[2] = 0;
-	d->tableauVertices[2].coords[0] = 1; d->tableauVertices[2].coords[1] = 1; d->tableauVertices[2].coords[2] = 0;
-	d->tableauVertices[3].coords[0] = 0; d->tableauVertices[3].coords[1] = 1; d->tableauVertices[3].coords[2] = 0;
+	d->tableauVertex[0].coords[0] = 0; d->tableauVertex[0].coords[1] = 0; d->tableauVertex[0].coords[2] = 0;	
+	d->tableauVertex[1].coords[0] = 1; d->tableauVertex[1].coords[1] = 0; d->tableauVertex[1].coords[2] = 0;
+	d->tableauVertex[2].coords[0] = 1; d->tableauVertex[2].coords[1] = 1; d->tableauVertex[2].coords[2] = 0;
+	d->tableauVertex[3].coords[0] = 0; d->tableauVertex[3].coords[1] = 1; d->tableauVertex[3].coords[2] = 0;
 
 	for(n = 4; n < nbVertex; n++) {
-		d->tableauVertices[n].coords[0] = RAND(0, 1);
-		d->tableauVertices[n].coords[1] = RAND(0, 1);
-		d->tableauVertices[n].coords[2] = RAND(0, H_MAX); //à modifier
+		d->tableauVertex[n].coords[0] = RAND(0, 1);
+		d->tableauVertex[n].coords[1] = RAND(0, 1);
+		d->tableauVertex[n].coords[2] = RAND(0, H_MAX); //à modifier
 	}
 
-	s0 = creationSimplexe(&d->tableauVertices[0], &d->tableauVertices[1], &d->tableauVertices[2]);
-	s1 = creationSimplexe(&d->tableauVertices[0], &d->tableauVertices[2], &d->tableauVertices[3]);
+	s0 = creationSimplexe(&d->tableauVertex[0], &d->tableauVertex[1], &d->tableauVertex[2]);
+	s1 = creationSimplexe(&d->tableauVertex[0], &d->tableauVertex[2], &d->tableauVertex[3]);
 
 	for(n = 4; n < nbVertex; n++) {
-		if(positionPointSimplexe(s0, &d->tableauVertices[n]) == DEDANS)
-			ajouteVertex(s0, &d->tableauVertices[n]);
-		else ajouteVertex(s1, &d->tableauVertices[n]);		
+		if(positionPointSimplexe(s0, &d->tableauVertex[n]) == DEDANS)
+			ajouteVertex(s0, &d->tableauVertex[n]);
+		else ajouteVertex(s1, &d->tableauVertex[n]);		
 	}
 	
 	ajouteVoisin(s0, NULL, s1, NULL);
@@ -102,10 +97,10 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 void destruction(Delaunay *d)
 {
 	freeFileSimplexe(d->filePrioriteSimplexe);
-	free(d->tableauVertices);
+
+	free(d->tableauVertex);
 	free(d);
 }
-
 
 /*
 durée de la triangulation (simple a = 0)
@@ -224,14 +219,24 @@ void triangulationDelaunay(Delaunay *d)
 
 		while(! estVide(pile)) {
 			s = getSommetPile(pile);
-
+			printf("Simplexe à controler\n");
+			afficheSimplexe(s);
+			printf("\n");
 			for (i = 0; i < 3; ++i)
 			{
 				t = s->voisins[i];
+				printf("voisin %d\n",i);
+				afficheSimplexe(t);
+				printf("\n");
 				sommetOppose = getSommetOppose(s, t);
+				printf("sommetOppose\n");
+				afficheVertex(sommetOppose);
+				printf("\n");
+				//printf("%d ", sommetOppose != NULL);
+				printf("orientationPolaire ");
+				orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE ? printf("GAUCHE\n") : printf("DROITE\n");
+				
 
-				printf("%d ", sommetOppose != NULL);
-				printf("%d ", orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE);
 				if(sommetOppose != NULL) printf("%d", InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS);
 				printf("\n");
 				/*	if(sommetOppose != NULL)
@@ -239,14 +244,26 @@ void triangulationDelaunay(Delaunay *d)
 				if(sommetOppose != NULL &&
 					orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE &&
 					InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
-					echangeSimplexe(s, t, i);
-
-					insererPile(s, t, t0);
-					printf("caca\n");
+					printf("cacacacacacacacacacacacacacacacacacacacacacacacacacacacacacacaca\n");
+					
+					echangeSimplexe(s, t, sommetOppose);
+					printf("nouveau Simplexe \n");
+					afficheSimplexe(s);
+					afficheSimplexe(t);
+					printf("\n");
+					insererPile(pile, t, t0);
+					insererPile(pile, s, t0);
 				}
 			}
 		}
+		printf("file après liste vide\n");
+		afficheFile(d->filePrioriteSimplexe);
+		printf("\n");
 		retriFileSimplexe(d->filePrioriteSimplexe);
+		printf("file retriée\n");
+		afficheFile(d->filePrioriteSimplexe);
+		printf("\n");
 	}
 	free(pile);
+	printf("fin triangulation\n");
 }

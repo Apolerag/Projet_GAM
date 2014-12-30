@@ -99,91 +99,118 @@ const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin)
 	const Vertex *v = NULL;
 
 	if(Voisin != NULL) {
-		if(Voisin->voisins[0] == s) v = s->sommets[0];
-		else if(Voisin->voisins[1] == s) v = s->sommets[1];
-		else if(Voisin->voisins[2] == s) v = s->sommets[2];
+		if(Voisin->voisins[0] == s) v = Voisin->sommets[0];
+		else if(Voisin->voisins[1] == s) v = Voisin->sommets[1];
+		else if(Voisin->voisins[2] == s) v = Voisin->sommets[2];
 	}
 	
 	return v;
 }
 
-void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouveauVoisin)
+void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *NouveauVoisin)
 {
 	if(s != NULL)  
 	{
-		if(s->voisins[0] == ancienVoisin) s->voisins[0] = nouveauVoisin;
-		else if(s->voisins[1] == ancienVoisin) s->voisins[1] = nouveauVoisin;
-		else if(s->voisins[2] == ancienVoisin) s->voisins[2] = nouveauVoisin;
+		if(s->voisins[0] == ancienVoisin) s->voisins[0] = NouveauVoisin;
+		else if(s->voisins[1] == ancienVoisin) s->voisins[1] = NouveauVoisin;
+		else if(s->voisins[2] == ancienVoisin) s->voisins[2] = NouveauVoisin;
 	}
 
 }
 
-void echangeSimplexe(Simplexe *s1, Simplexe *s2, const int i)
+void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 {
-	Simplexe *nouveau1 = NULL, *nouveau2 = NULL;
-	Vertex *v = NULL, *c = NULL;
+	Simplexe *tampon1 = s1, *tampon2 = s2;
+	Vertex *t = NULL, *c = NULL;
+	int i = 0;
 
-	if(orientationPolaire(s1->sommets[0], s1->sommets[1], s2->sommets[i]) == GAUCHE &&
-		orientationPolaire(s2->sommets[i], s1->sommets[1], s1->sommets[2]) == GAUCHE ) {
-		nouveau1 = creationSimplexe(s1->sommets[0], s1->sommets[1], s2->sommets[i]);
-		nouveau2 = creationSimplexe(s2->sommets[i], s1->sommets[1], s1->sommets[2]);
+	while(s2->sommets[i] != v) i++;
 
-		nouveau1->voisins[0] = nouveau2;
-		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
-		nouveau1->voisins[2] = s1->voisins[2];
+	printf("debut echange\n");
+	afficheSimplexe(tampon1);
+	afficheSimplexe(tampon2);
+	printf("\n");
 
-		nouveau2->voisins[0] = s1->voisins[0];
-		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
-		nouveau2->voisins[2] = nouveau1;
+
+	if(orientationPolaire(tampon1->sommets[0], tampon1->sommets[1], v) == GAUCHE &&
+		orientationPolaire(v, tampon1->sommets[1], tampon1->sommets[2]) == GAUCHE ) {
+		s1 = creationSimplexe(tampon1->sommets[0], tampon1->sommets[1], v);
+		s2 = creationSimplexe(v, tampon1->sommets[1], tampon1->sommets[2]);
+
+		s1->voisins[0] = s2;
+		s1->voisins[1] = tampon2->voisins[(i+2)%3];
+		s1->voisins[2] = tampon1->voisins[2];
+
+		s2->voisins[0] = tampon1->voisins[0];
+		s2->voisins[1] = tampon2->voisins[(i+1)%3];
+		s2->voisins[2] = s1;
 	}
-	else if(orientationPolaire(s1->sommets[0], s1->sommets[1], s2->sommets[i]) == GAUCHE &&
-			orientationPolaire(s2->sommets[i], s1->sommets[2], s1->sommets[0]) == GAUCHE ) {
-		nouveau1 = creationSimplexe(s1->sommets[0], s1->sommets[1], s2->sommets[i]);
-		nouveau2 = creationSimplexe(s2->sommets[i], s1->sommets[2], s1->sommets[0]);
+	else if(orientationPolaire(tampon1->sommets[0], tampon1->sommets[1], v) == GAUCHE &&
+			orientationPolaire(v, tampon1->sommets[2], tampon1->sommets[0]) == GAUCHE ) {
+		s1 = creationSimplexe(tampon1->sommets[0], tampon1->sommets[1], v);
+		tampon2 = creationSimplexe(v, tampon1->sommets[2], tampon1->sommets[0]);
 
-		nouveau1->voisins[0] = nouveau2;
-		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
-		nouveau1->voisins[2] = s1->voisins[2];
+		s1->voisins[0] = s2;
+		s1->voisins[1] = tampon2->voisins[(i+2)%3];
+		s1->voisins[2] = tampon1->voisins[2];
 
-		nouveau2->voisins[0] = s1->voisins[0];
-		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
-		nouveau2->voisins[2] = nouveau1;
+		s2->voisins[0] = tampon1->voisins[0];
+		s2->voisins[1] = tampon2->voisins[(i+1)%3];
+		s2->voisins[2] = s1;
 	}
-	else if(orientationPolaire(s2->sommets[i], s1->sommets[1], s1->sommets[2]) == GAUCHE && 
-			orientationPolaire(s2->sommets[i], s1->sommets[2], s1->sommets[0]) == GAUCHE ) {
-		nouveau1 = creationSimplexe(s2->sommets[i], s1->sommets[1], s1->sommets[2]);
-		nouveau2 = creationSimplexe(s2->sommets[i], s1->sommets[2], s1->sommets[0]);
+	else if(orientationPolaire(v, tampon1->sommets[1], tampon1->sommets[2]) == GAUCHE && 
+			orientationPolaire(v, tampon1->sommets[2], tampon1->sommets[0]) == GAUCHE ) {
+		s1 = creationSimplexe(v, tampon1->sommets[1], tampon1->sommets[2]);
+		s2 = creationSimplexe(v, tampon1->sommets[2], tampon1->sommets[0]);
 
-		nouveau1->voisins[0] = nouveau2;
-		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
-		nouveau1->voisins[2] = s1->voisins[2];
+		s1->voisins[0] = s2;
+		s1->voisins[1] = tampon2->voisins[(i+2)%3];
+		s1->voisins[2] = tampon1->voisins[2];
 
-		nouveau2->voisins[0] = s1->voisins[0];
-		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
-		nouveau2->voisins[2] = nouveau1;
+		s2->voisins[0] = tampon1->voisins[0];
+		s2->voisins[1] = tampon2->voisins[(i+1)%3];
+		s2->voisins[2] = s1;
 	}
+	else fprintf(stderr, "OUPS !!!\n");
 
-	v = s1->listeVertex;
-	while(v != NULL) {
-		c = v->suivant;
-		if(positionPointSimplexe(nouveau1, v) == DEDANS)
-			ajouteVertex(nouveau1, v);
-		else ajouteVertex(nouveau2, v);
+	t = tampon1->listeVertex;
+	while(t != NULL) {
+		c = t->suivant;
+		if(positionPointSimplexe(s1, t) == DEDANS)
+			ajouteVertex(s1, t);
+		else ajouteVertex(s2, t);
 
-		v = c;
-	}
-
-	v = s2->listeVertex;
-	while(v != NULL) {
-		c = v->suivant;
-		if(positionPointSimplexe(nouveau1, v) == DEDANS)
-			ajouteVertex(nouveau1, v);
-		else ajouteVertex(nouveau2, v);
-
-		v = c;
+		t = c;
 	}
 
-	free(s1); s1 = nouveau1;
-	free(s2); s2 = nouveau2;
+	t = tampon2->listeVertex;
+	while(t != NULL) {
+		c = t->suivant;
+		if(positionPointSimplexe(s1, t) == DEDANS)
+			ajouteVertex(s1, t);
+		else ajouteVertex(s2, t);
+
+		t = c;
+	}
+	free(tampon1); 
+	free(tampon2); 
+
+	printf("fin echange\n");
+	afficheSimplexe(s1);
+	afficheSimplexe(s2);
+	printf("\n");
 }
 
+void afficheSimplexe(const Simplexe *s)
+{
+	int j;
+	if(s != NULL){
+		for (j = 0; j < 3; ++j) {
+		afficheVertex(s->sommets[j]);
+		//printf("(%.2f, %.2f) ", s->sommets[j]->coords[0], s->sommets[j]->coords[1]);
+		}
+		printf("%.2f", s->distanceMax);
+		printf("\n");
+	}
+	else printf("NULL\n");
+}

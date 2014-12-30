@@ -17,15 +17,20 @@ FileSimplexe * creerFileSimplexe(const int nb_elements)
 
 void freeFileSimplexe(FileSimplexe * f)
 {
-	Simplexe *s;
-	while(f->nbElementsCourant > 0)
+	int i;
+	/*while(f->nbElementsCourant > 0)
 	{
 		s = extremierFileSimplexe(f);
-		free(s);
+		///free(s);
 		
+	}*/
+	printf("boucle %d\n",f->nbElementsCourant);
+	for (i = 1; i <= f->nbElementsCourant; ++i)
+	{
+		//free(f->file[i]);
 	}
+	printf("fin boucle\n");
 	free(f->file);
-	f->nbElements = 0;
 	free(f);
 }
 
@@ -137,5 +142,13 @@ void retriFileSimplexe(FileSimplexe * f)
 			}	
 			else break;
 		}
+	}
+}
+
+void afficheFile(FileSimplexe *f)
+{
+	int i;
+	for(i = 1; i <= f->nbElementsCourant; ++i) {
+		afficheSimplexe(f->file[i]);		
 	}
 }

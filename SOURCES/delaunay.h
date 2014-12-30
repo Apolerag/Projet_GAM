@@ -28,6 +28,9 @@ typedef struct
 	int nombreFacetteMax;
 } Delaunay;
 
+/*! fonction de test (à enlever)*/
+Delaunay *initialisationTest(const int nbVertex, const int nombreFacette);
+
 /*! Générations des Vertex dans le carré unité
 * la fonction génère aléatoirement nb Vertex et crée les deux premiers Simplexe de la triangulation 
 * \arg v un tableau vide de Vertex de taille nbVertex

@@ -68,19 +68,22 @@ int main(int argc, char **argv)
 	}
 
 	winInit();
-	d = initialisation(nbPoints, nbFacette);
+	d = initialisationTest(nbPoints, nbFacette);
 	triangulationDelaunay(d);
+	printf("fin triangulationDelaunay\n");
 	if(affiche){
+		printf("%d\n", triangle);
 		if(triangle == 0) displaySimplexeLigne(d);
 		else displaySimplexeTriangle(d);
 		glutMainLoop();
 	}
-	 
+	printf("Fin affiche\n");
+
 	clearFenetre();
 	destruction(d);
 
+	printf("return\n");
 	return EXIT_SUCCESS;  
-
 }  
 
 /*

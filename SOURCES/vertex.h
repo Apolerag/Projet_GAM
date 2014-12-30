@@ -36,6 +36,9 @@ typedef struct _Vertex
 	struct _Vertex *suivant;
 } Vertex;
 
+
+void afficheVertex(const Vertex *v);
+
 /*! Calcul le determinant de la matrice 3*3 
 \f[
     \left |
