@@ -29,12 +29,12 @@ int main(int argc, char **argv)
 	Delaunay *d = NULL;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "af:hn:t:")) != EOF)
+	while ((c = getopt(argc, argv, "af:hn:t")) != EOF)
 	{
 		switch (c)
 		{
 			case 'a':
-					affiche = 1;
+				affiche = 1;
 				break;
 			case 'f': 
 				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
@@ -45,8 +45,8 @@ int main(int argc, char **argv)
 					nbPoints = 50;
 				break;
 			case 't': 
-				if ((sscanf(optarg, "%d", &triangle) != 1) || (triangle != 0 && triangle != 1))
-					triangle = 0;
+				affiche = 1;
+				triangle = 1;
 				break;
 			case 'h':  
 			default :

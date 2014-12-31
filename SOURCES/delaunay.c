@@ -173,6 +173,7 @@ void triangulationDelaunay(Delaunay *d)
 {
 	Simplexe *s, *t;
 	Simplexe *s0, *s1, *s2;
+	Simplexe *nouveau1 = NULL, *nouveau2 = NULL;
 	Vertex *v,*c;
 	const Vertex *sommetOppose;
 	int i;
@@ -225,35 +226,38 @@ void triangulationDelaunay(Delaunay *d)
 			for (i = 0; i < 3; ++i)
 			{
 				t = s->voisins[i];
-				printf("voisin %d\n",i);
+				/*printf("voisin %d\n",i);
 				afficheSimplexe(t);
-				printf("\n");
-				sommetOppose = getSommetOppose(s, t);
-				printf("sommetOppose\n");
-				afficheVertex(sommetOppose);
-				printf("\n");
-				//printf("%d ", sommetOppose != NULL);
-				printf("orientationPolaire ");
-				orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE ? printf("GAUCHE\n") : printf("DROITE\n");
-				
-
-				if(sommetOppose != NULL) printf("%d", InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS);
-				printf("\n");
-				/*	if(sommetOppose != NULL)
-						InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEHORS? printf("DEHORS\n"): printf("DEDANS\n");*/
-				if(sommetOppose != NULL &&
-					orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE &&
-					InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
-					printf("cacacacacacacacacacacacacacacacacacacacacacacacacacacacacacacaca\n");
-					
-					echangeSimplexe(s, t, sommetOppose);
-					printf("nouveau Simplexe \n");
-					afficheSimplexe(s);
-					afficheSimplexe(t);
+				printf("\n");*/
+				if(t != NULL ) {
+					sommetOppose = getSommetOppose(s, t);
+					/*printf("sommetOppose\n");
+					afficheVertex(sommetOppose);
 					printf("\n");
-					insererPile(pile, t, t0);
-					insererPile(pile, s, t0);
+					//printf("%d ", sommetOppose != NULL);
+					printf("orientationPolaire ");
+					orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE ? printf("GAUCHE\n") : printf("DROITE\n");
+					*/
+
+					/*if(sommetOppose != NULL) printf("%d", InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS);
+					printf("\n");*/
+					/*	if(sommetOppose != NULL)
+							InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEHORS? printf("DEHORS\n"): printf("DEDANS\n");*/
+					if(sommetOppose != NULL &&
+						orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE &&
+						InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
+						printf("cacacacacacacacacacacacacacacacacacacacacacacacacacacacacacacaca\n");
+						
+						echangeSimplexe(s, t, sommetOppose);
+						printf("nouveau Simplexe \n");
+						afficheSimplexe(s);
+						afficheSimplexe(t);
+						printf("\n");
+						insererPile(pile, t, t0);
+						insererPile(pile, s, t0);
+					}
 				}
+				
 			}
 		}
 		printf("file après liste vide\n");

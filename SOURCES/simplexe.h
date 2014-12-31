@@ -40,7 +40,7 @@ typedef struct _Simplexe
 	Vertex *listeVertex; //liste de vertices 
 	// avec le Vertex le plus loin du plan formé par le Simplexe
 	// en première position
-	int nbListe;
+	//int nbListe;
 	Equation e;
 	struct _Simplexe *voisins[3];
 	double distanceMax;
@@ -110,6 +110,8 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouvea
 *
 *	\warning s1 et s2 sont voisins
 */
+//void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, Simplexe *nouveau1, Simplexe *nouveau2);
+
 void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v);
 
 void afficheSimplexe(const Simplexe *s);
