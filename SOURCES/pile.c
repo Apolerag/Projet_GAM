@@ -13,6 +13,7 @@ Pile* initialiserPile()
 	ALLOUER(p,1);
 	p->dernierPile = NULL;
 	p->nbPile = 0;
+	p->maxPile = 0;
 	return p;
 }
 
@@ -23,6 +24,7 @@ void insererPile(Pile *p, Simplexe *s, const time_t t)
 		s->precedentPile = p->dernierPile;
 		p->dernierPile = s;
 		p->nbPile++;
+		if(p->nbPile > p->maxPile) p->maxPile++;
 	}
 }
 

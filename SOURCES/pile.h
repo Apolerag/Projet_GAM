@@ -17,14 +17,20 @@
  *	@details (utilisé par Delaunay)
  *	
  *	@param dernierPile le Simplexe en tête de Pile
+ *	@param nbPile le nombre de Simplexe dans la pile
+ *	@param maxPile le plus grand nombre de Simplexe que la pile ait eu
  */
 typedef struct 
 {
 	Simplexe *dernierPile;
 	int nbPile;
+	int maxPile;
 } Pile;
 
-
+/**
+ * @brief initialise une pile vide
+ * @return une pile vide initialisée
+ */
 Pile* initialiserPile();
 
 /**

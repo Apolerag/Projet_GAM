@@ -76,11 +76,15 @@ void triangulation(Delaunay *d)
 {
 	Simplexe *s;
 	Simplexe *s0, *s1, *s2;
+	int compteur = 4; // les 4 points du carré initial
 	Vertex *v,*c;
+	clock_t temps;
+    srand(time(NULL));
 	while(getValeurPremier(d->filePrioriteSimplexe) >= d->distanceMin && 
 		d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
-		
+
 		s = extremierFileSimplexe(d->filePrioriteSimplexe);
+		compteur ++;
 		v = s->listeVertex;
 		s0 = creationSimplexe(s->sommets[0], s->sommets[1], v);
 		s1 = creationSimplexe(s->sommets[1], s->sommets[2], v);
@@ -109,6 +113,10 @@ void triangulation(Delaunay *d)
 		insererFileSimplexe(d->filePrioriteSimplexe, s2);
 		free(s);
 	}
+	temps=clock();
+    printf("Temps de calcul: %f secondes \n", (double) temps/CLOCKS_PER_SEC);
+	printf("nombre de points inséré : %d\n", compteur);
+	printf("nombre de facette créées : %d\n", d->filePrioriteSimplexe->nbElementsCourant);
 }
 
 void triangulationDelaunay(Delaunay *d)
@@ -118,9 +126,12 @@ void triangulationDelaunay(Delaunay *d)
 	Vertex *v,*c;
 	const Vertex *sommetOppose;
 	int i;
-	int compteur = 4; // les 4 points du tour
+	int compteur = 4; // les 4 points du carré initial
 	time_t t0;
 	Pile *pile = initialiserPile();
+	clock_t temps;
+    srand(time(NULL));
+
 	while(getValeurPremier(d->filePrioriteSimplexe) >= d->distanceMin && 
 		d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		
@@ -181,6 +192,10 @@ void triangulationDelaunay(Delaunay *d)
 		}
 		retriFileSimplexe(d->filePrioriteSimplexe);
 	}
-	free(pile);
+	temps=clock();
+    printf("Temps de calcul: %f secondes \n", (double) temps/CLOCKS_PER_SEC);
 	printf("nombre de points inséré : %d\n", compteur);
+	printf("nombre de facette créées : %d\n", d->filePrioriteSimplexe->nbElementsCourant);
+	printf("taille maximale de la pile: %d\n", pile->maxPile);
+	free(pile);
 }
