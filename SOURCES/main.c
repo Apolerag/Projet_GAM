@@ -22,21 +22,25 @@ extern int opterr;
 
 int main(int argc, char **argv)  
 {  
-	//printf("\E[34;1mhel\E[mlo\n");
 	int c;
-	int nbPoints = 10;
+	int nbPoints = 50;
 	int nbFacette = -1;
 	int affiche = 0;
 	int triangle = 0;
+	double distance = 0.f;
 	Delaunay *d = NULL;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "af:hn:t")) != EOF)
+	while ((c = getopt(argc, argv, "ad:f:hn:t")) != EOF)
 	{
 		switch (c)
 		{
 			case 'a':
 				affiche = 1;
+				break;
+			case 'd':
+				if ((sscanf(optarg, "%lf", &distance) != 1) || (distance < 0.f && distance > 1.f) )
+					distance = 0.f;
 				break;
 			case 'f': 
 				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
@@ -70,41 +74,16 @@ int main(int argc, char **argv)
 	}
 
 	winInit();
-	d = initialisation(nbPoints, nbFacette);
+	d = initialisation(nbPoints, nbFacette, distance * H_MAX);
 	triangulationDelaunay(d);
-	//printf("fin triangulationDelaunay\n");
 	if(affiche){
-		//printf("%d\n", triangle);
 		if(triangle == 0) displaySimplexeLigne(d);
 		else displaySimplexeTriangle(d);
 		glutMainLoop();
 	}
-	//printf("Fin affiche\n");
 
 	clearFenetre();
 	destruction(d);
 
-	//printf("return\n");
 	return EXIT_SUCCESS;  
 }  
-
-/*
-int main(int argc, char **argv)  
-{
-	Vertex v[4];
-
-	v[0].coords[0] = 0; v[0].coords[1] = 0; v[0].coords[2] = 0;	
-	v[1].coords[0] = 1; v[1].coords[1] = 0; v[1].coords[2] = 0;
-	v[2].coords[0] = 0; v[2].coords[1] = 1; v[2].coords[2] = 0;
-	v[3].coords[0] = 1; v[3].coords[1] = 1; v[3].coords[2] = 0;
-
-
-	(orientationPolaire(&v[0], &v[1], &v[2]) == GAUCHE)? printf("GAUCHE\n"):printf("DROITE\n");;
-
-	(InCircle (&v[0], &v[1], &v[2], &v[3]) == DEDANS)? printf("DEDANS\n"):printf("DEHORS\n");;
-	(InCircle (&v[2], &v[0], &v[1], &v[3]) == DEDANS)? printf("DEDANS\n"):printf("DEHORS\n");;
-	(InCircle (&v[1], &v[2], &v[0], &v[3]) == DEDANS)? printf("DEDANS\n"):printf("DEHORS\n");;
-
-
-	return EXIT_SUCCESS;
-}*/

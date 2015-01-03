@@ -91,7 +91,7 @@ void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2);
  * @param s le Simplexe où se situe le Vertex
  * @param v le Vertex à insérer dans le Simplexe
  */
-void ajouteVertex(Simplexe *s, Vertex *v);
+void ajouteVertex(Simplexe *s, Vertex *v, const double distanceMin);
 
 /**
  * @brief calcule l'équation du plan formé par s
@@ -153,7 +153,7 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouvea
  * 
  *  @warning s1 et s2 sont voisins
  */
-void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v);
+void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, const double distanceMin);
 
 void afficheSimplexe(const Simplexe *s);
 

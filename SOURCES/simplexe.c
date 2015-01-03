@@ -48,13 +48,16 @@ void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2)
 	s->voisins[2] = v2;
 }
 
-void ajouteVertex(Simplexe *s, Vertex *v)
+void ajouteVertex(Simplexe *s, Vertex *v, const double distanceMin)
 {
 	double distance = distanceVertexSimplexe(s,v);
+	//printf("distance %f, distanceMin %f\n", distance, distanceMin );
 	if(s->listeVertex == NULL || distance > s->distanceMax) { 
 		// liste vide ou vertex plus loin que le premier 
 		// -> premiere position dans la liste
-		s->distanceMax = distance;
+		if(distance >= distanceMin)
+			s->distanceMax = distance;
+
 		v->suivant = s->listeVertex;
 		s->listeVertex = v;
 	}
@@ -125,7 +128,7 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *Nouvea
 
 }
 
-void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v) 
+void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, const double distanceMin)
 {
 	const Vertex *sommet1[3];
 	Simplexe *voisin1[3], *voisin2[3];
@@ -213,8 +216,8 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 		//afficheVertex(t1);
 		c = t1->suivant;
 		if(positionPointSimplexe(s1, t1) == DEDANS)
-			ajouteVertex(s1, t1);
-		else ajouteVertex(s2, t1);
+			ajouteVertex(s1, t1, distanceMin);
+		else ajouteVertex(s2, t1, distanceMin);
 
 		t1 = c;
 	}
@@ -225,8 +228,8 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 		
 		c = t2->suivant;
 		if(positionPointSimplexe(s1, t2) == DEDANS)
-			ajouteVertex(s1, t2);
-		else ajouteVertex(s2, t2);
+			ajouteVertex(s1, t2, distanceMin);
+		else ajouteVertex(s2, t2, distanceMin);
 
 		t2 = c;
 	}

@@ -44,9 +44,9 @@ Position positionPointTriangle(const Vertex *A, const Vertex *B,
 										const Vertex *C, const Vertex *N)
 {
 	Position position;
-	Orientation O1 = orientationPolaire(A,B,N) ;
-	Orientation O2 = orientationPolaire(B,C,N) ;
-	Orientation O3 = orientationPolaire(C,A,N) ;
+	Orientation O1 = orientationPolaire(A,B,N);
+	Orientation O2 = orientationPolaire(B,C,N);
+	Orientation O3 = orientationPolaire(C,A,N);
 	if(O1 == DROITE || O2 == DROITE || O3 == DROITE)
 		position = DEHORS; 
 	else if(O1 == ALIGNES || O2 == ALIGNES  || O3 == ALIGNES )

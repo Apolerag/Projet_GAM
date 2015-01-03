@@ -15,7 +15,7 @@
 /**
 *	@brief valeur max des coordonnées z des Vertex
 */
-#define H_MAX 1000
+#define H_MAX 1
 
 /**
 *	@struct Delaunay
@@ -32,10 +32,8 @@ typedef struct
 	Vertex *tableauVertex;
 	int nbVertex;
 	int nombreFacetteMax;
+	double distanceMin;
 } Delaunay;
-
-/** fonction de test (à enlever)*/
-Delaunay *initialisationTest(const int nbVertex, const int nombreFacette);
 
 /**
  * @brief initialise une structure Delaunay en générant des Vertex aléatoirement dans le carré unité
@@ -46,7 +44,7 @@ Delaunay *initialisationTest(const int nbVertex, const int nombreFacette);
  * 
  * @return une structure Delaunay initialisée
  */
-Delaunay *initialisation(const int nbVertex, const int nombreFacette);
+Delaunay *initialisation(const int nbVertex, const int nombreFacette, const double distance);
 
 /**
  * @brief libère la place occupée en mémoire par d et ses composants
