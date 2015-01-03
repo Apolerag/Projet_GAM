@@ -1,3 +1,10 @@
+/**
+ *	@file pile.c
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ *	@date 2014
+ */
+
 #include "pile.h"
 
 void insererPile(Pile *p, Simplexe *s, const time_t t)

@@ -1,6 +1,8 @@
-/*! \file delaunay.c
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
+/**
+ * @file delaunay.c
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * @date 2014
 */
 
 #include "delaunay.h"

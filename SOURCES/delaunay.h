@@ -1,7 +1,9 @@
-/*! \file delaunay.h
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
-*/
+/** 
+ *	@file delaunay.h
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * 	@date 2014
+ */
 
 #ifndef DELAUNAY_H
 #define DELAUNAY_H
@@ -10,15 +12,19 @@
 #include "filePrioriteSimplexe.h"
 #include "vertex.h"	
 
-/*! \brief valeur max des coordonnées z des Vertex*/
+/**
+*	@brief valeur max des coordonnées z des Vertex
+*/
 #define H_MAX 1000
 
-/*!
-*	\struct Delaunay
-* 	\arg filePrioriteSimplexe: les Simplexe créés par la triangulation
-*	\arg tableauVertex: le tableau de Vertex à trianguler
-*	\arg nbVertex: le nombre de Vertex dans le tableau
-*	\arg nombreFacetteMax: le nombre maximal de Simplexe créés (défini par l'utilisateur)
+/**
+*	@struct Delaunay
+*	@brief structure gérant la triangulation des Vertex
+*	
+* 	@param filePrioriteSimplexe: les Simplexe créés par la triangulation
+*	@param tableauVertex: le tableau de Vertex à trianguler
+*	@param nbVertex: le nombre de Vertex dans le tableau
+*	@param nombreFacetteMax: le nombre maximal de Simplexe créés (défini par l'utilisateur)
 */
 typedef struct 
 {
@@ -28,29 +34,39 @@ typedef struct
 	int nombreFacetteMax;
 } Delaunay;
 
-/*! fonction de test (à enlever)*/
+/** fonction de test (à enlever)*/
 Delaunay *initialisationTest(const int nbVertex, const int nombreFacette);
 
-/*! Générations des Vertex dans le carré unité
-* la fonction génère aléatoirement nb Vertex et crée les deux premiers Simplexe de la triangulation 
-* \arg v un tableau vide de Vertex de taille nbVertex
-* \arg f la file de priorité vide qui contiendra les Simplexe
-*/
+/**
+ * @brief initialise une structure Delaunay en générant des Vertex aléatoirement dans le carré unité
+ * @details la fonction génère aléatoirement nb Vertex et crée les deux premiers Simplexe de la triangulation 
+ * 
+ * @param nbVertex la taille du tableau de Vertex à allouer
+ * @param nombreFacette le nombre maximum de Simplexe à créer
+ * 
+ * @return une structure Delaunay initialisée
+ */
 Delaunay *initialisation(const int nbVertex, const int nombreFacette);
 
-/*! libere la place occupé en mémoire par d et ses composants
-*
-*/
+/**
+ * @brief libère la place occupée en mémoire par d et ses composants
+ * 
+ * @param d un Delaunay initialisé
+ */
 void destruction(Delaunay *d);
 
-/*! Triangule les Vertex contenu dans d
-*
-*/
+/**
+ * @brief Triangule les Vertex contenus dans d
+ * 
+ * @param d un Delaunay initialisé
+ */
 void triangulation(Delaunay *d);
 
-/*! Triangule les Vertex contenu dans d selon la methode de Delaunay
-*
-*/
+/**
+ * @brief Triangule les Vertex contenus dans d selon la methode de Delaunay
+ * 
+ * @param d un Delaunay initialisé
+ */
 void triangulationDelaunay(Delaunay *d);
 
 #endif

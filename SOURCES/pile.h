@@ -1,34 +1,50 @@
+/**
+ *	@file pile.h
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ *	@date 2014
+ */
+
 #ifndef PILE_H
 #define PILE_H
 
 #include "simplexe.h"
 
-/*!	
-*	\Struct Pile
-*	\brief Pile de simplexe
-*	
-*	(utilisé par Delaunay)
-*/
+/**
+ *	@struct Pile
+ *	@brief une pile de Simplexe
+ *	@details (utilisé par Delaunay)
+ *	
+ *	@param dernierPile le Simplexe en tête de Pile
+ */
 typedef struct 
 {
 	Simplexe *dernierPile;
 } Pile;
 
-/*! 
-*	\brief ajoute un élément dans la pile
-*/
+/**
+ * @brief ajoute un élément dans la pile
+ * 
+ * @param p une Pile
+ * @param s un Simplexe à inserer
+ * @param t un marqueur pour controler si le s n'a pas déjà été empilé
+ */
 void insererPile(Pile *p, Simplexe *s, const time_t t);
 
-/*! 
-*	\brief récupère le dernier élément de la pile
-*	\return le premier élément de la Pile p
-*/
+/**
+ * @brief récupère le dernier élément de la pile
+ * 
+ * @param p une Pile
+ * @return le dernier élément de la Pile p
+ */
 Simplexe* getSommetPile(Pile *p);
 
-/*!	
-*	\brief controle si la pile est vide
-*	\return 1 si la pile est vide, 0 sinon
-*/
+/**
+ * @brief controle si la pile est vide
+ * 
+ * @param p une Pile
+ * @return 1 si la pile est vide, 0 sinon
+ */
 int estVide(const Pile *p);
 
 #endif

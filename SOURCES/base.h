@@ -1,21 +1,22 @@
-/*! 
-*	\file base.h
-*	\author Aurélien Chemier, Romane Lhomme
-*	\date 2014
-*/
+/** 
+ *	@file base.h
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ *	@date 2014
+ */
 
-/*! Generation d'un nombre aleatoire entre deux bornes.
-* \arg a : borne inferieure
-* \arg b : borne superieure.
-* \warning verifier que random() retourne bien un entier long entre 0 et RAND_MAX inclus.
-*/
+/**
+ * @brief Génération d'un nombre aléatoire entre borné entre A et B.
+ * 
+ * @param A  borne inferieure
+ * @param B  borne superieure
+ * @return un double entre A et B
+ */
 #define RAND(A,B) ( rand()/(double)RAND_MAX ) * (B - A) + A;
 
-/*! ALLOUER permet d'allouer à X un emplacement mémoire de taille NB*/
+/*! 
+*	@brief ALLOUER permet d'allouer à X un emplacement mémoire de taille NB
+*	@param X le type qui doit être allouer
+*	@param NB la taille à allouer
+*/
 #define ALLOUER(X,NB) X = malloc(sizeof(*(X)) * (NB))
-
-/*! MAX retourne le max de A et B*/
-#define MAX(A,B) ( (A)>=(B) ? (A) : (B) )
-
-/*! MIN retourne le min de A et B*/
-#define MIN(A,B) ( (A)<=(B) ? (A) : (B) )

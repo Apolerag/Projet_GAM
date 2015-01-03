@@ -1,35 +1,47 @@
-/*! \file vertex.h
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
-*/
+/**
+ * @file vertex.h
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * @date 2014
+ */
 
 #ifndef _VERTEX_H
 #define _VERTEX_H
 
 #include "base.h"
 
-/*! Dimension de l'espace */
+/**
+ * @brief Dimension de l'espace
+ */
 #define DIM 3
 
-/*! enum pour representer l'orientation de trois points*/
+/**
+ * @brief permet de gérer l'orientation des angles polaires  
+ */
 typedef enum
 {
-	GAUCHE = -1, 
-	ALIGNES = 0, 
-	DROITE = 1
+	GAUCHE,	/**< -1*/ 
+	ALIGNES,/**< 0*/ 
+	DROITE	/**< 1*/ 
 } Orientation;
 
-/*! enum pour la position du point par rapport a un polygone*/
+/**
+ * @brief enum pour la position du point par rapport à un polygone
+ */ 
 typedef enum
 {
-	DEDANS = -1,
-	DESSUS = 0,
-	DEHORS = 1
+	DEDANS, /**< -1*/ 
+	DESSUS, /**< 0*/ 
+	DEHORS /**< 1*/ 
 } Position;
 
-/*!
-*	\struct Vertex 
-*/
+/**
+ *	@struct Vertex 
+ *	@brief permet de représenter un point
+ *	
+ *	@param coords les coordonnées du Vertex
+ *	@param suivant le pointeur sur le Vertex suivant dans une liste de Vertex
+ */
 typedef struct _Vertex
 {
 	double coords[DIM];	
@@ -39,8 +51,10 @@ typedef struct _Vertex
 
 void afficheVertex(const Vertex *v);
 
-/*! Calcul le determinant de la matrice 3*3 
-\f[
+/**
+ * @brief Calcul le determinant de la matrice 3*3 
+ * @details la matrice est de la forme:
+ * \f[
     \left |
 	  \begin{array}{ccc}
 	   a & b & c  \\
@@ -49,44 +63,46 @@ void afficheVertex(const Vertex *v);
 	  \end{array}
 	\right |
  *  \f]
-*/
+ * 
+ * @param a, b, c, d, e, f, g, h et i les valeurs des cases de la matrices 
+ * @return le determinant de la matrice 
+ */
 double determinant(const double a, const double b, const double c,
 				const double d, const double e, const double f,
 				const double g, const double h, const double i);
 
-/*! Calcul l'orientation polaire des Vertex A, B et C
-* \arg A, B et C les trois Vertices dont on veut calculer l'angle
-* \return l'orientation du Vertex C par rapport x
-*/
+/**
+ * @brief Calcul l'orientation polaire des Vertex A, B et C
+ * @details pour cela la fonction calcule le determinant de la matrice formé par les coordonnées des Vertex.
+ * le signe du determinant permet de connaitre l'orientation
+ * -  < 0 DROITE
+ * -  = 0 ALIGNES
+ * -  > 0 GAUCHE
+ * 
+ * 
+ * @param A, B et C trois Vertex
+ * @return GAUCHE, ALIGNES ou DROITE selon le signe du determminant
+ */
 Orientation orientationPolaire(const Vertex *A, const Vertex *B, const Vertex *C);
 
-/*! Retourne l'indice du min lexicographique des points du fichier
-* \arg const Vertex *v un tableau de Vertex
-* \arg const int taile la taille du tableau
-*/
-int minLexicographique(const Vertex *v, const int taille);
-
-/*! 
-*	\fn Position positionPointTriangle(const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *N)
-*	\brief Calcul la position d'un vertices par rapport à un triangle
-*	\arg A,B,C le triangle
-*	\arg N le point 
-*	\return la position
+/** 
+*	@brief Calcul la position d'un vertices par rapport à un triangle
+*	@param A,B,C le triangle
+*	@param N le point 
+*	@return la position
 */
 Position positionPointTriangle(const Vertex *A, const Vertex *B, 
 										const Vertex *C, const Vertex *N);
 
-
-/*! 
-*	\fn Position InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *Z)
-*	\param A the first Vertex determining the circle
-*	\param B the second Vertex determining the circle
-*	\param C the last Vertex determining the circle
-*	\param Z the Vertex to be tested against the circle \f$\Gamma(A,B,C)\f$.
-*	\brief determines wether Vertex \a Z lies ouside, on, or inside
+/** 
+*	@param A the first Vertex determining the circle
+*	@param B the second Vertex determining the circle
+*	@param C the last Vertex determining the circle
+*	@param Z the Vertex to be tested against the circle \f$\Gamma(A,B,C)\f$.
+*	@brief determines wether Vertex \a Z lies ouside, on, or inside
 *	the circle passing through \a A, \a B and \a C.
 *
-*	Let \f$\Gamma(ABC)\f$ be the circle around vertices \f$A, B, C\f$.
+*	@details Let \f$\Gamma(ABC)\f$ be the circle around vertices \f$A, B, C\f$.
 *	Guibas and Stolfi have shown that the relative position of \f$Z\f$
 *	and \f$\Gamma(A,B,C)\f$ is equivalent to computing the sign 
 *	of determinant:
@@ -112,11 +128,9 @@ Position positionPointTriangle(const Vertex *A, const Vertex *B,
 *
 *	For convenience, as the only disturbing case is 
 *	\f$D\f$ lies inside \f$\Gamma(A,B,C)\f$,
-*	the routine actually returns: 
-*	1 (DEDANS) if Vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$,
-*	-1 (DEHORS) otherwise.
+*	@returns 1 (DEDANS) if Vertex \f$Z\f$ strictly lies inside circle \f$\Gamma(A,B,C)\f$, -1 (DEHORS) otherwise.
 *
-*	\warning Vertices \f$A,B,C\f$ are ASSUMED neither to be aligned or equal.
+*	@warning Vertices \f$A,B,C\f$ are ASSUMED neither to be aligned or equal.
 *	Overflow might arise otherwise. User must check this condition
 *	with function Angle() before calling present function.
 */

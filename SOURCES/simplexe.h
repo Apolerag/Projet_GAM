@@ -1,7 +1,9 @@
-/*! \file Simplexe.h
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
-*/
+/**
+ * @file simplexe.h
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * @date 2014
+ */
 
 #ifndef Simplexe_H
 #define Simplexe_H
@@ -9,14 +11,16 @@
 #include <time.h>
 #include "vertex.h"
 
-/*! 
-*	\struct Equation
-*	\brief paramètre de l'équation d'un plan de la forme:
-*
-*	\f$
-*	a*x + b*y + c*z + d = 0
-*	\f$
-*/
+/** 
+ *	@struct Equation
+ *	@brief paramètres de l'équation d'un plan :
+ *	@details l'équation est de la forme :
+ *	\f$
+ *	a*x + b*y + c*z + d = 0
+ *	\f$
+ *	
+ *	@param a, b, c, d les coefficients de l'équation.
+ */
 typedef struct 
 {
 	double a;
@@ -25,22 +29,21 @@ typedef struct
 	double d;
 } Equation;
 
-/*! 
-*	\struct Simplexe
-*	\brief Structure pour representer un triangle
-*	\arg sommets les sommets du Simplexe
-*	\arg listeVertex la liste des Vertex qui sont contenus dans le Simplexe
-*	\arg nbListe le nombre d'éléments dans la liste
-*	\arg voisins les Simplexes voisins du Simplexe courant
-*	\arg distanceMax la distance en le plan formé par le Simplexe et le premier Vertex de la liste
+/** 
+ *	@struct Simplexe
+ *	@brief Structure pour representer un triangle
+ *	
+ *	@param sommets les sommets du Simplexe
+ *	@param listeVertex la liste des Vertex qui sont contenus dans le Simplexe, 
+ *	le premier de la liste est également le plus éloigné du Simplexe
+ *	@param nbListe le nombre d'éléments dans la liste
+ *	@param voisins les Simplexes voisins du Simplexe courant
+ *	@param distanceMax la distance en le plan formé par le Simplexe et le premier Vertex de la liste
 */
 typedef struct _Simplexe
 {
 	const Vertex *sommets[3];
-	Vertex *listeVertex; //liste de vertices 
-	// avec le Vertex le plus loin du plan formé par le Simplexe
-	// en première position
-	//int nbListe;
+	Vertex *listeVertex;
 	Equation e;
 	struct _Simplexe *voisins[3];
 	double distanceMax;
@@ -52,53 +55,82 @@ typedef struct _Simplexe
 } Simplexe;
 
 /*! crée le Simplexe ABC*/
+/**
+ * @brief crée le Simplexe ABC
+ * 
+ * @param A, B, C les trois sommet du Simplexe à créer
+ * @return un Simplexe initialisé
+ */
 Simplexe* creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C);
 
-/*! supprime les éléments occupés en mémoire par le Simplexe*/
-//void destructionSimplexe(Simplexe *s);
-
-/*! retourne la position du Vertex N par rapport au Simplexe s
-* DEDANS, DESSUS ou DEHORS 
-*/
+/**
+ * @brief retourne la position du Vertex N par rapport au Simplexe s
+ * @details [long description]
+ * 
+ * @param s un Simplexe
+ * @param N un Vertex
+ * 
+ * @return DEDANS, DESSUS ou DEHORS  en fonction de la position du Vertex par rapport au Simplexe
+ */
 Position positionPointSimplexe(const Simplexe *s, const Vertex *N);
 
-/*! ajoute un voisin au Simplexe*/
+/**
+ * @brief ajoute ses voisin à un Simplexe
+ * 
+ * @param s un Simplexe
+ * @param v0, v1, v2 trois Simplexe, les voisins de s
+ */
 void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2);
 
-/*! ajoute un Vertex dans la liste de vertices du Simplexe s
-* 	si la distance est supérieur à la distance max courante du Simplexe,
-*	le Vertex est ajouté en tête et la distance est mise à jour
-*	sinon le Vertex est inséré en position deux dans la liste
-*	\arg s le Simplexe où se situe le Vertex
-*	\arg v le Vertex à insérer dans le Simplexe
-*   \arg distance la distance minimal entre le plan formé par s et v
-*/
+/**
+ * @brief ajoute un Vertex dans la liste de vertices du Simplexe s
+ * @details si la distance est supérieur à la distanceMmax courante du Simplexe,
+ * le Vertex est ajouté en tête et la distance est mise à jour
+ * sinon le Vertex est inséré en position deux dans la liste
+ * 
+ * @param s le Simplexe où se situe le Vertex
+ * @param v le Vertex à insérer dans le Simplexe
+ */
 void ajouteVertex(Simplexe *s, Vertex *v);
 
-/*! calcul l'équation du plan formé par s :
-*
-*	\f$
-*	a*x + b*y + c*z + d = 0
-*	\f$
-*	
-*	A la fin equation contient a,b,c et d.
-*	\warning les trois vertices du Simplexe ne sont pas alignés
-*/
+/**
+ * @brief calcule l'équation du plan formé par s
+ * @details A la fin equation contient a,b,c et d.
+ * 
+ * @warning les trois vertices du Simplexe ne sont pas alignés
+ * @param s un Simplexe
+ * @return l'équation de s
+ */
 Equation equationPlan(const Simplexe *s);
 
-/*! calcul la distance entre le Simplexe s et le Vertex v
-*	abs(a*x+b*y+c*z+d)/sqrt(a2 +b2+ c2)
-*/
+/**
+ * @brief calcul la distance entre le Simplexe s et le Vertex v
+ * @details la formule utilisé est \f$ \frac{ |a*x+b*y+c*z+d|} {\sqrt{a^2 +b^2+ c^2} }\f$
+ * 
+ * @param s un Simplexe
+ * @param v un Vertex appartenant au Simplexe s
+ * 
+ * @return la distance entre v et son projeté orthogonal sur le plan formé par s
+ */
 double distanceVertexSimplexe(const Simplexe *s, const Vertex *v);		
 
-/*!	s et voisin sont deux Simplexes voisins
-*	la fonction retourne le vetex sommet de Voisin qui n'est pas un sommet de s
-*/
+/**
+ * @brief retrouve le Vertex Sommet de voisin qui n'est pas Sommet de s
+ * 
+ * @param s un Simplexe
+ * @param Voisin un Simplexe voisin de s
+ * 
+ * @return Le Vertex de Voisin n'etant pas un Sommet de s
+ */
 const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin);
 
-/*!	Controle les voisins de s et remplace ancienVoisin par nouveauVoisin
-*
-*/
+/**
+ * @brief modifie un voisin de s
+ * 
+ * @param s un Simplexe
+ * @param ancienVoisin un voisin de s
+ * @param nouveauVoisin le Simplexe qui remplace ancienVoisin en voisin de s
+ */
 void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouveauVoisin);
 
 /*!
@@ -108,10 +140,19 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouvea
 *	\param s1 et s2 deux Simplexe voisin
 *	\param i le Vertex de s2 non sommet de s1
 *
-*	\warning s1 et s2 sont voisins
+*	\warning 
 */
 //void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, Simplexe *nouveau1, Simplexe *nouveau2);
 
+/**
+ * @brief réoganise s1 et s2 quand InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *Z) retourne DEDANS
+ * 
+ * @param s1 un Simplexe 
+ * @param s2 un Voisin de s1 dont le sommet opposé appartient au cercle formé par les sommet de s1
+ * @param v le resultat de getSommetOppose(const Simplexe *s, Simplexe *Voisin) pour s1 et s2
+ * 
+ *  @warning s1 et s2 sont voisins
+ */
 void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v);
 
 void afficheSimplexe(const Simplexe *s);

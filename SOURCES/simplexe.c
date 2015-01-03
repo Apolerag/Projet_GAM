@@ -1,7 +1,9 @@
-/*! \file Simplexe.c
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
-*/
+/**
+ * @file simplexe.c
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * @date 2014
+ */
 #include "simplexe.h"
 #include "vertex.h"
 
@@ -18,7 +20,6 @@ Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	s->sommets[1] = B;
 	s->sommets[2] = C;
 	s->listeVertex = NULL;
-	//s->nbListe = 0;
 	s->distanceMax = -1;
 	s->e = equationPlan(s);
 	s->precedentPile = NULL;
@@ -62,7 +63,6 @@ void ajouteVertex(Simplexe *s, Vertex *v)
 		v->suivant = s->listeVertex->suivant;
 		s->listeVertex->suivant = v;
 	}
-	//s->nbListe ++;	
 }
 
 Equation equationPlan(const Simplexe *s)

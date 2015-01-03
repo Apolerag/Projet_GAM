@@ -1,7 +1,9 @@
-/*! \file FilePrioriteSimplexe.c
-* \author A Chemier, R Lhomme
-* \date 2014
-*/
+/**
+ * @file FilePrioriteSimplexe.c
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * @date 2014
+ */
 
 #include "filePrioriteSimplexe.h"
 
@@ -42,7 +44,6 @@ double getGauche(const FileSimplexe *f, const int i)
 	return -1;
 }
 
-/*! retourne la valeur du fils droit de la case i*/
 double getDroite(const FileSimplexe *f, const int i)
 {
 	if((2*i)+1 <=  f->nbElementsCourant){
@@ -142,13 +143,5 @@ void retriFileSimplexe(FileSimplexe * f)
 			}	
 			else break;
 		}
-	}
-}
-
-void afficheFile(FileSimplexe *f)
-{
-	int i;
-	for(i = 1; i <= f->nbElementsCourant; ++i) {
-		afficheSimplexe(f->file[i]);		
 	}
 }

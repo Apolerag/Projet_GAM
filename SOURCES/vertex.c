@@ -1,7 +1,9 @@
-/*! \file vertex.c
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
-*/
+/**
+ * @file vertex.c
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * @date 2014
+ */
 
 #include "vertex.h"
 
@@ -36,25 +38,6 @@ Orientation orientationPolaire(const Vertex *A, const Vertex *B, const Vertex *C
 	if(det < 0) return DROITE;
 	else if(det > 0) return GAUCHE;
 	else return ALIGNES;
-}
-
-int minLexicographique(const Vertex *v, const int taille)
-{
-	
-	Vertex minL = v[0];
-	int indice = 0 ;
-	
-	int i ;
-	for(i = 1; i < taille; i++) 
-	{
-		if( (v[i].coords[0] < minL.coords[0]) ||
-			((v[i].coords[0] == minL.coords[0]) && (v[i].coords[1] < minL.coords[1])))
-		{
-			minL = v[i]; 
-			indice = i ;
-		}
-	}
-	return indice ;
 }
 
 Position positionPointTriangle(const Vertex *A, const Vertex *B, 

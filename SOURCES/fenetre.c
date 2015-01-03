@@ -1,6 +1,8 @@
-/*! \file Fenetre.c
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
+/**
+ * @file fenetre.c
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * @date 2014
 */
 
 #include "fenetre.h"
@@ -22,23 +24,6 @@ void clearFenetre()
 void winInit()
 {
 	gluOrtho2D(f.minX, f.maxX, f.minY, f.maxY);
-}
-
-void displayPoints(const Vertex *v, const int nbVertex)
-{	
-	glColor3f(0.0, 0.0, 0.0);
-  	glClear(GL_COLOR_BUFFER_BIT);
-	int i;
-	int echelleX = f.maxX - 10;
-	int echelleY = f.maxY - 10;
-
-	glBegin(GL_POINTS);
-	glColor3f(1.0, 1.0, 1.0);
-	for (i = 0; i < nbVertex; ++i)
-	{
-		glVertex2f(v[i].coords[0]*echelleX + 5, f.maxY - v[i].coords[1]*echelleY - 5);
-	}
-	glEnd();
 }
 
 void displaySimplexeLigne(Delaunay *d)

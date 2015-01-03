@@ -1,7 +1,9 @@
-/*! \file main.c
-* \author Aurélien Chemier, Romane Lhomme
-* \date 2014
-*/
+/** 
+ *	@file main.c
+ * @author Aurélien Chemier
+ * @author Romane Lhomme
+ * 	@date 2014
+ */
 
 #include "fenetre.h"
 #include "delaunay.h"
@@ -12,20 +14,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*! variable externe permettant de lire les parametres sur le ligne de commande.*/
+/** variable externe permettant de lire les parametres sur le ligne de commande.*/
 extern char *optarg;
 
-/*! bascule pour autoriser ou interdire (0) les messages d'erreurs envoyes par getopt. */
+/** bascule pour autoriser ou interdire (0) les messages d'erreurs envoyes par getopt. */
 extern int opterr;
-/*
+
 int main(int argc, char **argv)  
 {  
 	//printf("\E[34;1mhel\E[mlo\n");
 	int c;
 	int nbPoints = 50;
 	int nbFacette = -1;
-	int affiche = 1;
-	int triangle = 1;
+	int affiche = 0;
+	int triangle = 0;
 	Delaunay *d = NULL;
 	
 	opterr = 0;
@@ -85,8 +87,8 @@ int main(int argc, char **argv)
 	printf("return\n");
 	return EXIT_SUCCESS;  
 }  
-*/
 
+/*
 int main(int argc, char **argv)  
 {
 	Vertex v[4];
@@ -105,4 +107,4 @@ int main(int argc, char **argv)
 
 
 	return EXIT_SUCCESS;
-}
+}*/
