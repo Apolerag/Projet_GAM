@@ -23,6 +23,7 @@ Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	s->e = equationPlan(s);
 	s->precedentPile = NULL;
 	s->marqueurTemps = 0;
+	printf("fin creationSimplexe\n");
 	return s;
 }
 
@@ -73,7 +74,11 @@ Equation equationPlan(const Simplexe *s)
 	const Vertex *B = s->sommets[1];
 	const Vertex *C = s->sommets[2];
 	//double dist;
-
+	printf("equationPlan\n");
+	afficheVertex(A);
+	afficheVertex(B);
+	afficheVertex(C);
+	printf("\n");
 	eq.a = (B->coords[1] - A->coords[1]) * (C->coords[2] - A->coords[2]) -
 	       (B->coords[2] - A->coords[2]) * (C->coords[1] - A->coords[1]);
 
@@ -84,6 +89,8 @@ Equation equationPlan(const Simplexe *s)
 		   (B->coords[1] - A->coords[1]) * (C->coords[0] - A->coords[0]);
 
 	eq.d = -eq.a * A->coords[0] - eq.b * A->coords[1] - eq.c * A->coords[2];
+
+	printf("a %f b %f c %f d %f\n",eq.a, eq.b, eq.c, eq.d );
 	return eq;
 }
 
@@ -117,98 +124,17 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *Nouvea
 	}
 
 }
-/*
-void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, Simplexe *nouveau1, Simplexe *nouveau2)
-{
-	Vertex *t = NULL, *c = NULL;
-	int i = 0;
-
-	while(s2->sommets[i] != v) i++;
-
-	printf("debut echange\n");
-	afficheSimplexe(s1);
-	afficheSimplexe(s2);
-	printf("\n");
-
-
-	if(orientationPolaire(s1->sommets[0], s1->sommets[1], v) == GAUCHE &&
-		orientationPolaire(v, s1->sommets[1], s1->sommets[2]) == GAUCHE ) {
-		nouveau1 = creationSimplexe(s1->sommets[0], s1->sommets[1], v);
-		nouveau2 = creationSimplexe(v, s1->sommets[1], s1->sommets[2]);
-
-		nouveau1->voisins[0] = s2;
-		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
-		nouveau1->voisins[2] = s1->voisins[2];
-
-		nouveau2->voisins[0] = s1->voisins[0];
-		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
-		nouveau2->voisins[2] = nouveau1;
-	}
-	else if(orientationPolaire(s1->sommets[0], s1->sommets[1], v) == GAUCHE &&
-			orientationPolaire(v, s1->sommets[2], s1->sommets[0]) == GAUCHE ) {
-		nouveau1 = creationSimplexe(s1->sommets[0], s1->sommets[1], v);
-		nouveau2 = creationSimplexe(v, s1->sommets[2], s1->sommets[0]);
-
-		nouveau1->voisins[0] = s2;
-		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
-		nouveau1->voisins[2] = s1->voisins[2];
-
-		nouveau2->voisins[0] = s1->voisins[0];
-		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
-		nouveau2->voisins[2] = nouveau1;
-	}
-	else if(orientationPolaire(v, s1->sommets[1], s1->sommets[2]) == GAUCHE && 
-			orientationPolaire(v, s1->sommets[2], s1->sommets[0]) == GAUCHE ) {
-		nouveau1 = creationSimplexe(v, s1->sommets[1], s1->sommets[2]);
-		nouveau2 = creationSimplexe(v, s1->sommets[2], s1->sommets[0]);
-
-		nouveau1->voisins[0] = s2;
-		nouveau1->voisins[1] = s2->voisins[(i+2)%3];
-		nouveau1->voisins[2] = s1->voisins[2];
-
-		nouveau2->voisins[0] = s1->voisins[0];
-		nouveau2->voisins[1] = s2->voisins[(i+1)%3];
-		nouveau2->voisins[2] = s1;
-	}
-	else fprintf(stderr, "OUPS !!!\n");
-
-	t = s1->listeVertex;
-	while(t != NULL) {
-		c = t->suivant;
-		if(positionPointSimplexe(nouveau1, t) == DEDANS)
-			ajouteVertex(nouveau1, t);
-		else ajouteVertex(nouveau2, t);
-
-		t = c;
-	}
-
-	t = s2->listeVertex;
-	while(t != NULL) {
-		c = t->suivant;
-		if(positionPointSimplexe(nouveau1, t) == DEDANS)
-			ajouteVertex(nouveau1, t);
-		else ajouteVertex(nouveau2, t);
-
-		t = c;
-	}
-
-
-	printf("fin echange\n");
-	afficheSimplexe(nouveau1);
-	afficheSimplexe(nouveau2);
-	printf("\n");
-}*/
 
 void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v) 
 {
-	const Vertex *sommet1[3], *sommet2[3];
+	const Vertex *sommet1[3];
 	Simplexe *voisin1[3], *voisin2[3];
 	Vertex *t1 = s1->listeVertex, *t2 = s2->listeVertex, *c = NULL;
 	int i;
 
 	for (i = 0; i < 3; ++i) {
 		sommet1[i] = s1->sommets[i];
-		sommet2[i] = s2->sommets[i];
+		//sommet2[i] = s2->sommets[i];
 
 		voisin1[i] = s1->voisins[i];
 		voisin2[i] = s2->voisins[i];
@@ -217,10 +143,10 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 	i = 0;
 	while(s2->sommets[i] != v) i++;
 
-	printf("debut echange\n");
+	/*printf("debut echange\n");
 	afficheSimplexe(s1);
 	afficheSimplexe(s2);
-	printf("\n");
+	printf("\n");*/
 
 	if(orientationPolaire(sommet1[0], sommet1[1], v) == GAUCHE &&
 			orientationPolaire(v, sommet1[1], sommet1[2]) == GAUCHE ) {
@@ -239,6 +165,9 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 		s2->voisins[0] = voisin1[0];
 		s2->voisins[1] = voisin2[(i+1)%3];
 		s2->voisins[2] = s1;
+
+		controleNouveauVoisin(voisin1[0], s1, s2);
+		controleNouveauVoisin(voisin2[(i+1)%3], s2, s1);
 	}
 	else if(orientationPolaire(sommet1[0], sommet1[1], v) == GAUCHE &&
 			orientationPolaire(v, sommet1[2], sommet1[0]) == GAUCHE ) {
@@ -258,6 +187,9 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 		s2->voisins[0] = voisin1[0];
 		s2->voisins[1] = voisin2[(i+1)%3];
 		s2->voisins[2] = s1;
+
+		controleNouveauVoisin(voisin1[1], s1, s2);
+		controleNouveauVoisin(voisin2[(i+2)%3], s2, s1);
 	}
 	else if(orientationPolaire(v, sommet1[1], sommet1[2]) == GAUCHE &&
 			orientationPolaire(v, sommet1[2], sommet1[0]) == GAUCHE ) {
@@ -277,11 +209,21 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 		s2->voisins[0] = voisin1[0];
 		s2->voisins[1] = voisin2[(i+1)%3];
 		s2->voisins[2] = s1;
+
+		controleNouveauVoisin(voisin1[1], s1, s2);
+		controleNouveauVoisin(voisin2[(i+2)%3], s2, s1);
 	}
 	else fprintf(stderr, "OUPS !!!\n");
 
+	s1->e = equationPlan(s1);
+	s2->e = equationPlan(s2);
+
 	s1->listeVertex = NULL;
+	s2->listeVertex = NULL;
+	s2->distanceMax = -1;
+	s1->distanceMax = -1;
 	while(t1 != NULL) {
+		afficheVertex(t1);
 		c = t1->suivant;
 		if(positionPointSimplexe(s1, t1) == DEDANS)
 			ajouteVertex(s1, t1);
@@ -289,9 +231,11 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 
 		t1 = c;
 	}
+	printf("\n");
 
-	s2->listeVertex = NULL;
 	while(t2 != NULL) {
+		afficheVertex(t2);
+		
 		c = t2->suivant;
 		if(positionPointSimplexe(s1, t2) == DEDANS)
 			ajouteVertex(s1, t2);
@@ -299,11 +243,8 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 
 		t2 = c;
 	}
-	printf("fin echange\n");
-	afficheSimplexe(s1);
-	afficheSimplexe(s2);
 	printf("\n");
-	
+	printf("distanceMax %f %f \n",s1->distanceMax, s2->distanceMax);
 }	
 
 void afficheSimplexe(const Simplexe *s)
@@ -311,8 +252,7 @@ void afficheSimplexe(const Simplexe *s)
 	int j;
 	if(s != NULL){
 		for (j = 0; j < 3; ++j) {
-		afficheVertex(s->sommets[j]);
-		//printf("(%.2f, %.2f) ", s->sommets[j]->coords[0], s->sommets[j]->coords[1]);
+			afficheVertex(s->sommets[j]);
 		}
 		printf("%.2f", s->distanceMax);
 		printf("\n");

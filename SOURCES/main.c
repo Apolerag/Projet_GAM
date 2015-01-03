@@ -17,15 +17,15 @@ extern char *optarg;
 
 /*! bascule pour autoriser ou interdire (0) les messages d'erreurs envoyes par getopt. */
 extern int opterr;
-
+/*
 int main(int argc, char **argv)  
 {  
 	//printf("\E[34;1mhel\E[mlo\n");
 	int c;
 	int nbPoints = 50;
 	int nbFacette = -1;
-	int affiche = 0;
-	int triangle = 0;
+	int affiche = 1;
+	int triangle = 1;
 	Delaunay *d = NULL;
 	
 	opterr = 0;
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	}
 
 	winInit();
-	d = initialisationTest(nbPoints, nbFacette);
+	d = initialisation(nbPoints, nbFacette);
 	triangulationDelaunay(d);
 	printf("fin triangulationDelaunay\n");
 	if(affiche){
@@ -85,33 +85,24 @@ int main(int argc, char **argv)
 	printf("return\n");
 	return EXIT_SUCCESS;  
 }  
+*/
 
-/*
 int main(int argc, char **argv)  
 {
-	Simplexe *s;
-	FileSimplexe *file;
-	file = creerFileSimplexe(1000000);
-	int i;
-	srand(time(NULL)); 
-	for (i = 1; i <= 1000000; ++i)
-	{
-		ALLOUER(s,1);
-		s->distanceMax = RAND(0,100);
-		file->file[i] = s;
-	}
-	file->nbElements = file->nbElementsCourant = 1000000;
+	Vertex v[4];
+
+	v[0].coords[0] = 0; v[0].coords[1] = 0; v[0].coords[2] = 0;	
+	v[1].coords[0] = 1; v[1].coords[1] = 0; v[1].coords[2] = 0;
+	v[2].coords[0] = 0; v[2].coords[1] = 1; v[2].coords[2] = 0;
+	v[3].coords[0] = 1; v[3].coords[1] = 1; v[3].coords[2] = 0;
 
 
-	retriFile(file);
-	while(file->nbElementsCourant > 0) {
-		s = extremierFileSimplexe(file);
-		free(s);
-	}
+	(orientationPolaire(&v[0], &v[1], &v[2]) == GAUCHE)? printf("GAUCHE\n"):printf("DROITE\n");;
 
+	(InCircle (&v[0], &v[1], &v[2], &v[3]) == DEDANS)? printf("DEDANS\n"):printf("DEHORS\n");;
+	(InCircle (&v[2], &v[0], &v[1], &v[3]) == DEDANS)? printf("DEDANS\n"):printf("DEHORS\n");;
+	(InCircle (&v[1], &v[2], &v[0], &v[3]) == DEDANS)? printf("DEDANS\n"):printf("DEHORS\n");;
 
-
-	freeFileSimplexe(file);
 
 	return EXIT_SUCCESS;
-}*/
+}
