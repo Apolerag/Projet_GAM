@@ -24,7 +24,6 @@ Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	s->e = equationPlan(s);
 	s->precedentPile = NULL;
 	s->marqueurTemps = 0;
-	//printf("fin creationSimplexe\n");
 	return s;
 }
 
@@ -48,16 +47,16 @@ void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2)
 	s->voisins[2] = v2;
 }
 
-void ajouteVertex(Simplexe *s, Vertex *v, const double distanceMin)
+void ajouteVertex(Simplexe *s, Vertex *v)
 {
 	double distance = distanceVertexSimplexe(s,v);
+	printf("distance %f\n", distance);
 	//printf("distance %f, distanceMin %f\n", distance, distanceMin );
 	if(s->listeVertex == NULL || distance > s->distanceMax) { 
 		// liste vide ou vertex plus loin que le premier 
 		// -> premiere position dans la liste
-		if(distance >= distanceMin)
-			s->distanceMax = distance;
-
+		
+		s->distanceMax = distance;
 		v->suivant = s->listeVertex;
 		s->listeVertex = v;
 	}
@@ -76,12 +75,7 @@ Equation equationPlan(const Simplexe *s)
 	const Vertex *A = s->sommets[0];
 	const Vertex *B = s->sommets[1];
 	const Vertex *C = s->sommets[2];
-	//double dist;
-	/*printf("equationPlan\n");
-	afficheVertex(A);
-	afficheVertex(B);
-	afficheVertex(C);
-	printf("\n");*/
+	
 	eq.a = (B->coords[1] - A->coords[1]) * (C->coords[2] - A->coords[2]) -
 	       (B->coords[2] - A->coords[2]) * (C->coords[1] - A->coords[1]);
 
@@ -93,15 +87,12 @@ Equation equationPlan(const Simplexe *s)
 
 	eq.d = -eq.a * A->coords[0] - eq.b * A->coords[1] - eq.c * A->coords[2];
 
-	//printf("a %f b %f c %f d %f\n",eq.a, eq.b, eq.c, eq.d );
 	return eq;
 }
 
 double distanceVertexSimplexe(const Simplexe *s, const Vertex *v)
 {
-	return (double)abs(s->e.a * v->coords[0] + s->e.b * v->coords[1] + 
-			   s->e.c * v->coords[2] + s->e.d) /
-			   sqrt(pow(s->e.a,2) + pow(s->e.b,2) + pow(s->e.c,2));		   
+	return fabs(fabs(-(s->e.a * v->coords[0] + s->e.b * v->coords[1] + s->e.d)/s->e.c) - fabs(v->coords[2]));		   
 }
 
 const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin)
@@ -128,7 +119,7 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *Nouvea
 
 }
 
-void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, const double distanceMin)
+void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 {
 	const Vertex *sommet1[3];
 	Simplexe *voisin1[3], *voisin2[3];
@@ -216,8 +207,8 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, const double d
 		//afficheVertex(t1);
 		c = t1->suivant;
 		if(positionPointSimplexe(s1, t1) == DEDANS)
-			ajouteVertex(s1, t1, distanceMin);
-		else ajouteVertex(s2, t1, distanceMin);
+			ajouteVertex(s1, t1);
+		else ajouteVertex(s2, t1);
 
 		t1 = c;
 	}
@@ -228,8 +219,8 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, const double d
 		
 		c = t2->suivant;
 		if(positionPointSimplexe(s1, t2) == DEDANS)
-			ajouteVertex(s1, t2, distanceMin);
-		else ajouteVertex(s2, t2, distanceMin);
+			ajouteVertex(s1, t2);
+		else ajouteVertex(s2, t2);
 
 		t2 = c;
 	}

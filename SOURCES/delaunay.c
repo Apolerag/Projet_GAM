@@ -26,7 +26,6 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette, const doub
 	d->distanceMin = distance;
 	int n;
 	Simplexe *s0, *s1;
-	printf("distance %f\n", distance);
 
 	srand(time(NULL)); 
 	/*creation du carré initial */ 
@@ -46,8 +45,8 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette, const doub
 
 	for(n = 4; n < nbVertex; n++) {
 		if(positionPointSimplexe(s0, &d->tableauVertex[n]) == DEDANS)
-			ajouteVertex(s0, &d->tableauVertex[n], d->distanceMin);
-		else ajouteVertex(s1, &d->tableauVertex[n], d->distanceMin);		
+			ajouteVertex(s0, &d->tableauVertex[n]);
+		else ajouteVertex(s1, &d->tableauVertex[n]);		
 	}
 	
 	ajouteVoisin(s0, NULL, s1, NULL);
@@ -98,10 +97,10 @@ void triangulation(Delaunay *d)
 		while(v != NULL) {
 			c = v->suivant;
 			if(positionPointSimplexe(s0, v) == DEDANS)
-				ajouteVertex(s0, v, d->distanceMin);
+				ajouteVertex(s0, v);
 			else if(positionPointSimplexe(s1, v) == DEDANS)
-				ajouteVertex(s1, v, d->distanceMin);
-			else ajouteVertex(s2, v, d->distanceMin);
+				ajouteVertex(s1, v);
+			else ajouteVertex(s2, v);
 
 			v = c;
 		}
@@ -116,16 +115,16 @@ void triangulationDelaunay(Delaunay *d)
 {
 	Simplexe *s, *t;
 	Simplexe *s0, *s1, *s2;
-	//Simplexe *nouveau1 = NULL, *nouveau2 = NULL;
 	Vertex *v,*c;
 	const Vertex *sommetOppose;
 	int i;
-	int compteur = 0;
+	int compteur = 4; // les 4 points du tour
 	time_t t0;
 	Pile *pile = initialiserPile();
-
-	while(getValeurPremier(d->filePrioriteSimplexe) >= 0
-		&& d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
+	printf("d->distanceMin %f\n", d->distanceMin);
+	printf("%f\n", getValeurPremier(d->filePrioriteSimplexe));
+	while(getValeurPremier(d->filePrioriteSimplexe) >= d->distanceMin && 
+		d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		
 		t0 = time(NULL);
 		s = extremierFileSimplexe(d->filePrioriteSimplexe);
@@ -146,11 +145,11 @@ void triangulationDelaunay(Delaunay *d)
 		while(v != NULL) {
 			c = v->suivant;
 			if(positionPointSimplexe(s0, v) == DEDANS)
-				ajouteVertex(s0, v, d->distanceMin);
+				ajouteVertex(s0, v);
 			else if(positionPointSimplexe(s1, v) == DEDANS)
-				ajouteVertex(s1, v, d->distanceMin);
+				ajouteVertex(s1, v);
 			else if(positionPointSimplexe(s2, v) == DEDANS) 
-				ajouteVertex(s2, v, d->distanceMin);
+				ajouteVertex(s2, v);
 
 			v = c;
 		}
@@ -171,12 +170,10 @@ void triangulationDelaunay(Delaunay *d)
 			{
 				t = s->voisins[i];
 				if(t != NULL ) {
-
 					sommetOppose = getSommetOppose(s, t);
 					if(sommetOppose != NULL) {
 						if(InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
-
-							echangeSimplexe(s, t, sommetOppose, d->distanceMin);
+							echangeSimplexe(s, t, sommetOppose);
 							insererPile(pile, t, t0);
 							insererPile(pile, s, t0);
 						}
@@ -185,7 +182,6 @@ void triangulationDelaunay(Delaunay *d)
 			}
 		}
 		retriFileSimplexe(d->filePrioriteSimplexe);
-		printf("%f\n", getValeurPremier(d->filePrioriteSimplexe));
 	}
 	free(pile);
 	printf("nombre de points inséré : %d\n", compteur);
