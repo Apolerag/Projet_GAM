@@ -1,10 +1,13 @@
 /** 
  *	@file base.h
- * @author Aurélien Chemier
- * @author Romane Lhomme
+ *  @author Aurélien Chemier
+ *  @author Romane Lhomme
  *	@date 2014
  */
-
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+ 
 /**
  * @brief Génération d'un nombre aléatoire entre borné entre A et B.
  * 

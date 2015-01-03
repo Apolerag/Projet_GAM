@@ -7,13 +7,12 @@
 
 #include "fenetre.h"
 
-void definitionFenetre(const double X_min, const double X_max, const double Y_min, const double Y_max, const double margin)
+void definitionFenetre(const double X_min, const double X_max, const double Y_min, const double Y_max)
 {
 	f.minX = X_min;
 	f.maxX = X_max;
 	f.minY = Y_min;
 	f.maxY = Y_max;
-	f.margin = margin;
 }
 
 void clearFenetre()
@@ -36,8 +35,8 @@ void displaySimplexeLigne(Delaunay *d)
 
 	glColor3f(0.0, 0.0, 0.0);
   	glClear(GL_COLOR_BUFFER_BIT);
-	printf("affichage\n");
 	for (j = 1; j <= d->filePrioriteSimplexe->nbElementsCourant; ++j) {
+		//printf("j %d\n", j);
 		s = d->filePrioriteSimplexe->file[j];
 
 		//tracage du triangle
@@ -45,18 +44,16 @@ void displaySimplexeLigne(Delaunay *d)
 		glColor3f(1,1,1);
 
 		for (i = 0; i < 3; ++i) {
-			printf("i = %d ",i);
 			glVertex2f(s->sommets[i]->coords[0]*echelleX + 5, 
 				f.maxY - s->sommets[i]->coords[1]*echelleY - 5);
 		}
-		printf("\n");
 		glEnd();
+		afficheSimplexe(s);
 
 		v = s->listeVertex;
 		//tracage des vertices contenus dans le simplexe (si triangulation incomplète)
 		glBegin(GL_POINTS);
 		glColor3f(1,1,1);
-
 		while(v != NULL) {
 			glVertex2f(v->coords[0]*echelleX + 5, 
 				f.maxY - v->coords[1]*echelleY - 5);
@@ -65,6 +62,7 @@ void displaySimplexeLigne(Delaunay *d)
 		glEnd();
 	}
 	glFlush();
+	printf("fin displaySimplexeLigne\n");
 }
 
 void displaySimplexeTriangle(Delaunay *d)

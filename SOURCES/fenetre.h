@@ -27,7 +27,6 @@ typedef struct {
 	double maxX;
 	double minY;
 	double maxY;
-	double margin;
 } Fenetre;
 
 /**
@@ -37,10 +36,10 @@ Fenetre f;
 
 /**
 *	@brief modifie les dimensions de la Fenetre
-* 	@param X_min, X_max, Y_min, Y_max, margin les nouvelles dimensions de la Fenetre
+* 	@param X_min, X_max, Y_min, Y_max les nouvelles dimensions de la Fenetre
 */
 
-void definitionFenetre(const double X_min, const double X_max, const double Y_min, const double Y_max, const double margin);
+void definitionFenetre(const double X_min, const double X_max, const double Y_min, const double Y_max);
 
 /**
 *	@brief vide la Fenetre.

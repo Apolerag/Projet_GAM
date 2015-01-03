@@ -1,13 +1,14 @@
 /**
  *	@file pile.h
- * @author Aurélien Chemier
- * @author Romane Lhomme
+ *  @author Aurélien Chemier
+ *  @author Romane Lhomme
  *	@date 2014
  */
 
 #ifndef PILE_H
 #define PILE_H
 
+#include "base.h"
 #include "simplexe.h"
 
 /**
@@ -20,7 +21,11 @@
 typedef struct 
 {
 	Simplexe *dernierPile;
+	int nbPile;
 } Pile;
+
+
+Pile* initialiserPile();
 
 /**
  * @brief ajoute un élément dans la pile

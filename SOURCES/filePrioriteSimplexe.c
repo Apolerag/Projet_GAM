@@ -20,18 +20,11 @@ FileSimplexe * creerFileSimplexe(const int nb_elements)
 void freeFileSimplexe(FileSimplexe * f)
 {
 	int i;
-	/*while(f->nbElementsCourant > 0)
-	{
-		s = extremierFileSimplexe(f);
-		///free(s);
-		
-	}*/
-	printf("boucle %d\n",f->nbElementsCourant);
+	
 	for (i = 1; i <= f->nbElementsCourant; ++i)
 	{
-		//free(f->file[i]);
+		free(f->file[i]);
 	}
-	printf("fin boucle\n");
 	free(f->file);
 	free(f);
 }

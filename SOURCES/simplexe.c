@@ -243,6 +243,8 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 
 		t2 = c;
 	}
+	s1->marqueurTemps = 0;
+	s2->marqueurTemps = 0;
 	printf("\n");
 	printf("distanceMax %f %f \n",s1->distanceMax, s2->distanceMax);
 }	

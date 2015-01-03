@@ -66,25 +66,25 @@ int main(int argc, char **argv)
 		glutInitWindowPosition(5,5);  
 		glutInitWindowSize(700,700);
 		glutCreateWindow("fenêtre"); 
-		definitionFenetre(0, 700, 0, 700, 10);
+		definitionFenetre(0, 700, 0, 700);
 	}
 
 	winInit();
 	d = initialisation(nbPoints, nbFacette);
 	triangulationDelaunay(d);
-	printf("fin triangulationDelaunay\n");
+	//printf("fin triangulationDelaunay\n");
 	if(affiche){
 		printf("%d\n", triangle);
 		if(triangle == 0) displaySimplexeLigne(d);
 		else displaySimplexeTriangle(d);
 		glutMainLoop();
 	}
-	printf("Fin affiche\n");
+	//printf("Fin affiche\n");
 
 	clearFenetre();
 	destruction(d);
 
-	printf("return\n");
+	//printf("return\n");
 	return EXIT_SUCCESS;  
 }  
 
