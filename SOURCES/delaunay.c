@@ -18,12 +18,12 @@ Delaunay *initialisationTest(const int nbVertex, const int nombreFacette)
 {
 	Delaunay *d;
 	ALLOUER(d, 1);
-	ALLOUER(d->tableauVertex, 5);
-	d->filePrioriteSimplexe = creerFileSimplexe(2 * 5);
-	d->nbVertex = 5;
+	ALLOUER(d->tableauVertex, nbVertex);
+	d->filePrioriteSimplexe = creerFileSimplexe(2 * nbVertex);
+	d->nbVertex = nbVertex;
 	if(nombreFacette == -1) d->nombreFacetteMax = d->filePrioriteSimplexe->nbElements;
 	else d->nombreFacetteMax = nombreFacette;
-	//int n;
+	int n;
 	Simplexe *s0, *s1;
 
 	srand(time(NULL)); 
@@ -33,9 +33,7 @@ Delaunay *initialisationTest(const int nbVertex, const int nombreFacette)
 	d->tableauVertex[2].coords[0] = 1; d->tableauVertex[2].coords[1] = 1; d->tableauVertex[2].coords[2] = 0;
 	d->tableauVertex[3].coords[0] = 0; d->tableauVertex[3].coords[1] = 1; d->tableauVertex[3].coords[2] = 0;
 
-	d->tableauVertex[4].coords[0] = 0.25;
-	d->tableauVertex[4].coords[1] = 0.75;
-	d->tableauVertex[4].coords[2] = 0; //à modifier
+	d->tableauVertex[4].coords[0] = 0.10; d->tableauVertex[4].coords[1] = 0.6; d->tableauVertex[4].coords[2] = 0; //à modifier
 
 	s0 = creationSimplexe(&d->tableauVertex[0], &d->tableauVertex[1], &d->tableauVertex[2]);
 	s1 = creationSimplexe(&d->tableauVertex[0], &d->tableauVertex[2], &d->tableauVertex[3]);
@@ -51,7 +49,6 @@ Delaunay *initialisationTest(const int nbVertex, const int nombreFacette)
 	insererFileSimplexe(d->filePrioriteSimplexe, s1);
 	return d;
 }
-
 
 Delaunay *initialisation(const int nbVertex, const int nombreFacette)
 {
@@ -166,12 +163,7 @@ void triangulationDelaunay(Delaunay *d)
 		t0 = time(NULL);
 		s = extremierFileSimplexe(d->filePrioriteSimplexe);
 		v = s->listeVertex;
-		//printf("premier Simplexe\n");
-		afficheSimplexe(s);
-		//printf("\n");
-		//printf("nouveau Vertex\n");
-		afficheVertex(v);
-		//printf("\n");
+
 		s0 = creationSimplexe(s->sommets[0], s->sommets[1], v);
 		s1 = creationSimplexe(s->sommets[1], s->sommets[2], v);
 		s2 = creationSimplexe(s->sommets[2], s->sommets[0], v);
@@ -190,7 +182,8 @@ void triangulationDelaunay(Delaunay *d)
 				ajouteVertex(s0, v);
 			else if(positionPointSimplexe(s1, v) == DEDANS)
 				ajouteVertex(s1, v);
-			else ajouteVertex(s2, v);
+			else if(positionPointSimplexe(s2, v) == DEDANS) 
+				ajouteVertex(s2, v);
 
 			v = c;
 		}
@@ -204,60 +197,28 @@ void triangulationDelaunay(Delaunay *d)
 		insererPile(pile, s2, t0);
 
 		while(! estVide(pile)) {
-			s = getSommetPile(pile);
 
-			//printf("Simplexe à controler\n");
-			afficheSimplexe(s);
-			//printf("\n");
-			//printf("nb pile %d\n", pile->nbPile);
+			s = getSommetPile(pile);
 
 			for (i = 0; i < 3; ++i)
 			{
 				t = s->voisins[i];
-				/*//printf("voisin %d\n",i);
-				afficheSimplexe(t);
-				//printf("\n");*/
 				if(t != NULL ) {
-					sommetOppose = getSommetOppose(s, t);
-					/*//printf("sommetOppose\n");
-					afficheVertex(sommetOppose);
-					//printf("\n");
-					////printf("%d ", sommetOppose != NULL);
-					//printf("orientationPolaire ");
-					orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE ? //printf("GAUCHE\n") : //printf("DROITE\n");
-					*/
 
-					/*if(sommetOppose != NULL) //printf("%d", InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS);
-					//printf("\n");*/
-					/*	if(sommetOppose != NULL)
-							InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEHORS? //printf("DEHORS\n"): //printf("DEDANS\n");*/
+					sommetOppose = getSommetOppose(s, t);
 					if(sommetOppose != NULL) {
-						if(orientationPolaire(s->sommets[0], s->sommets[1], s->sommets[2]) == GAUCHE &&
-							InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
-							//printf("cacacacacacacacacacacacacacacacacacacacacacacacacacacacacacacaca\n");
-							
+						if(InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
+
 							echangeSimplexe(s, t, sommetOppose);
-							/*//printf("nouveau Simplexe \n");
-							afficheSimplexe(s);
-							afficheSimplexe(t);
-							//printf("\n");*/
 							insererPile(pile, t, t0);
 							insererPile(pile, s, t0);
 						}
 					}
 				}
-				
 			}
 		}
-		/*//printf("file après liste vide\n");
-		afficheFile(d->filePrioriteSimplexe);
-		//printf("\n");*/
 		retriFileSimplexe(d->filePrioriteSimplexe);
-		/*//printf("file retriée\n");
-		afficheFile(d->filePrioriteSimplexe);
-		//printf("\n");*/
-		//printf("fin boucle\n");
+
 	}
 	free(pile);
-	////printf("fin triangulation\n");
 }

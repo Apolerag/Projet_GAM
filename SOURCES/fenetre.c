@@ -48,7 +48,7 @@ void displaySimplexeLigne(Delaunay *d)
 				f.maxY - s->sommets[i]->coords[1]*echelleY - 5);
 		}
 		glEnd();
-		afficheSimplexe(s);
+		//afficheSimplexe(s);
 
 		v = s->listeVertex;
 		//tracage des vertices contenus dans le simplexe (si triangulation incomplète)
@@ -62,7 +62,7 @@ void displaySimplexeLigne(Delaunay *d)
 		glEnd();
 	}
 	glFlush();
-	printf("fin displaySimplexeLigne\n");
+	//printf("fin displaySimplexeLigne\n");
 }
 
 void displaySimplexeTriangle(Delaunay *d)

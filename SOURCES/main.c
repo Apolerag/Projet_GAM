@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 {  
 	//printf("\E[34;1mhel\E[mlo\n");
 	int c;
-	int nbPoints = 50;
+	int nbPoints = 10;
 	int nbFacette = -1;
 	int affiche = 0;
 	int triangle = 0;
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 	triangulationDelaunay(d);
 	//printf("fin triangulationDelaunay\n");
 	if(affiche){
-		printf("%d\n", triangle);
+		//printf("%d\n", triangle);
 		if(triangle == 0) displaySimplexeLigne(d);
 		else displaySimplexeTriangle(d);
 		glutMainLoop();
