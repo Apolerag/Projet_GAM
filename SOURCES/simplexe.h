@@ -105,7 +105,7 @@ Equation equationPlan(const Simplexe *s);
 
 /**
  * @brief calcul la distance entre le Simplexe s et le Vertex v
- * @details la formule utilisé est \f$ \frac{ |a*x+b*y+c*z+d|} {\sqrt{a^2 +b^2+ c^2} }\f$
+ * @details la formule utilisé est \f$ | |-\frac{a * v.x + b*v.y + d}{c}| - |v.z| |  \f$
  * 
  * @param s un Simplexe
  * @param v un Vertex appartenant au Simplexe s
@@ -145,7 +145,7 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouvea
 //void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, Simplexe *nouveau1, Simplexe *nouveau2);
 
 /**
- * @brief réoganise s1 et s2 quand InCircle (const Vertex *A, const Vertex *B, const Vertex *C, const Vertex *Z) retourne DEDANS
+ * @brief réoganise s1 et s2 quand InCircle retourne DEDANS
  * 
  * @param s1 un Simplexe 
  * @param s2 un Voisin de s1 dont le sommet opposé appartient au cercle formé par les sommet de s1

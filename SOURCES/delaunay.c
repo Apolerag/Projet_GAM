@@ -77,8 +77,8 @@ void triangulation(Delaunay *d)
 	Simplexe *s;
 	Simplexe *s0, *s1, *s2;
 	Vertex *v,*c;
-	while(getValeurPremier(d->filePrioriteSimplexe) >= 0
-		&& d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
+	while(getValeurPremier(d->filePrioriteSimplexe) >= d->distanceMin && 
+		d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		
 		s = extremierFileSimplexe(d->filePrioriteSimplexe);
 		v = s->listeVertex;
@@ -121,8 +121,6 @@ void triangulationDelaunay(Delaunay *d)
 	int compteur = 4; // les 4 points du tour
 	time_t t0;
 	Pile *pile = initialiserPile();
-	printf("d->distanceMin %f\n", d->distanceMin);
-	printf("%f\n", getValeurPremier(d->filePrioriteSimplexe));
 	while(getValeurPremier(d->filePrioriteSimplexe) >= d->distanceMin && 
 		d->nombreFacetteMax > d->filePrioriteSimplexe->nbElementsCourant) {
 		

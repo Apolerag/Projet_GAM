@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 			case 'h':  
 			default :
 				printf("-a l'affichage du résultat\n");
+				printf("-d la distance minimun entre un Vertex et un Simplexe\n");
 				printf("-f le nombre de facettes maximum crées par la triangulation (toutes par default)\n");
 				printf("-h l'aide d'utilisation\n");
 				printf("-t le type de l'affichage (0 ligne, 1 triangle\n");

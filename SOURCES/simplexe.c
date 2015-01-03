@@ -50,12 +50,9 @@ void ajouteVoisin(Simplexe *s, Simplexe *v0, Simplexe *v1, Simplexe *v2)
 void ajouteVertex(Simplexe *s, Vertex *v)
 {
 	double distance = distanceVertexSimplexe(s,v);
-	printf("distance %f\n", distance);
-	//printf("distance %f, distanceMin %f\n", distance, distanceMin );
 	if(s->listeVertex == NULL || distance > s->distanceMax) { 
 		// liste vide ou vertex plus loin que le premier 
 		// -> premiere position dans la liste
-		
 		s->distanceMax = distance;
 		v->suivant = s->listeVertex;
 		s->listeVertex = v;
