@@ -120,7 +120,7 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 	const Vertex *sommet1[3];
 	Simplexe *voisin1[3], *voisin2[3];
 	Vertex *t1 = s1->listeVertex, *t2 = s2->listeVertex, *c = NULL;
-	int i;
+	int indiceVertexS1, indiceVertexS2, i;
 
 	for (i = 0; i < 3; ++i) {
 		sommet1[i] = s1->sommets[i];
@@ -128,69 +128,27 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 		voisin2[i] = s2->voisins[i];
 	}
 
-	i = 0;
-	while(s2->sommets[i] != v) i++; /*indice de v dans s2*/
+	indiceVertexS2 = 0;
+	indiceVertexS1 = 0;
+	while(s2->sommets[indiceVertexS2] != v) indiceVertexS2++;
+	while(voisin1[indiceVertexS1] != s2) indiceVertexS1++;
 
-	if(orientationPolaire(sommet1[0], sommet1[1], v) == GAUCHE &&
-			orientationPolaire(v, sommet1[1], sommet1[2]) == GAUCHE ) {
+	s1->sommets[0] = v;
+	s1->sommets[1] = sommet1[(indiceVertexS1+2)%3];
+	s1->sommets[2] = sommet1[indiceVertexS1];
+	s2->sommets[0] = v;
+	s2->sommets[1] = sommet1[indiceVertexS1];
+	s2->sommets[2] = sommet1[(indiceVertexS1+1)%3];
 
-		s1->sommets[0] = sommet1[0];
-		s1->sommets[1] = sommet1[1];
-		s1->sommets[2] = v;
-		s2->sommets[0] = v;
-		s2->sommets[1] = sommet1[1];
-		s2->sommets[2] = sommet1[2];
+	s1->voisins[0] = voisin1[(indiceVertexS1+1)%3];
+	s1->voisins[1] = s2;
+	s1->voisins[2] = voisin2[(indiceVertexS2+2)%3];
+	s2->voisins[0] = voisin1[(indiceVertexS1+2)%3];
+	s2->voisins[1] = voisin2[(indiceVertexS2+1)%3];
+	s2->voisins[2] = s1;
 
-		s1->voisins[0] = s2;
-		s1->voisins[1] = voisin2[(i+2)%3];
-		s1->voisins[2] = voisin1[2];
-		s2->voisins[0] = voisin1[0];
-		s2->voisins[1] = voisin2[(i+1)%3];
-		s2->voisins[2] = s1;
-
-		controleNouveauVoisin(voisin1[0], s1, s2);
-		controleNouveauVoisin(voisin2[(i+2)%3], s2, s1);
-	}
-	else if(orientationPolaire(sommet1[0], sommet1[1], v) == GAUCHE &&
-			orientationPolaire(v, sommet1[2], sommet1[0]) == GAUCHE ) {
-
-		s1->sommets[0] = sommet1[0];
-		s1->sommets[1] = sommet1[1];
-		s1->sommets[2] = v;
-		s2->sommets[0] = v;
-		s2->sommets[1] = sommet1[2];
-		s2->sommets[2] = sommet1[0];
-
-		s1->voisins[0] = voisin2[(i+1)%3];
-		s1->voisins[1] = s2;
-		s1->voisins[2] = voisin1[2];
-		s2->voisins[0] = voisin1[1];
-		s2->voisins[1] = s1;
-		s2->voisins[2] = voisin2[(i+2)%3];
-
-		controleNouveauVoisin(voisin1[1], s1, s2);
-		controleNouveauVoisin(voisin2[(i+1)%3], s2, s1);
-	}
-	else if(orientationPolaire(v, sommet1[1], sommet1[2]) == GAUCHE &&
-			orientationPolaire(v, sommet1[2], sommet1[0]) == GAUCHE ) {
-
-		s1->sommets[0] = v;
-		s1->sommets[1] = sommet1[1];
-		s1->sommets[2] = sommet1[2];
-		s2->sommets[0] = v;
-		s2->sommets[1] = sommet1[2];
-		s2->sommets[2] = sommet1[0];
-
-		s1->voisins[0] = voisin1[0];
-		s1->voisins[1] = s2;
-		s1->voisins[2] = voisin2[(i+2)%3];
-		s2->voisins[0] = voisin1[1];
-		s2->voisins[1] = voisin2[(i+1)%3];
-		s2->voisins[2] = s1;
-
-		controleNouveauVoisin(voisin1[1], s1, s2);
-		controleNouveauVoisin(voisin2[(i+2)%3], s2, s1);
-	}
+	controleNouveauVoisin(voisin1[(indiceVertexS1+2)%3], s1, s2);
+	controleNouveauVoisin(voisin2[(indiceVertexS2+2)%3], s2, s1);
 
 	s1->e = equationPlan(s1);
 	s2->e = equationPlan(s2);
