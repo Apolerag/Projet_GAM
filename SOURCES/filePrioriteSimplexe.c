@@ -113,27 +113,36 @@ void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 	f->file[j] = temp;
 }
 
-void retriFileSimplexe(FileSimplexe * f)
+void triFileSimplexe(FileSimplexe * f, Simplexe * s)
 {
-	int i,j;
-	double gauche, droite, courant;
+	int indice;
+	for(indice = 1; indice <= f->nbElementsCourant; indice++) {
+		if(f->file[indice] == s)
+			break;
+	}
 
-	for ( i = f->nbElementsCourant / 2; i >= 1; --i)
-	{
-		j = i;
-		while(j <= f->nbElementsCourant) {
-			gauche = getGauche(f,j);
-			droite = getDroite(f,j);
-			courant = f->file[j]->distanceMax;
-			if(gauche > courant && gauche > droite) {
-				echangeCaseSimplexe(f, j, 2*j);
-				j*=2;
-			}
-			else if(droite > courant){
-				echangeCaseSimplexe(f, j, (2*j)+1);
-				j = 2*j+1;
-			}	
-			else break;
+	while(indice > 1 && f->file[indice]->distanceMax > f->file[indice/2]->distanceMax) {
+		
+		echangeCaseSimplexe(f, indice, indice/2);
+		indice /= 2;
+	}
+	while( 2*indice < f->nbElementsCourant &&
+			(f->file[indice]->distanceMax < getGauche(f, indice) || 
+				f->file[indice]->distanceMax < getDroite(f, indice) ) ) {
+
+		double gauche = getGauche(f,indice);
+		double droite = getDroite(f,indice);
+		double courant = f->file[indice]->distanceMax;
+
+		if(gauche > courant && gauche > droite) {
+			echangeCaseSimplexe(f, indice, 2*indice);
+			indice *= 2 ; 
 		}
+		else if(droite > courant){
+			echangeCaseSimplexe(f, indice, (2*indice)+1);
+			indice = 2*indice + 1 ;
+		}	
+		else
+			break;
 	}
 }

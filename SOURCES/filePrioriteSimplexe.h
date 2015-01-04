@@ -119,4 +119,13 @@ void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j);
  */
 void retriFileSimplexe(FileSimplexe * f);
 
+/**
+ * @brief replace le simplexe s au bon endroit dans la file de priorité
+ * 
+ * @param f une FileSimplexe initialisée contenant au moins un pointeur sur 
+ * le simplexe s
+ * @param s le simplexe qui doit être rangé a la bonne place dans la file
+ */
+void triFileSimplexe(FileSimplexe * f, Simplexe * s);
+
 #endif

@@ -179,6 +179,8 @@ void triangulationDelaunay(Delaunay *d)
 					if(sommetOppose != NULL) {
 						if(InCircle(s->sommets[0], s->sommets[1], s->sommets[2], sommetOppose) == DEDANS) {
 							echangeSimplexe(s, t, sommetOppose);
+							triFileSimplexe(d->filePrioriteSimplexe, s);
+							triFileSimplexe(d->filePrioriteSimplexe, t);
 							insererPile(pile, t, t0);
 							insererPile(pile, s, t0);
 						}
@@ -186,7 +188,6 @@ void triangulationDelaunay(Delaunay *d)
 				}
 			}
 		}
-		retriFileSimplexe(d->filePrioriteSimplexe);
 	}
 	temps=clock();
     printf("Temps de calcul: %f secondes \n", (double) temps/CLOCKS_PER_SEC);
