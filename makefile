@@ -1,4 +1,4 @@
-CC=clang
+CC=gcc
  
 # Les différents répertoires contenant respectivement les fichiers : Sources *.c, Headers *.h, Objets *.o, l'exécutable
 SRCDIR=SOURCES

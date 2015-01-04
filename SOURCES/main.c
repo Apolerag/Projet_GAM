@@ -1,7 +1,7 @@
 /** 
  *	@file main.c
- * @author Aurélien Chemier
- * @author Romane Lhomme
+ *  @author Aurélien Chemier
+ *  @author Romane Lhomme
  * 	@date 2014
  */
 
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 				break;
 			case 'f': 
 				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
-					nbFacette = -1; // un nombre négatif indique que toutes les facettes seront créées
+					nbFacette = -1; /* un nombre négatif indique que toutes les facettes seront créées*/
 				break;
 			case 'n': 
 				if ((sscanf(optarg, "%d", &nbPoints) != 1) || nbPoints <= 0)

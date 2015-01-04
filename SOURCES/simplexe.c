@@ -51,14 +51,14 @@ void ajouteVertex(Simplexe *s, Vertex *v)
 {
 	double distance = distanceVertexSimplexe(s,v);
 	if(s->listeVertex == NULL || distance > s->distanceMax) { 
-		// liste vide ou vertex plus loin que le premier 
-		// -> premiere position dans la liste
+		/*liste vide ou vertex plus loin que le premier 
+		 -> premiere position dans la liste*/
 		s->distanceMax = distance;
 		v->suivant = s->listeVertex;
 		s->listeVertex = v;
 	}
 	else {
-		//vertex moins loin que le premier -> deuxieme position de la liste
+		/*vertex moins loin que le premier -> deuxieme position de la liste*/
 		v->suivant = s->listeVertex->suivant;
 		s->listeVertex->suivant = v;
 	}
@@ -66,7 +66,6 @@ void ajouteVertex(Simplexe *s, Vertex *v)
 
 Equation equationPlan(const Simplexe *s)
 {
-	assert(s != NULL);
 	Equation eq;
 
 	const Vertex *A = s->sommets[0];
@@ -130,7 +129,7 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 	}
 
 	i = 0;
-	while(s2->sommets[i] != v) i++; //indice du sommet de s2
+	while(s2->sommets[i] != v) i++; /*indice de v dans s2*/
 
 	if(orientationPolaire(sommet1[0], sommet1[1], v) == GAUCHE &&
 			orientationPolaire(v, sommet1[1], sommet1[2]) == GAUCHE ) {
@@ -201,7 +200,6 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 	s2->distanceMax = -1;
 	s1->distanceMax = -1;
 	while(t1 != NULL) {
-		//afficheVertex(t1);
 		c = t1->suivant;
 		if(positionPointSimplexe(s1, t1) == DEDANS)
 			ajouteVertex(s1, t1);
@@ -209,11 +207,8 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 
 		t1 = c;
 	}
-	//printf("\n");
 
-	while(t2 != NULL) {
-	//	afficheVertex(t2);
-		
+	while(t2 != NULL) {		
 		c = t2->suivant;
 		if(positionPointSimplexe(s1, t2) == DEDANS)
 			ajouteVertex(s1, t2);
@@ -223,8 +218,6 @@ void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v)
 	}
 	s1->marqueurTemps = 0;
 	s2->marqueurTemps = 0;
-	/*printf("\n");
-	printf("distanceMax %f %f \n",s1->distanceMax, s2->distanceMax);*/
 }	
 
 void afficheSimplexe(const Simplexe *s)

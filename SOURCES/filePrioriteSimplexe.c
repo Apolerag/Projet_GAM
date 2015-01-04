@@ -47,6 +47,7 @@ double getDroite(const FileSimplexe *f, const int i)
 
 void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 {
+	int i;
 	if(f->nbElements == f->nbElementsCourant) {
 		printf("La file est pleine, on ne peut pas insérer.\n"); 
 		return;
@@ -55,7 +56,6 @@ void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 	f->nbElementsCourant++;
 	f->file[f->nbElementsCourant] = s;
 	
-	int i ;
 	i = f->nbElementsCourant ;
 	while((i > 1) && (f->file[i]->distanceMax > f->file[i/2]->distanceMax)) {
 		echangeCaseSimplexe(f, i, i/2);
@@ -72,25 +72,24 @@ double getValeurPremier(FileSimplexe * f)
 
 Simplexe* extremierFileSimplexe(FileSimplexe * f)
 {
-	echangeCaseSimplexe(f, 1, f->nbElementsCourant);
-	f->nbElementsCourant--;
+	int i;
 	double gauche, droite, courant;
 
-	int i = 1;
+	echangeCaseSimplexe(f, 1, f->nbElementsCourant);
+	f->nbElementsCourant--;
+
+	i = 1;
 	while(2*i < f->nbElementsCourant)
 	{
 		gauche = getGauche(f,i);
 		droite = getDroite(f,i);
 		courant = f->file[i]->distanceMax;
-		//printf("gauche %lf droite %lf courant %lf\n", gauche, droite, courant);
 
 		if(gauche > courant && gauche > droite) {
-			//printf("gauche\n");
 			echangeCaseSimplexe(f, i, 2*i);
 			i *= 2 ; 
 		}
 		else if(droite > courant){
-			//printf("droite\n");
 			echangeCaseSimplexe(f, i, (2*i)+1);
 			i *= 2 ; i += 1 ;
 		}	

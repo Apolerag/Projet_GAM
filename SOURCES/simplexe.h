@@ -50,11 +50,10 @@ typedef struct _Simplexe
 
 	/*gestion de la pile*/
 	struct _Simplexe *precedentPile;
-	time_t marqueurTemps; //
+	time_t marqueurTemps;
 
 } Simplexe;
 
-/*! crée le Simplexe ABC*/
 /**
  * @brief crée le Simplexe ABC
  * 
@@ -133,17 +132,6 @@ const Vertex * getSommetOppose(const Simplexe *s, Simplexe *Voisin);
  */
 void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouveauVoisin);
 
-/*!
-*	\fn void echangeSimplexe(Simplexe *s1, Simplexe *s2, const int i);
-*	\brief échange les Simplexe s1 et s2 quand s2->sommet[i] est dans le cercle formé par les sommets de s1
-*
-*	\param s1 et s2 deux Simplexe voisin
-*	\param i le Vertex de s2 non sommet de s1
-*
-*	\warning 
-*/
-//void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v, Simplexe *nouveau1, Simplexe *nouveau2);
-
 /**
  * @brief réoganise s1 et s2 quand InCircle retourne DEDANS
  * 
@@ -155,6 +143,11 @@ void controleNouveauVoisin(Simplexe *s, Simplexe *ancienVoisin, Simplexe *nouvea
  */
 void echangeSimplexe(Simplexe *s1, Simplexe *s2, const Vertex *v);
 
+/**
+ * @brief affiche les valeurs du simplexe sur la sortie standard
+ * 
+ * @param s un Simplexe
+ */
 void afficheSimplexe(const Simplexe *s);
 
 #endif

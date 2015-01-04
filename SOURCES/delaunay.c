@@ -16,16 +16,18 @@
 
 Delaunay *initialisation(const int nbVertex, const int nombreFacette, const double distance)
 {
+	int n;
+	Simplexe *s0, *s1;
+
 	Delaunay *d;
 	ALLOUER(d, 1);
 	ALLOUER(d->tableauVertex, nbVertex);
 	d->filePrioriteSimplexe = creerFileSimplexe(2 * nbVertex);
 	d->nbVertex = nbVertex;
+
 	if(nombreFacette == -1) d->nombreFacetteMax = d->filePrioriteSimplexe->nbElements;
 	else d->nombreFacetteMax = nombreFacette;
-	d->distanceMin = distance;
-	int n;
-	Simplexe *s0, *s1;
+	d->distanceMin = distance;	
 
 	srand(time(NULL)); 
 	/*creation du carré initial */ 
@@ -37,7 +39,7 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette, const doub
 	for(n = 4; n < nbVertex; n++) {
 		d->tableauVertex[n].coords[0] = RAND(0, 1);
 		d->tableauVertex[n].coords[1] = RAND(0, 1);
-		d->tableauVertex[n].coords[2] = RAND(0, H_MAX); //à modifier
+		d->tableauVertex[n].coords[2] = RAND(0, H_MAX);
 	}
 
 	s0 = creationSimplexe(&d->tableauVertex[0], &d->tableauVertex[1], &d->tableauVertex[2]);
@@ -66,17 +68,11 @@ void destruction(Delaunay *d)
 	free(d);
 }
 
-/*
-durée de la triangulation (simple a = 0)
-n = 10000 	0m0.044s
-n = 100000 	0m0.424s
-n = 1000000	0m5.020s
-*/
 void triangulation(Delaunay *d)
 {
 	Simplexe *s;
 	Simplexe *s0, *s1, *s2;
-	int compteur = 4; // les 4 points du carré initial
+	int compteur = 4; /* les 4 points du carré initial*/
 	Vertex *v,*c;
 	clock_t temps;
     srand(time(NULL));
@@ -126,7 +122,7 @@ void triangulationDelaunay(Delaunay *d)
 	Vertex *v,*c;
 	const Vertex *sommetOppose;
 	int i;
-	int compteur = 4; // les 4 points du carré initial
+	int compteur = 4; /* les 4 points du carré initial*/
 	time_t t0;
 	Pile *pile = initialiserPile();
 	clock_t temps;
