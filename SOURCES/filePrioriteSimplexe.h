@@ -1,7 +1,7 @@
 /** 
- *	@file FilePrioriteSimplexe.h
- * @author Aurélien Chemier
- * @author Romane Lhomme
+ *	@file filePrioriteSimplexe.h
+ *  @author Aurélien Chemier
+ *  @author Romane Lhomme
  * 	@date 2014
  */
 

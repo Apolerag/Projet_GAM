@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	Delaunay *d = NULL;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "adf:hn:s:t")) != EOF)
+	while ((c = getopt(argc, argv, "abdf:hn:s:t")) != EOF)
 	{
 		switch (c)
 		{

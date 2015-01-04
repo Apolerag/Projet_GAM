@@ -1,5 +1,5 @@
 /**
- * @file FilePrioriteSimplexe.c
+ * @file filePrioriteSimplexe.c
  * @author Aurélien Chemier
  * @author Romane Lhomme
  * @date 2014
