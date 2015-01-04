@@ -1,3 +1,21 @@
+options du makefile:
+
+all: compile le projet et l'execute 
+
+delaunay: compile le projet
+
+doc: génération de la documentation doxygen dans le dossier DOCS
+fichier index: DOCS/html/index.html
+
+rapport: compile le fichier .tex contenu dans RAPPORT
+
+clean: supprime les .o
+
+veryclean: supprime tous le contenu du dossier OBJS (.o + executable).
+
+cleanAll: veryclean + suppression de la doc et des fichier de compilation latex
+
+
 SOURCES: .c, .h.
 
 DATA: fichiers de données éventuelles.

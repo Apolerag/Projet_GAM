@@ -67,7 +67,4 @@ rapport:
 	pdflatex $(RAPDIR)/*.tex 
 	mv *.pdf *.aux *.log *.toc $(RAPDIR)/
 
-lireRapport:
-	acroread $(RAPDIR)/*.pdf&
-
 

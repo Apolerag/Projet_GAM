@@ -60,12 +60,12 @@ int main(int argc, char **argv)
 				break;
 			case 'h':  
 			default :
-				printf("-a l'affichage du résultat\n");
+				printf("-a l'affichage en squelette\n");
 				printf("-b la triangulation est de base (Delaunay par défaut)\n");
 				printf("-f le nombre de facettes maximum crées par la triangulation (toutes par default)\n");
 				printf("-h l'aide d'utilisation\n");
-				printf("-s la distance minimun entre un Vertex et un Simplexe\n");
-				printf("-t le type de l'affichage (0 ligne, 1 triangle\n");
+				printf("-s le seuil de distance minimale (pourcentage de la distance maximum entre 0 et 1)\n");
+				printf("-t l'affichage en triangles pleins\n");
 				printf("-n le nombre de Vertex (50 par défaut)\n");
 				return EXIT_SUCCESS;  
 		}
