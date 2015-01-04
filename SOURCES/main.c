@@ -27,20 +27,20 @@ int main(int argc, char **argv)
 	int nbFacette = -1;
 	int affiche = 0;
 	int triangle = 0;
+	int delaunay = 1;
 	double distance = 0.f;
 	Delaunay *d = NULL;
 	
 	opterr = 0;
-	while ((c = getopt(argc, argv, "ad:f:hn:t")) != EOF)
+	while ((c = getopt(argc, argv, "adf:hn:s:t")) != EOF)
 	{
 		switch (c)
 		{
 			case 'a':
 				affiche = 1;
 				break;
-			case 'd':
-				if ((sscanf(optarg, "%lf", &distance) != 1) || (distance < 0.f && distance > 1.f) )
-					distance = 0.f;
+			case 'b':
+				delaunay = 0;
 				break;
 			case 'f': 
 				if ((sscanf(optarg, "%d", &nbFacette) != 1) || nbFacette <= 0)
@@ -50,6 +50,10 @@ int main(int argc, char **argv)
 				if ((sscanf(optarg, "%d", &nbPoints) != 1) || nbPoints <= 0)
 					nbPoints = 50;
 				break;
+			case 's':
+				if ((sscanf(optarg, "%lf", &distance) != 1) || (distance < 0.f && distance > 1.f) )
+					distance = 0.f;
+				break;
 			case 't': 
 				affiche = 1;
 				triangle = 1;
@@ -57,9 +61,10 @@ int main(int argc, char **argv)
 			case 'h':  
 			default :
 				printf("-a l'affichage du résultat\n");
-				printf("-d la distance minimun entre un Vertex et un Simplexe\n");
+				printf("-b la triangulation est de base (Delaunay par défaut)\n");
 				printf("-f le nombre de facettes maximum crées par la triangulation (toutes par default)\n");
 				printf("-h l'aide d'utilisation\n");
+				printf("-s la distance minimun entre un Vertex et un Simplexe\n");
 				printf("-t le type de l'affichage (0 ligne, 1 triangle\n");
 				printf("-n le nombre de Vertex (50 par défaut)\n");
 				return EXIT_SUCCESS;  
@@ -76,7 +81,10 @@ int main(int argc, char **argv)
 
 	winInit();
 	d = initialisation(nbPoints, nbFacette, distance * H_MAX);
-	triangulationDelaunay(d);
+	
+	if(delaunay) triangulationDelaunay(d);
+	else triangulation(d);	
+
 	if(affiche){
 		if(triangle == 0) displaySimplexeLigne(d);
 		else displaySimplexeTriangle(d);
