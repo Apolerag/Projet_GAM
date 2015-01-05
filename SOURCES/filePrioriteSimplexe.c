@@ -57,6 +57,7 @@ void insererFileSimplexe(FileSimplexe * f, Simplexe * s)
 	f->file[f->nbElementsCourant] = s;
 	
 	i = f->nbElementsCourant ;
+	s->indiceDansFile = i;
 	while((i > 1) && (f->file[i]->distanceMax > f->file[i/2]->distanceMax)) {
 		echangeCaseSimplexe(f, i, i/2);
 		i /= 2;
@@ -108,6 +109,10 @@ Simplexe* extremierFileSimplexe(FileSimplexe * f)
 void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 {
 	Simplexe* temp;
+
+	f->file[i]->indiceDansFile = j;
+	f->file[j]->indiceDansFile = i;
+
 	temp = f->file[i];
 	f->file[i] = f->file[j];
 	f->file[j] = temp;
@@ -116,10 +121,7 @@ void echangeCaseSimplexe(FileSimplexe * f, const int i, const int j)
 void triFileSimplexe(FileSimplexe * f, Simplexe * s)
 {
 	int indice;
-	for(indice = 1; indice <= f->nbElementsCourant; indice++) {
-		if(f->file[indice] == s)
-			break;
-	}
+	indice = s->indiceDansFile;
 
 	while(indice > 1 && f->file[indice]->distanceMax > f->file[indice/2]->distanceMax) {
 		

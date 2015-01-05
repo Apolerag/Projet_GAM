@@ -39,6 +39,7 @@ typedef struct
  *	@param nbListe le nombre d'éléments dans la liste
  *	@param voisins les Simplexes voisins du Simplexe courant
  *	@param distanceMax la distance en le plan formé par le Simplexe et le premier Vertex de la liste
+ *  @param indiceDansFile l'indice du simplexe dans la file de priorité
 */
 typedef struct _Simplexe
 {
@@ -51,6 +52,8 @@ typedef struct _Simplexe
 	/*gestion de la pile*/
 	struct _Simplexe *precedentPile;
 	time_t marqueurTemps;
+	/* gestion de la file */
+	int indiceDansFile;
 
 } Simplexe;
 

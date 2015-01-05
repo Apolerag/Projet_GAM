@@ -24,6 +24,7 @@ Simplexe * creationSimplexe(const Vertex *A, const Vertex *B, const Vertex *C)
 	s->e = equationPlan(s);
 	s->precedentPile = NULL;
 	s->marqueurTemps = 0;
+	s->indiceDansFile = -1;
 	return s;
 }
 
