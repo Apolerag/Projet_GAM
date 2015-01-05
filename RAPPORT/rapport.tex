@@ -58,7 +58,7 @@ commentstyle=\it\color{green}, %
     
 \section{Utilisation du programme}
     Les paramètres par défaut d'utilisation du programme peuvent être modifiés via la ligne de commande.
-	
+    
     \begin{itemize}
     \item L'affichage du résultat dans une fenetre OpenGL doit être demandé avec l'argument $-a$ pour le squelette et $-t$ pour les triangles pleins et colorés.
     \item Le nombre de vertices est de 50 par défaut. Il peut être modifié avec l'argument $-n$ suivi du nombre de vertices voulu. 
@@ -83,36 +83,37 @@ commentstyle=\it\color{green}, %
     
         Le Vertex est la structure de base du projet, il permet de représenter les points qui formeront les sommets des simplexes.
     
-    \begin{lstlisting}[caption={la structure Vertex},language=C,label=vertex]
+    \begin{lstlisting}[caption={la structure Vertex},language=C,label=structvertex]
     typedef struct _Vertex
     {
-        double coords[DIM];	
+        double coords[DIM]; 
         struct _Vertex *suivant;
     } Vertex;
-	\end{lstlisting}
-	
-	\begin{itemize}
-	\item \textit{coords} est le tableau des contenant les coordonnées du vertex. 
-	Sa taille correspond au nombre de dimensions dans lequel le vertex est défini ; dans le cadre de ce projet \textit{DIM = 3}.
-	\item \textit{suivant} est un pointeur sur un autre vertex. Il est utilisé pour la gestion des vertices dans la file de priorité de la structure \textit{Delaunay} (voir \ref{structureDelaunay}).
-	\end{itemize}
-	
+    \end{lstlisting}
+    
+    \begin{itemize}
+    \item \textit{coords} est le tableau des contenant les coordonnées du vertex. 
+    Sa taille correspond au nombre de dimensions dans lequel le vertex est défini ; dans le cadre de ce projet \textit{DIM = 3}.
+    \item \textit{suivant} est un pointeur sur un autre vertex. Il est utilisé pour la gestion des vertices dans la file de priorité de la structure \textit{Delaunay} (voir \ref{structureDelaunay}).
+    \end{itemize}
+    
     \subsection{Simplexe}
     
         La structure Simplexe permet de représenter les triangles.
      
-    \begin{lstlisting}[caption={la structure Simplexe},language=C,label=simplexe]
+    \begin{lstlisting}[caption={la structure Simplexe},language=C,label=structsimplexe]
     typedef struct _Simplexe
     {
-    	const Vertex *sommets[3];
-    	Vertex *listeVertex;
-    	Equation e;
-    	struct _Simplexe *voisins[3];
-    	double distanceMax;
-    	struct _Simplexe *precedentPile;
-    	time_t marqueurTemps;
+        const Vertex *sommets[3];
+        Vertex *listeVertex;
+        Equation e;
+        struct _Simplexe *voisins[3];
+        double distanceMax;
+        int indiceDansFile;
+        struct _Simplexe *precedentPile;
+        time_t marqueurTemps;
     } Simplexe;
-	\end{lstlisting}
+    \end{lstlisting}
     
     \begin{itemize}
     \item \textit{sommets} contient les pointeurs sur les trois vertices qui composent le triangle. Ces trois sommets sont systématiquement ordonnés dans le tableau de manière à être définis dans le sens trigonométrique. Si tel n'était pas le cas, plusieurs fonctions et procédures n'auraient pas les résultats escomptés.
@@ -124,6 +125,7 @@ commentstyle=\it\color{green}, %
     \item $a$, $b$, $c$ et $d$ les paramètres de l'équation du plan.
     \item $v.x$, $v.y$ et $v.z$ les coordonnés du vertex.
     \end{itemize}
+    \item \textit{indiceDansFile} stocke comme son nom l'indique la position du simplexe dans la file de priorité (voir \ref{file}).
     \item Les éléments \textit{precedentPile} et \textit{marqueurTemps} sont utilisés dans le cas de la triangulation de Delaunay. Lorsque de nouveaux simplexes sont créés, ils sont ajoutés à la pile afin de pouvoir vérifier si il faut faire des échanges de diagonales. \textit{precedentPile} pointe sur le simplexe précédant dans la pile et \textit{marqueurTemps} permet d'indiquer si le simplexe a déjà été traité dans l'itération courante.
     \end{itemize}
 
@@ -132,15 +134,15 @@ commentstyle=\it\color{green}, %
     La file de priorité permet de trier les simplexes en fonction de leur attribut \textit{distanceMax}. Plus celle ci est élévée, plus le simplexe est prioritaire. Cette file de priorité est basée sur celle developpée en TP mais a été adaptée pour les simplexes.
     \\Elle se met à jour automatiquement à chaque ajout ou suppression d'élément ; une fonction est également disponible pour la mettre à jour lorsqu'un simplexe a été modifié (après un échange de diagonale par exemple).
     
-    \begin{lstlisting}[caption={la structure FileSimplexe},language=C,label=file]
+    \begin{lstlisting}[caption={la structure FileSimplexe},language=C,label=structfile]
     typedef struct 
     {
        Simplexe ** file; 
-       int nbElements;	
+       int nbElements;  
        int nbElementsCourant;
     } FileSimplexe;
-	\end{lstlisting}
-    
+    \end{lstlisting}
+    \label{file}
     \begin{itemize}
     \item \textit{file} est un tableau de pointeurs sur des simplexes. Ce tableau est de taille $nbElements + 1$ car le premier élément d'une file de priorité se trouve à l'indice $1$.
     \item  \textit{nbElementsCourant} correspond au nombre de simplexes dans la file et donc au nombre de facettes créées.
@@ -151,24 +153,24 @@ commentstyle=\it\color{green}, %
     
     Cette structure a été créée afin de regrouper les éléments nécessaires à la triangulation et de simplifier le passage des paramètres des fonctions et procédures.
     
-    \begin{lstlisting}[caption={la structure Delaunay},language=C,label=delaunay]
+    \begin{lstlisting}[caption={la structure Delaunay},language=C,label=structdelaunay]
         typedef struct 
         {
-        	FileSimplexe *filePrioriteSimplexe;
-        	Vertex *tableauVertex;
-        	int nbVertex;
-        	int nombreFacetteMax;
-        	double distanceMin;
+            FileSimplexe *filePrioriteSimplexe;
+            Vertex *tableauVertex;
+            int nbVertex;
+            int nombreFacetteMax;
+            double distanceMin;
         } Delaunay;
-	\end{lstlisting}
-	
-	\begin{itemize}
-	\item \textit{filePrioriteSimplexe} est un pointeur sur la file de priorité qui contient tous les simplexes.
-	\item \textit{tableauVertex} est un tableau qui contient tous les vertices qui sont créés lors de l'initialisation puis qui seront associés à des simplexes. Ce tableau est de taille \textit{nbVertex}.
-	\item \textit{nombreFacetteMax} et \textit{distanceMin} sont les variables qui permettent de gérer les cas d'arrêts de la triangulation (voir \ref{triangulationDelaunay}).
-	\end{itemize}
+    \end{lstlisting}
+    
+    \begin{itemize}
+    \item \textit{filePrioriteSimplexe} est un pointeur sur la file de priorité qui contient tous les simplexes.
+    \item \textit{tableauVertex} est un tableau qui contient tous les vertices qui sont créés lors de l'initialisation puis qui seront associés à des simplexes. Ce tableau est de taille \textit{nbVertex}.
+    \item \textit{nombreFacetteMax} et \textit{distanceMin} sont les variables qui permettent de gérer les cas d'arrêts de la triangulation (voir \ref{triangulationDelaunay}).
+    \end{itemize}
 
-\section{Initialisation}	
+\section{Initialisation}
     Avant de commencer la triangulation, une étape d'initialisation est nécessaire afin de tirer aléatoirement les coordonnées des vertices et de créer manuellement les deux premiers simplexes. Cette étape permet également d'initialiser la structure \textit{Delaunay}.
     
     \paragraph{}
@@ -252,13 +254,13 @@ commentstyle=\it\color{green}, %
             \begin{tabular}{|c|c|}\hline \label{tempsBasique}
                 Nombre de vertices & Temps d'exécution (s) \\
                 \hline
-                $10$ &  0,004027 \\
-                $100$ & 0,005394 \\
-                $1000$ & 0,007469 \\
-                $10^4$ & 0,03256 \\
-                $10^5$ & 0,306865 \\
-                $10^6$ & 4,173267 \\
-                $10^7$ & 58,279697\\
+                $10$ & 0.005338 \\
+                $100$ & 0.005810 \\
+                $1000$ & 0.007804 \\
+                $10^4$ & 0.032356 \\
+                $10^5$ & 0.267649 \\
+                $10^6$ & 3.078548 \\
+                $10^7$ & 41.693276 \\
                 \hline
             \end{tabular}
         \end{center}
@@ -295,31 +297,31 @@ commentstyle=\it\color{green}, %
         La fonction \textit{echangeSimplexe} qui peut aussi être appellée \textit{swap} consiste à changer la diagonale commune de deux simplexes afin que la condition de Delaunay soit respectée. Ainsi deux simplexes ABC et et ACD deviendront ABD et BCD (voir figure \ref{fig1}).
         
         \begin{figure}[H]
-    		\centering
-    		\includegraphics[scale=0.40]{exemple_swap_simple.jpg}     
-    		\caption{Echange de diagonale}
-    		\label{fig1}
-	    \end{figure}
+            \centering
+            \includegraphics[scale=0.40]{exemple_swap_simple.jpg}     
+            \caption{Echange de diagonale}
+            \label{fig1}
+        \end{figure}
         
         Nous avons essayé de faire un échange de diagonale le plus générique possible afin d'avoir une méthode claire et précise. Par la suite, nous supposerons que les deux simplexes dont nous voulons changer la diagonale se nomment S1 et S2.
         \\ Dans un premier temps, nous cherchons à connaître l'indice du sommet de S1 opposé à S2 ainsi que celui du sommet de S2 opposé à S1, que nous appellerons respectivement iS1 et iS2. Nous avons donc la configuration suivante : 
         
         \begin{figure}[H]
-    		\centering
-    		\includegraphics[scale=0.40]{config_avant_swap.jpg}     
-    		\caption{Configuration avant l'échange}
-	    \end{figure}
-	    
-	    Grâce à cette configuration, il nous est possible de créer les nouveaux simplexes aisément, quel que soit l'indice du sommet opposé à S2. Les vertices composant les sommet de S1 sont stockés dans un tableau temporaire ; de même pour les voisins de S1 et les voisins de S2. On stocke également le sommet de S2 opposé à S1.
-	    \\Tous ces éléments nous permettent de créer les deux nouveaux simplexes en changeant dans les structures de données des simplexes d'origine les valeurs qui correspondent à la configuration suivante :
-	    
-	    \begin{figure}[H]
-    		\centering
-    		\includegraphics[scale=0.40]{config_apres_swap.jpg}     
-    		\caption{Configuration après l'échange}
-    		\label{fig3}
-	    \end{figure}
-	    
+            \centering
+            \includegraphics[scale=0.40]{config_avant_swap.jpg}     
+            \caption{Configuration avant l'échange}
+        \end{figure}
+        
+        Grâce à cette configuration, il nous est possible de créer les nouveaux simplexes aisément, quel que soit l'indice du sommet opposé à S2. Les vertices composant les sommet de S1 sont stockés dans un tableau temporaire ; de même pour les voisins de S1 et les voisins de S2. On stocke également le sommet de S2 opposé à S1.
+        \\Tous ces éléments nous permettent de créer les deux nouveaux simplexes en changeant dans les structures de données des simplexes d'origine les valeurs qui correspondent à la configuration suivante :
+        
+        \begin{figure}[H]
+            \centering
+            \includegraphics[scale=0.40]{config_apres_swap.jpg}     
+            \caption{Configuration après l'échange}
+            \label{fig3}
+        \end{figure}
+        
         Une fois que la diagonale a été changée, nous stockons les listes des vertices restants à insérer dans un temporaire puis nous les distribuons dans les deux nouveaux simplexes. 
         \\Il faut enfin notifier les deux voisins de S1 et S2 concernés (en bleu sur la figure \ref{fig3}) qu'ils ont changé de voisin.
         
@@ -331,18 +333,20 @@ commentstyle=\it\color{green}, %
             \begin{tabular}{|c|c|}\hline \label{tempsDelaunay}
                 Nombre de vertices & Temps d'exécution (s) \\
                 \hline
-                $10$ &  0,004939 \\
-                $100$ & 0,005378 \\
-                $1000$ & 0,016825 \\
-                $10^4$ & 0,506709 \\
-                $10^5$ & 46,24618 \\
+                $10$ &  0.005565 \\
+                $100$ & 0.005951 \\
+                $1000$ & 0.011019 \\
+                $10^4$ & 0.062287 \\
+                $10^5$ & 0.536949 \\
+                $10^6$ & 6.881539 \\
+                $10^7$ & 85.979735 \\
                 \hline
             \end{tabular}
         \end{center}
         
-        L'ajout de cette boucle augmente de façon significative la complexité de l'algorithme car il n'est pas possible de savoir à l'avance la taille maximale que va atteindre la pile et le nombre de fois que la fonction d'échange de diagonale va être appelée. C'est cette dernière qui augmente la compléxité de l'algorithme et allonge le temps d'exécution du programme car elle nécessite de replacer dans la file de priorité les simplexes qui ont été modifiés. 
+        L'ajout de cette boucle augmente la complexité de l'algorithme car il n'est pas possible de savoir à l'avance la taille maximale que va atteindre la pile et le nombre de fois que la fonction d'échange de diagonale va être appelée. C'est cette dernière qui augmente la compléxité de l'algorithme et allonge le temps d'exécution du programme car elle nécessite de replacer dans la file de priorité les simplexes qui ont été modifiés. 
         \paragraph{}
-        D'après les résultats que nous avons obtenu, nous pouvons affirmer que le programme ne s'exécute pas en temps logarithmique, contrairement à ce que nous pouvions espérer.
+        D'après les résultats que nous avons obtenu, nous pouvons affirmer que le programme s'exécute en temps logarithmique, comme nous pouvions espérer.
 
 
 \section{Conclusion}    

@@ -58,7 +58,6 @@ veryclean:
 cleanAll: veryclean
 	rm -rf DOCS/*
 	rm -rf $(RAPDIR)/*.aux $(RAPDIR)/*.toc $(RAPDIR)/*.log
-	rm -rf $(RAPDIR)/*.pdf
 
 doc: 
 	doxygen $(SRCDIR)/Doxyfile
