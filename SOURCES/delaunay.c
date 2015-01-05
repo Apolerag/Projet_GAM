@@ -22,7 +22,7 @@ Delaunay *initialisation(const int nbVertex, const int nombreFacette, const doub
 	Delaunay *d;
 	ALLOUER(d, 1);
 	ALLOUER(d->tableauVertex, nbVertex);
-	d->filePrioriteSimplexe = creerFileSimplexe(2 * nbVertex);
+	d->filePrioriteSimplexe = creerFileSimplexe(2 * nbVertex - 6);
 	d->nbVertex = nbVertex;
 
 	if(nombreFacette == -1) d->nombreFacetteMax = d->filePrioriteSimplexe->nbElements;
@@ -111,8 +111,8 @@ void triangulation(Delaunay *d)
 	}
 	temps=clock();
     printf("Temps de calcul: %f secondes \n", (double) temps/CLOCKS_PER_SEC);
-	printf("nombre de points inséré : %d\n", compteur);
-	printf("nombre de facette créées : %d\n", d->filePrioriteSimplexe->nbElementsCourant);
+	printf("Nombre de points inséré : %d\n", compteur);
+	printf("Nombre de facette créées : %d\n", d->filePrioriteSimplexe->nbElementsCourant);
 }
 
 void triangulationDelaunay(Delaunay *d)
@@ -191,8 +191,8 @@ void triangulationDelaunay(Delaunay *d)
 	}
 	temps=clock();
     printf("Temps de calcul: %f secondes \n", (double) temps/CLOCKS_PER_SEC);
-	printf("nombre de points inséré : %d\n", compteur);
-	printf("nombre de facette créées : %d\n", d->filePrioriteSimplexe->nbElementsCourant);
-	printf("taille maximale de la pile: %d\n", pile->maxPile);
+	printf("Nombre de points inséré : %d\n", compteur);
+	printf("Nombre de facette créées : %d\n", d->filePrioriteSimplexe->nbElementsCourant);
+	printf("Taille maximale de la pile: %d\n", pile->maxPile);
 	free(pile);
 }
